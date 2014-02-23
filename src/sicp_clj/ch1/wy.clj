@@ -1,4 +1,4 @@
-(ns sicp-clj.wy.ch1)
+(ns sicp-clj.ch1.wy)
 
 ; 1-3
 (defn sum-square-of-larger-two [a b c]
@@ -50,8 +50,6 @@
       (cbrt-iter (improve guess))))
   (cbrt-iter 1.0))
 
-(ns sicp.ch-1-2)
-
 ; 1-9
 ; first one's process is recursive as it expands like (inc (inc (inc ...))).
 ; second one's process is iterative as `+` procedure calls itself as a top expression.
@@ -74,11 +72,32 @@
 
 ; 1-11
 (defn f-recur [n]
-  (if (n < 3)
+  (if (< n 3)
     n
     (+ (f-recur (- n 1))
        (* 2 (f-recur (- n 2)))
        (* 3 (f-recur (- n 3))))))
 
 (defn f-iter [n]
-  )
+  (defn iter [a b c x]
+    (if (< x 3)
+      a
+      (iter (+ a (* 2 b) (* 3 c)) a b (dec x))))
+  (iter 2 1 0 n))
+
+; 1-12
+
+(defn pascal [row col]
+  (if (or (= col 0) (= col row))
+    1
+    (+ (pascal (dec row) col) (pascal (dec row) (dec col)))))
+
+; 1-16
+
+(defn fast-expt-iter [b n]
+  (defn iter [acc m]
+    (cond
+      (= m 0) acc
+      (even? m) (iter ??? ???)
+      :else (iter ??? ???)))
+  (iter 1 n))
