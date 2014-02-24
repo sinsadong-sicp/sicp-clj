@@ -95,9 +95,9 @@
 ; 1-16
 
 (defn fast-expt-iter [b n]
-  (defn iter [acc m]
+  (defn iter [acc prod c]
     (cond
-      (= m 0) acc
-      (even? m) (iter ??? ???)
-      :else (iter ??? ???)))
-  (iter 1 n))
+      (= c 0) acc
+      (even? c) (iter acc (square prod) (/ c 2))
+      :else (iter (* acc prod) prod (dec c))))
+  (iter 1 b n))
