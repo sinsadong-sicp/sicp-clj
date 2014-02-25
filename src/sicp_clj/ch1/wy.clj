@@ -88,7 +88,7 @@
 ; 1-12
 
 (defn pascal [row col]
-  (if (or (= col 0) (= col row))
+  (if (or (zero? col) (= col row))
     1
     (+ (pascal (dec row) col) (pascal (dec row) (dec col)))))
 
@@ -97,7 +97,56 @@
 (defn fast-expt-iter [b n]
   (defn iter [acc prod c]
     (cond
-      (= c 0) acc
+      (zero? c) acc
       (even? c) (iter acc (square prod) (/ c 2))
       :else (iter (* acc prod) prod (dec c))))
   (iter 1 b n))
+
+; 1-17
+(defn do-double [x]
+  (* 2 x))
+
+(defn do-halve [x]
+  (/ x 2))
+
+(defn fast-mult [a b]
+  (cond
+    (zero? b) 0
+    (even? b) (fast-mult (do-double a) (do-halve b))
+    :else (+ a (fast-mult a (dec b)))))
+
+; 1-18
+
+(defn fast-mult-iter [a b]
+  (defn iter [acc x y]
+    (cond
+      (zero? y) acc
+      (even? y) (iter acc (do-double x) (do-halve y))
+      :else (iter (+ acc x) x (dec y))))
+  (iter 0 a b))
+
+; 1-19
+
+; Tpq(a, b)
+;   = (bq + aq + ap, bp + aq)
+; Tpq(Tpq(a, b))
+;   = (bpq + aqq + bqq + aqq + apq + bpq + apq + app, bpp + apq + bqq + aqq + apq)
+;   = (b(2pq + qq) + a(2qq + 2pq + pp), b(pp + qq) + a(2pq + qq))
+;   = (bq' + aq' + ap', bp' + aq'), where p' = pp + qq, q' = 2pq + qq
+
+(defn fib [n]
+  (defn fib-iter [a b p q c]
+    (cond
+      (zero? c) b
+      (even? c) (fib-iter a
+                          b
+                          (+ (square p) (square q))
+                          (+ (* 2 p q) (square q))
+                          (/ c 2))
+      :else (fib-iter (+ (* b q) (* a q) (* a p))
+                      (+ (* b p) (* a q))
+                      p
+                      q
+                      (dec c))))
+  (fib-iter 1 0 0 1 n))
+
