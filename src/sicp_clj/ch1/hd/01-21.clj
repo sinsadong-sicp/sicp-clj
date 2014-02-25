@@ -262,8 +262,8 @@
       :else (find-divisor (inc test-divisor))))
     (find-divisor 2))
 
-(defn prime?[n]
-  (= n (smallest-divisor n)))
+; (defn prime?[n]
+;   (= n (smallest-divisor n)))
 
 (defn expmod[base exp m]
   (cond
