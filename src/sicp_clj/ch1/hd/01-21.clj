@@ -100,8 +100,8 @@
 ; 1-10
 (defn acnn [x y]
   (cond
-    (= y 0) 0
-    (= x 0) (* 2 y)
+    (zero? y) 0
+    (zero? x) (* 2 y)
     (= y 1) 2
     :else (acnn (dec x) (acnn x (dec y))))
   )
@@ -134,7 +134,7 @@
 ; 1-11
 (defn fib[n]
   (defn iter[a b count]
-    (if (= count 0) 
+    (if (zero? count) 
       b 
       (iter (+ a b) a (dec count))))
   (iter 1 0 n))
@@ -150,7 +150,7 @@
 
 (defn ex11-iter[n]
   (defn iter[a b c count]
-    (if (= count 0)
+    (if (zero? count)
       c
       (iter (+ a (* 2 b) (* 3 c)) a b (dec count))))
   (iter 2 1 0 n))
@@ -159,7 +159,7 @@
 (defn pascal-tri[n] 
   (defn pascal-val[level idx]
     (cond     
-      (= idx 0) 1
+      (zero? idx) 1
       (= idx level) 1
       :else (+ (nth (pascal-tri (dec level)) (dec idx)) (nth (pascal-tri (dec level)) idx))
       ))
@@ -171,14 +171,14 @@
 
 ; 1-15
 (defn pow[n, x]
-  (if (= x 0) 1 (reduce * (take x (repeat n)))))
+  (if (zero? x) 1 (reduce * (take x (repeat n)))))
 ; a. 3^4=81, 3^5=243. 3의 x승이 121.5을 넘기면 종료하는 것이니까 5번.
 ; b. (sine a)는 a를 0.1로 나눈 값이 3의 x승을 넘길 때까지 계산. 즉 ceiling(log (10a) / (log 3)) 번 한다. 자람 차수는 (log a).
 
 ; 1-16
 (defn expt[b n]
   (defn expt-iter[counter product]
-    (if (= counter 0)
+    (if (zero? counter)
       product
       (expt-iter (dec counter) (* b product)
     )))
@@ -186,7 +186,7 @@
 
 (defn fast-expt[b n]
   (cond 
-    (= n 0) 1
+    (zero? n) 1
     (even? n) (square (fast-expt b (/ n 2)))
     :else (* b (fast-expt b (dec n)))
   ))
@@ -194,7 +194,7 @@
 (defn fast-expt-iter[b n]
   (defn iter[counter product]
     (cond 
-      (= counter 0) product
+      (zero? counter) product
       (even? counter) (square (iter (/ counter 2) product))
       :else (iter (dec counter) (* b product))
     ))
@@ -205,7 +205,7 @@
   (defn double_ [x] (+ x x))
   (defn halve [x] (/ x 2))
   (cond 
-    (= b 0) 0
+    (zero? b) 0
     (even? b) (multiply (double_ a) (halve b))
     :else (+ a (multiply a (dec b)))))
 
@@ -215,7 +215,7 @@
   (defn halve [x] (/ x 2))
   (defn iter[counter product]
     (cond
-      (= counter 0) 0
+      (zero? counter) 0
       (= counter 1) product
       (even? counter) (iter (halve counter) (double_ product))
       :else (+ b (iter (dec counter) product))
@@ -233,7 +233,7 @@
 
 ; 1-20
 (defn gcd[a b]
-  (if (= b 0) 
+  (if (zero? b) 
     a
     (gcd b (rem a b)))
   )
@@ -254,7 +254,7 @@
 ; 1.2.6 연습: 소수 찾기
 (defn smallest-divisor [n]
   (defn divides? [a b]
-      (= (rem b a) 0))
+      (zero? (rem b a)))
   (defn find-divisor [test-divisor]
     (cond 
       (> (square test-divisor) n) n
@@ -267,7 +267,7 @@
 
 (defn expmod[base exp m]
   (cond
-    (= exp 0) 1
+    (zero? exp) 1
     (even? exp) (rem (square (expmod base (/ exp 2) m)) m)
     :else (rem (* base (expmod base (dec exp) m)) m)
   ))
@@ -279,7 +279,7 @@
 
 (defn fast-prime? [n times]
   (cond
-    (= times 0) true
+    (zero? times) true
     (fermat-test n) (fast-prime? n (dec times))
     :else false
   ))    
