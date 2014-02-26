@@ -8,6 +8,9 @@
   (if (< x 0.0)
     (- 0.0 x)
     x))
+(defn average [x y]
+  (/ (+ x y) 2))
+
 
 ; 1-3
 (defn sum-of-squares-of-larger-two [a b c]
@@ -22,8 +25,22 @@
   normal order evaluation일 경우 무한루프
   applicative order evaluation일 경우 0 )
 
-; 1-7
+; 1-6
 ; 무한루프
+
+; 1-7
+(defn sqrt [x]
+  (defn sq-iter [guess gbefore]
+    (defn improve [b a]
+      (average b (/ a b)))
+    (defn isgood [est ori]
+      (if (= est ori)
+        (= 1 1)
+        (< (abs (/ ori (- ori est))) 0.001)))
+    (if (isgood guess gbefore)
+      guess
+      (sq-iter (improve guess x) guess)))
+  (sq-iter 1.0 x))
 
 ; 1-8
 (defn cuberoot [x]
@@ -37,5 +54,10 @@
       (cube-iter (improve guess x))))
   (cube-iter 1.0))
 
-
+; 1-11
+(defn f-recur [n]
+  (cond (< n 3) n
+         :else (+ (+ (f-recur (- n 1))
+                 (* 2 (f-recur (- n 2))))
+                 (* 3 (f-recur (- n 3))))))
 
