@@ -170,7 +170,7 @@
 ; 1-14 => pass
 
 ; 1-15
-(defn pow[n, x]
+(defn pow[n x]
   (if (zero? x) 1 (reduce * (take x (repeat n)))))
 ; a. 3^4=81, 3^5=243. 3의 x승이 121.5을 넘기면 종료하는 것이니까 5번.
 ; b. (sine a)는 a를 0.1로 나눈 값이 3의 x승을 넘길 때까지 계산. 즉 ceiling(log (10a) / (log 3)) 번 한다. 자람 차수는 (log a).
@@ -192,13 +192,13 @@
   ))
 
 (defn fast-expt-iter[b n]
-  (defn iter[counter product]
+  (defn iter[counter product multiplier]
     (cond 
       (zero? counter) product
-      (even? counter) (square (iter (/ counter 2) product))
-      :else (iter (dec counter) (* b product))
+      (even? counter) (iter (/ counter 2) product (square multiplier))
+      :else (iter (dec counter) (* multiplier product) multiplier)
     ))
-  (iter n 1))
+  (iter n 1 b))
 
 ; 1-17
 (defn multiply [a b]
@@ -213,14 +213,14 @@
 (defn multiply-iter [a b]
   (defn double_ [x] (+ x x))
   (defn halve [x] (/ x 2))
-  (defn iter[counter product]
+  (defn iter[counter product acc]
     (cond
       (zero? counter) 0
-      (= counter 1) product
-      (even? counter) (iter (halve counter) (double_ product))
-      :else (+ b (iter (dec counter) product))
+      (= counter 1) (+ product acc)
+      (even? counter) (iter (halve counter) (double_ product) acc)
+      :else (iter (dec counter) product (+ product acc))
     ))
-  (iter a b))
+  (iter a b 0))
 
 ; 1-19
 ; p'와 q'가 어디서 튀어나온건가??
