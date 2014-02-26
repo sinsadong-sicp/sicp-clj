@@ -150,3 +150,19 @@
                       (dec c))))
   (fib-iter 1 0 0 1 n))
 
+; 1-21
+
+(defn smallest-divisor [n]
+  (defn divides? [a b]
+    (zero? (rem b a)))
+  (defn find-divisor [n test-divisor]
+    (cond
+      (> (square test-divisor) n) n
+      (divides? test-divisor n) test-divisor
+      :else (find-divisor n (inc test-divisor))))
+  (find-divisor n 2))
+
+; (smallest-divisor 199) => 199
+; (smallest-divisor 1999) => 1999
+; (smallest-divisor 19999) => 7
+
