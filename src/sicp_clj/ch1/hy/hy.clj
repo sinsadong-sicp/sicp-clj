@@ -61,3 +61,21 @@
                  (* 2 (f-recur (- n 2))))
                  (* 3 (f-recur (- n 3))))))
 
+; 1-12
+(defn pascal [n t]
+  (cond (or (<= n 1) (<= t 1))  1
+         (<= n t) 1
+         :else (+ (pascal (- n 1) (- t 1)) (pascal (- n 1) t))))
+
+; 1-16
+(defn expo [b n]
+  (defn expo-step [b n a]
+    (cond
+      (even? n) (expo-step (square b) (/ n 2) a)
+      (= n 1)  (* a b)
+      (= n 0)  a
+      :else (expo-step b (- n 1) (* a b))))
+  (expo-step b n 1))
+
+
+

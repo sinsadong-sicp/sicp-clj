@@ -15,3 +15,11 @@
 
 ;1-11
 (println (f-recur 3))
+
+;1-12
+(println (pascal 1 1))
+(println (pascal 5 3))
+
+;1-16
+(println (expo 2 3))
+(println (expo 2 11))
