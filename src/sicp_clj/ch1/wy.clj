@@ -168,10 +168,10 @@
 
 ; 1-29
 
-(defn sum [t a n b]
+(defn sum [term a advance b]
   (if (> a b)
     0
-    (+ (t a) (sum t (n a) n b))))
+    (+ (term a) (sum term (advance a) advance b))))
 
 (defn integral [f a b dx]
   (defn add-dx [x]
@@ -191,9 +191,56 @@
 
 ; 1-30
 
-(defn sum-iter [t a n b]
-  (defn iter [a result]
+(defn sum-iter [term a advance b]
+  (defn iter [a acc]
     (if (> a b)
-      result
-      (iter (n a) (+ result (t a)))))
+      acc
+      (iter (advance a) (+ acc (term a)))))
   (iter a 0))
+
+; 1-31
+
+(defn product-recur [term a advance b]
+  (if (> a b)
+    1
+    (* (term a) (product-recur term (advance a) advance b))))
+
+(defn product-iter [term a advance b]
+  (defn iter [a acc]
+    (if (> a b)
+      acc
+      (iter (advance a) (* acc (term a)))))
+  (iter a 1))
+
+(defn approximate-pi [n]
+  (let [product product-recur]
+    (defn term [k]
+      (let [n (inc (* 2 k))]
+        (/ (* (dec n) (inc n)) (square n))))
+    (* 4.0 (product term 1 inc n))))
+
+(defn factorial [n]
+  (let [product product-recur]
+    (product identity 1 inc n)))
+
+; 1-32
+
+(defn accumulate-recur [combiner null-value term a advance b]
+  (if (> a b)
+    null-value
+    (combiner (term a) (accumulate-recur combiner null-value term (advance a) advance b))))
+
+(defn accumulate-iter [combiner null-value term a advance b]
+  (defn iter [a acc]
+    (if (> a b)
+      acc
+      (iter (advance a) (combiner acc (term a)))))
+  (iter a null-value))
+
+(defn sum-using-accumulate [term a advance b]
+  (let [accumulate accumulate-recur]
+    (accumulate + 0 term a advance b)))
+
+(defn product-using-accumulate [term a advance b]
+  (let [accumulate accumulate-recur]
+    (accumulate * 1 term a advance b)))
