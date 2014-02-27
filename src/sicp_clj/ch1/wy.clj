@@ -166,3 +166,34 @@
 ; (smallest-divisor 1999) => 1999
 ; (smallest-divisor 19999) => 7
 
+; 1-29
+
+(defn sum [t a n b]
+  (if (> a b)
+    0
+    (+ (t a) (sum t (n a) n b))))
+
+(defn integral [f a b dx]
+  (defn add-dx [x]
+    (+ x dx))
+  (* dx (sum f (+ a (/ dx 2.0)) add-dx b)))
+
+(defn simpson-integral [f a b n]
+  (let [h (/ (- b a) n)]
+    (defn c [k]
+      (cond
+        (or (zero? k) (= n k)) 1
+        (odd? k) 4
+        :else 2))
+    (defn g [k]
+      (* (c k) (f (+ a (* k h)))))
+    (* (/ h 3.0) (sum g 0 inc n))))
+
+; 1-30
+
+(defn sum-iter [t a n b]
+  (defn iter [a result]
+    (if (> a b)
+      result
+      (iter (n a) (+ result (t a)))))
+  (iter a 0))
