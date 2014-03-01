@@ -7,12 +7,10 @@
 		(combiner (term a) (accumulate combiner null-value term (next a) next b))))
 
 (defn sum-acc[term a next b]
-	(defn plus[a b](+ a b))
-	(accumulate plus 0 term a next b))
+	(accumulate + 0 term a next b))
 
 (defn mul-acc[term a next b]
-	(defn multiply[a b](* a b))
-	(accumulate multiply 1 term a next b))
+	(accumulate * 1 term a next b))
 
 ; 1-32-b
 (defn accumulate-iter[combiner null-value term a next b]
@@ -22,12 +20,10 @@
 	(iter a null-value))
 
 (defn sum-acc-iter[term a next b]
-	(defn plus[a b](+ a b))
-	(accumulate-iter plus 0 term a next b))
+	(accumulate-iter + 0 term a next b))
 
 (defn mul-acc-iter[term a next b]
-	(defn multiply[a b](* a b))
-	(accumulate-iter multiply 1 term a next b))
+	(accumulate-iter * 1 term a next b))
 
 (prn (sum-acc identity 1 inc 10)) ; => 55
 (prn (sum-acc-iter identity 1 inc 10)) ; => 55
@@ -61,17 +57,15 @@
 	(iter a null-value))
 
 (defn sum-of-sqares-of-primes[a b]
-	(defn plus[a b](+ a b))
-	(filtered-accumulate plus 0 square a inc b prime?))
+	(filtered-accumulate + 0 square a inc b prime?))
 
 (defn prod-of-pos-ints-less-and-rel-prime-to-n[n]
-	(defn multiply[a b](* a b))	
 	(defn relative-prime?[x]
 		(defn gcd[a b]
 		  (if (zero? b) a
 		    (gcd b (rem a b))))
 		(= (gcd x n) 1))
-	(filtered-accumulate multiply 1 identity 1 inc n relative-prime?)
+	(filtered-accumulate * 1 identity 1 inc n relative-prime?)
 )
 
 (prn (sum-of-sqares-of-primes 1 10)) ; => 87
