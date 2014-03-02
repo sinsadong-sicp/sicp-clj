@@ -77,5 +77,14 @@
       :else (expo-step b (- n 1) (* a b))))
   (expo-step b n 1))
 
-
+; 1-17
+(defn double2 [a]
+  (+ a a))
+(defn halve2 [a]
+  (/ a 2))
+(defn fast-expt [a b]
+  (cond  (= b 0) 0
+          (= b 1) a
+          (even? b) (fast-expt (double2 a) (halve2 b))
+          :else (+ a (fast-expt a (- b 1)))))
 

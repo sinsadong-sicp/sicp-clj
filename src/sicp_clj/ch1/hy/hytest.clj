@@ -23,3 +23,7 @@
 ;1-16
 (println (expo 2 3))
 (println (expo 2 11))
+
+;1-17
+(println (fast-expt 10 3))
+(println (fast-expt 20 4))
