@@ -88,3 +88,12 @@
           (even? b) (fast-expt (double2 a) (halve2 b))
           :else (+ a (fast-expt a (- b 1)))))
 
+; 1-18
+(defn fast-expt-iter [a b]
+  (defn iter [x y sum]
+    (cond
+      (= y 0) sum
+      (even? y) (iter (double2 x) (halve2 y) sum)
+      :else (iter x (- y 1) (+ sum x))))
+  (iter a b 0))
+
