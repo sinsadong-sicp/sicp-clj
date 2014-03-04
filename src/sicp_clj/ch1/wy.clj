@@ -244,3 +244,33 @@
 (defn product-using-accumulate [term a advance b]
   (let [accumulate accumulate-recur]
     (accumulate * 1 term a advance b)))
+
+; 1-33
+
+(defn filtered-accumulate [pred combiner null-value term a advance b]
+  (defn iter [a acc]
+    (if (> a b)
+      acc
+      (if (pred a)
+        (iter (advance a) (combiner acc (term a)))
+        (iter (advance a) acc))))
+  (iter a null-value))
+
+(defn prime? [n]
+  (and (> n 1) (= n (smallest-divisor n))))
+
+(defn sum-square-of-primes [a b]
+  (filtered-accumulate prime? + 0 square a inc b))
+
+(defn gcd [a b]
+  (if (zero? b)
+      a
+      (gcd b (rem a b))))
+
+(defn prod-coprimes [n]
+  (defn coprime-to-n? [i]
+    (= 1 (gcd i n)))
+  (filtered-accumulate coprime-to-n? * 1 identity 1 inc n))
+
+; 1-34
+; (f f) => (f 2) => (2 2) => 2 is not a function, hence an exception is thrown
