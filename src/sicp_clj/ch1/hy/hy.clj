@@ -10,6 +10,8 @@
     x))
 (defn average [x y]
   (/ (+ x y) 2))
+(defn halve [x]
+  (/ x 2))
 
 
 ; 1-3
@@ -97,3 +99,21 @@
       :else (iter x (- y 1) (+ sum x))))
   (iter a b 0))
 
+; 1-19
+
+;| p+q  q | | a | = | ap+aq bq |
+;|  q   p | | b | = |   aq   bp |
+;앞의 메트릭스  square하면
+;| p^2+2pq+2q^2    q^2+2pq |
+;|   q^2+2pq       p^2+q^2 |
+;p' = p^2 + q^2
+;q' = q^2 + 2pq
+
+
+(defn fib [n]
+  (defn fib-iter [a b p q cnt]
+  (cond 
+    (= cnt 0) b
+    (even? cnt) (fib-iter a b (+ (square p) (square q)) (+ (square q) (double (* p q))) (halve cnt))
+    :else (fib-iter (+ (* b q) (* a q) (* a p)) (+ (* b p) (* a q)) p q (- cnt 1))))
+  (fib-iter 1 0 0 1 n))

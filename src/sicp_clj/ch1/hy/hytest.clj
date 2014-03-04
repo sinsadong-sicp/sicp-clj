@@ -31,3 +31,6 @@
 ;1-18
 (println (fast-expt-iter 10 3))
 (println (fast-expt-iter 20 4))
+
+;1-19
+(println (fib 10))
