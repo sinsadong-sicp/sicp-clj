@@ -33,4 +33,9 @@
 (println (fast-expt-iter 20 4))
 
 ;1-19
-(println (fib 10))
+(println (fib 11))
+
+;1-21
+(println (smallest-divisor 19999))
+(println (smallest-divisor 1999))
+(println (smallest-divisor 199))
