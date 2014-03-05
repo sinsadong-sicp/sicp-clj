@@ -101,7 +101,7 @@
 
 ; 1-19
 
-;| p+q  q | | a | = | ap+aq bq |
+;| p+q  q | | a | = | ap+aq  bq |
 ;|  q   p | | b | = |   aq   bp |
 ;앞의 메트릭스  square하면
 ;| p^2+2pq+2q^2    q^2+2pq |
@@ -117,3 +117,15 @@
     (even? cnt) (fib-iter a b (+ (square p) (square q)) (+ (square q) (double (* p q))) (halve cnt))
     :else (fib-iter (+ (* b q) (* a q) (* a p)) (+ (* b p) (* a q)) p q (- cnt 1))))
   (fib-iter 1 0 0 1 n))
+
+; 1-21
+(defn divides? [a b]
+  (= (rem b a) 0))
+(defn find-divisor [n test-divisor]
+  (cond 
+    (> (square test-divisor) n) n
+    ((divides? test-divisor n) test-divisor)
+    :else (find-divisor n (+ test-divisor 1))))
+(defn smallest-divisor [n]
+  (find-divisor n 2))
+
