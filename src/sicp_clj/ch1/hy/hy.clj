@@ -129,3 +129,38 @@
 (defn smallest-divisor [n]
   (find-divisor n 2))
 
+; 1-22
+(defn prime? [n]
+  (= (smallest-divisor n) n))
+(defn current-time []
+  (System/currentTimeMillis))
+(defn report-prime []
+  (str " *** "))
+(defn start-prime-test [n start-time]
+  (cond (prime? n) (report-prime)))
+(defn timed-prime-test [init-time n]
+  (str "\n" n (start-prime-test n init-time) " elapsed time " (- (current-time) init-time)))
+(defn search-for-primes [start end initial-time]
+  (defn make-odd [s e]
+    (cond 
+      (divides? 2 start) (range (inc start) end 2)
+      :else (range start end 2)))
+  (print (take-last 3 (filter (complement nil?) (map (partial timed-prime-test initial-time) (make-odd start end))))))
+
+; 1-29
+(defn sum [term a nxt b]
+  (if (> a b)
+    0
+    (+ (term a) (sum term (nxt a) (nxt b)))))
+(defn simpson [f a b n]
+  (defn coeff [idx]
+    (cond 
+      (= idx 0) 1
+      (= idx n) 1
+      (divides? 2 idx) 4
+      :else 2))
+  (let [h (/ (- b a) n)]
+    (defn term [idx]
+      (* (coeff idx) (f (+ a (* idx h)))))
+    (* (/ h 3) (sum term 0 inc n)
+  )))

@@ -39,3 +39,6 @@
 (println (smallest-divisor 19999))
 (println (smallest-divisor 1999))
 (println (smallest-divisor 199))
+
+;1-22
+;(search-for-primes 1 100000 (current-time))
