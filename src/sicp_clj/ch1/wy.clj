@@ -1,4 +1,5 @@
-(ns sicp-clj.ch1.wy)
+(ns sicp-clj.ch1.wy
+  (:use [clojure.contrib.generic.math-functions :only [abs]]))
 
 ; 1-3
 (defn sum-square-of-larger-two [a b c]
@@ -274,3 +275,21 @@
 
 ; 1-34
 ; (f f) => (f 2) => (2 2) => 2 is not a function, hence an exception is thrown
+
+; 1-35
+; x^2 = x + 1 => x = 1 + 1/x
+
+(def tolerance 0.00001)
+
+(defn fixed-point [f first-guess]
+  (defn close-enough? [v u]
+    (< (abs (- v u)) tolerance))
+  (defn check [guess]
+    (let [next-guess (f guess)]
+      (if (close-enough? guess next-guess)
+        next-guess
+        (check next-guess))))
+  (check first-guess))
+
+(def golden-ratio
+  (fixed-point (fn [x] (inc (/ 1 x))) 1.0))
