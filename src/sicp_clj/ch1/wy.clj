@@ -293,3 +293,39 @@
 
 (def golden-ratio
   (fixed-point (fn [x] (inc (/ 1 x))) 1.0))
+
+; 1-37
+
+(defn cont-frac-recur [n d k]
+  (defn term [i]
+    (if (> i k)
+      0
+      (/ (n i) (+ (d i) (term (inc i))))))
+  (term 1))
+
+(defn cont-frac-iter [n d k]
+  (defn term [i acc]
+    (if (> i k)
+      acc
+      (term (inc i) (/ (n i) (+ (d i) acc)))))
+  (term 1 0))
+
+; 1-38
+
+(defn approximate-e [k]
+  (defn n [i] 1.0)
+  (defn d [i]
+    (if (= (mod i 3) 2)
+      (* 2.0 (/ (inc i) 3))
+      1.0))
+  (let [cont-frac cont-frac-recur]
+    (+ 2 (cont-frac n d k))))
+
+; 1-39
+
+(defn tan-cf [x k]
+  (defn n [i] (- (square x)))
+  (defn d [i]
+    (dec (* 2 i)))
+  (let [cont-frac cont-frac-recur]
+    (- (/ (cont-frac n d k) x))))
