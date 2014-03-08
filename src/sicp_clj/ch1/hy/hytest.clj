@@ -42,3 +42,6 @@
 
 ;1-22
 ;(search-for-primes 1 100000 (current-time))
+
+;1-30
+(println (sum2 cube 1 inc 10))

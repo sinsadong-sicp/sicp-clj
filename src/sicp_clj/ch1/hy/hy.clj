@@ -1,4 +1,4 @@
-(ns sicp-clj.ch1.hy)
+(ns sicp-clj.ch1.hy.hy)
 
 (defn square [x]
   (* x x))
@@ -151,7 +151,7 @@
 (defn sum [term a nxt b]
   (if (> a b)
     0
-    (+ (term a) (sum term (nxt a) (nxt b)))))
+    (+ (term a) (sum term (nxt a) nxt b))))
 (defn simpson [f a b n]
   (defn coeff [idx]
     (cond 
@@ -164,3 +164,11 @@
       (* (coeff idx) (f (+ a (* idx h)))))
     (* (/ h 3) (sum term 0 inc n)
   )))
+
+; 1-30
+(defn sum2 [term a nxt b]
+  (defn iter [a result]
+    (if (> a b)
+      result
+      (iter (nxt a) (+ (term a) result))))
+  (iter a 0))
