@@ -12,6 +12,8 @@
   (/ (+ x y) 2))
 (defn halve [x]
   (/ x 2))
+(defn mult2 [x]
+  (* 2 x))
 
 
 ; 1-3
@@ -172,3 +174,28 @@
       result
       (iter (nxt a) (+ (term a) result))))
   (iter a 0))
+
+; 1-31
+(defn donothing [y] y)
+(defn product [term a nxt b]
+  (if (> a b)
+    1
+    (* (term a) (product term (nxt a) nxt b))))
+(defn product2 [term a nxt b]
+  (defn iter [a result]
+    (if (> a b)
+      result
+      (iter (nxt a) (* (term a) result))))
+  (iter a 1))
+(defn factorial [x]
+  (product donothing 1 inc x))
+(defn pi-prod [n]
+  (defn num-term [x]
+    (cond 
+      (= x 1) 2
+      :else (* (inc (quot x 2)) 2)))
+  (defn deno-term [x]
+    (inc (mult2 (quot (inc x) 2))))
+  (defn term [x]
+    (/ (num-term x) (deno-term x)))
+  (double (* 4 (product2 term 1 inc n))))
