@@ -1,5 +1,6 @@
 (ns sicp-clj.ch1.wy
-  (:use [clojure.contrib.generic.math-functions :only [abs]]))
+  (:use [clojure.contrib.math :only [floor]])
+  (:use [clojure.contrib.generic.math-functions :only [abs pow]]))
 
 ; 1-3
 (defn sum-square-of-larger-two [a b c]
@@ -27,9 +28,9 @@
   (defn improve [guess]
     (average guess (/ x guess)))
   ; (defn good-enough? [guess]
-  ;   (< (Math/abs (- (square guess) x)) 0.001))
+  ;   (< (abs (- (square guess) x)) 0.001))
   (defn good-enough? [guess]
-    (< (Math/abs (/ (- (improve guess) guess) guess)) 0.001))
+    (< (abs (/ (- (improve guess) guess) guess)) 0.001))
   (defn sqrt-iter [guess]
     (if (good-enough? guess)
       guess
@@ -42,7 +43,7 @@
 
 (defn cbrt [x]
   (defn good-enough? [guess]
-    (< (Math/abs (- (cube guess) x)) 0.001))
+    (< (abs (- (cube guess) x)) 0.001))
   (defn improve [guess]
     (/ (+ (/ x (square guess)) (* 2 guess)) 3))
   (defn cbrt-iter [guess]
@@ -258,7 +259,7 @@
   (iter a null-value))
 
 (defn prime? [n]
-  (and (> n 1) (= n (smallest-divisor n))))
+  (and (> n 1) (== n (smallest-divisor n))))
 
 (defn sum-square-of-primes [a b]
   (filtered-accumulate prime? + 0 square a inc b))
@@ -270,7 +271,7 @@
 
 (defn prod-coprimes [n]
   (defn coprime-to-n? [i]
-    (= 1 (gcd i n)))
+    (== 1 (gcd i n)))
   (filtered-accumulate coprime-to-n? * 1 identity 1 inc n))
 
 ; 1-34
@@ -297,7 +298,7 @@
 ; 1-37
 
 (defn cont-frac-recur [n d k]
-  (if (= k 0)
+  (if (== k 0)
     0
     (/ (n k) (+ (d k) (cont-frac-recur n d (dec k))))))
 
@@ -378,6 +379,53 @@
 ; 1-43
 
 (defn repeated [f n]
-  (if (= n 1)
+  (if (== n 1)
     f
     (compose f (repeated f (dec n)))))
+
+; 1-44
+
+(defn smooth [f]
+  (fn [x]
+    (/
+      (+
+        (f (- x dx))
+        (f x)
+        (f (+ x dx)))
+      3)))
+
+(defn n-fold-smooth [n]
+  (repeated smooth n))
+
+; 1-45
+
+(defn average-damp [f]
+  (fn [x]
+    (average x (f x))))
+
+(defn nth-root [x n]
+  (fixed-point
+    ((repeated average-damp (floor (sqrt n))) (fn [y] (/ x (pow y (dec n)))))
+    1.0))
+
+; 1-46
+
+(defn iterative-improve [good-enough? improve]
+  (defn iter [guess]
+    (if (good-enough? guess)
+      guess
+      (iter (improve guess))))
+  (fn [first-guess] (iter first-guess)))
+
+(defn sqrt-improve [x]
+  (defn improve [guess]
+    (average guess (/ x guess)))
+  (defn good-enough? [guess]
+    (< (abs (/ (- (improve guess) guess) guess)) 0.001))
+  ((iterative-improve good-enough? improve) 1.0))
+
+(defn fixed-point-improve [f first-guess]
+  (let [improve f]
+    (defn good-enough? [guess]
+      (< (abs (- guess (improve guess))) tolerance))
+    ((iterative-improve good-enough? improve) first-guess)))
