@@ -1,6 +1,5 @@
 (ns sicp-clj.ch1.wy
-  (:use [clojure.contrib.math :only [floor]])
-  (:use [clojure.contrib.generic.math-functions :only [abs pow]]))
+  (:use [clojure.contrib.math :only [abs expt floor]]))
 
 ; 1-3
 (defn sum-square-of-larger-two [a b c]
@@ -64,12 +63,12 @@
 ; => (A 0 (A 1 (- n 1)))
 ; => (* 2 (A 1 (- n 1)))
 ; => (* 2 (* 2 (* 2 ... 2)))
-; => (Math/pow 2 n)
+; => (expt 2 n)
 
 ; (A 2 n)
 ; => (A 1 (A 2 (- n 1)))
-; => (Math/pow 2 (A 2 (- n 1)))
-; => (Math/pow 2 (Math/pow 2 (Math/pow 2 ... 2)))
+; => (expt 2 (A 2 (- n 1)))
+; => (expt 2 (expt 2 (expt 2 ... 2)))
 ; => 2^2^2^... (n times)
 
 ; 1-11
@@ -405,7 +404,7 @@
 
 (defn nth-root [x n]
   (fixed-point
-    ((repeated average-damp (floor (sqrt n))) (fn [y] (/ x (pow y (dec n)))))
+    ((repeated average-damp (floor (sqrt n))) (fn [y] (/ x (expt y (dec n)))))
     1.0))
 
 ; 1-46
