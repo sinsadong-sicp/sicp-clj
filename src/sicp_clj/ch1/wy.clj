@@ -297,11 +297,9 @@
 ; 1-37
 
 (defn cont-frac-recur [n d k]
-  (defn term [i]
-    (if (> i k)
-      0
-      (/ (n i) (+ (d i) (term (inc i))))))
-  (term 1))
+  (if (= k 0)
+    0
+    (/ (n k) (+ (d k) (cont-frac-recur n d (dec k))))))
 
 (defn cont-frac-iter [n d k]
   (defn term [i acc]
@@ -329,3 +327,57 @@
     (dec (* 2 i)))
   (let [cont-frac cont-frac-recur]
     (- (/ (cont-frac n d k) x))))
+
+; 1-40
+
+(def dx 0.00001)
+
+(defn deriv [g]
+  (fn [x]
+    (/
+      (- (g (+ x dx)) (g x))
+      dx)))
+
+(defn newton-transform [g]
+  (fn [x]
+    (- x (/ (g x) ((deriv g) x)))))
+
+(defn newtons-method [g guess]
+  (fixed-point (newton-transform g) guess))
+
+(defn cubic [a b c]
+  (fn [x]
+    (+
+      (* x x x)
+      (* a x x)
+      (* b x)
+      c)))
+
+; 1-41
+
+(defn twice [f]
+  (fn [x]
+    (f (f x))))
+
+; lemma: ((twice twice) f) == (twice (twice f))
+
+; (((twice (twice twice)) inc) 5)
+; => (((twice twice) ((twice twice) inc)) 5)
+; => (((twice twice) (twice (twice inc))) 5)
+; => (((twice (twice (twice (twice inc))))) 5)
+; => calls twice 4 times on inc
+; => calls inc 2^4 times on 5
+; => 23
+
+; 1-42
+
+(defn compose [f g]
+  (fn [x]
+    (f (g x))))
+
+; 1-43
+
+(defn repeated [f n]
+  (if (= n 1)
+    f
+    (compose f (repeated f (dec n)))))
