@@ -191,11 +191,27 @@
   (product donothing 1 inc x))
 (defn pi-prod [n]
   (defn num-term [x]
-    (cond 
-      (= x 1) 2
-      :else (* (inc (quot x 2)) 2)))
+    (if (= x 1) 
+      2
+      (* (inc (quot x 2)) 2)))
   (defn deno-term [x]
     (inc (mult2 (quot (inc x) 2))))
   (defn term [x]
     (/ (num-term x) (deno-term x)))
   (double (* 4 (product2 term 1 inc n))))
+
+; 1-32
+(defn accumulate [combiner null-value term a next b]
+  (if (> a b)
+    null-value
+    (combiner (term a) (accumulate combiner null-value term (next a) next b))))
+(defn accumulate-iter [combiner null-value term a next b]
+  (defn iter [a result]
+    (if (> a b)
+      result
+      (iter (next a) (combiner (term a) result))))
+  (iter a null-value))
+(defn product3 [term a next b]
+  (accumulate * 1 term a next b))
+(defn sum3 [term a next b]
+  (accumulate + 0 term a next b))

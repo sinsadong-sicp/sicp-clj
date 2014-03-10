@@ -50,3 +50,7 @@
 (println (factorial 4))
 (println (pi-prod 10))
 (println (product2 donothing 1 inc 4))
+
+;1-32
+(println (sum3 cube 1 inc 10))
+(println (product3 donothing 1 inc 4))
