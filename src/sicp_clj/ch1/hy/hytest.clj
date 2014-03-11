@@ -1,4 +1,4 @@
-(ns sicp-clj.ch1.hy)
+(ns sicp-clj.ch1.hy.hy)
 
 ;1-3
 (println (sum-of-squares-of-larger-two 1 2 3))
@@ -54,3 +54,9 @@
 ;1-32
 (println (sum3 cube 1 inc 10))
 (println (product3 donothing 1 inc 4))
+
+;1-33
+(prn (prime-squares 1 10))
+(prn (prime-squares 1 4))
+(prn (product-rel-prime 10))
+(prn (product-rel-prime 13))

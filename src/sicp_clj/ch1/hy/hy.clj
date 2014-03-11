@@ -114,7 +114,7 @@
 
 (defn fib [n]
   (defn fib-iter [a b p q cnt]
-  (cond 
+  (cond
     (= cnt 0) b
     (even? cnt) (fib-iter a b (+ (square p) (square q)) (+ (square q) (double (* p q))) (halve cnt))
     :else (fib-iter (+ (* b q) (* a q) (* a p)) (+ (* b p) (* a q)) p q (- cnt 1))))
@@ -124,7 +124,7 @@
 (defn divides? [a b]
   (= (rem b a) 0))
 (defn find-divisor [n test-divisor]
-  (cond 
+  (cond
     (> (square test-divisor) n) n
     (divides? test-divisor n) test-divisor
     :else (find-divisor n (+ test-divisor 1))))
@@ -144,7 +144,7 @@
   (str "\n" n (start-prime-test n init-time) " elapsed time " (- (current-time) init-time)))
 (defn search-for-primes [start end initial-time]
   (defn make-odd [s e]
-    (cond 
+    (cond
       (divides? 2 start) (range (inc start) end 2)
       :else (range start end 2)))
   (print (take-last 3 (filter (complement nil?) (map (partial timed-prime-test initial-time) (make-odd start end))))))
@@ -156,7 +156,7 @@
     (+ (term a) (sum term (nxt a) nxt b))))
 (defn simpson [f a b n]
   (defn coeff [idx]
-    (cond 
+    (cond
       (= idx 0) 1
       (= idx n) 1
       (divides? 2 idx) 4
@@ -191,7 +191,7 @@
   (product donothing 1 inc x))
 (defn pi-prod [n]
   (defn num-term [x]
-    (if (= x 1) 
+    (if (= x 1)
       2
       (* (inc (quot x 2)) 2)))
   (defn deno-term [x]
@@ -215,3 +215,22 @@
   (accumulate * 1 term a next b))
 (defn sum3 [term a next b]
   (accumulate + 0 term a next b))
+
+; 1-33
+(defn filtered-accumulate [combiner null-value term a next b fil]
+  (defn iter [a result]
+    (if (> a b)
+      result
+      (if (fil a)
+        (iter (next a) (combiner (term a) result))
+        (iter (next a) result))))
+  (iter a null-value)
+)
+
+(defn prime-squares [a b]
+  (filtered-accumulate + 0 square a inc b prime?))
+
+(defn product-rel-prime [n]
+  (defn isdivisor? [a]
+    (divides? a n))
+  (filtered-accumulate * 1 identity 1 inc n isdivisor?))
