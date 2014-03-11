@@ -7,19 +7,21 @@
 (defn make-rational [n d]
   (let [g (gcd n d)
         s (* (sgn n) (sgn d))]
-    [(* s (/ (abs n) g)) (/ (abs d) g)]))
+    (vector
+      (* s (/ (abs n) g))
+      (/ (abs d) g))))
 
 ; 2-2
 
 (defn make-point [x y]
-  [x y])
+  (vector x y))
 (defn x-point [p]
   (first p))
 (defn y-point [p]
   (second p))
 
 (defn make-segment [p q]
-  [p q])
+  (vector p q))
 (defn start-of-segment [s]
   (first s))
 (defn end-of-segment [s]
@@ -46,7 +48,7 @@
 
 ; bottom left point + top right point
 (defn make-rectangle [p q]
-  [p q])
+  (vector p q))
 (defn length-of-rectangle [r]
   (let [p (first r)
         q (second r)]
@@ -118,3 +120,18 @@
 
 (defn add [m n]
   (fn [f] (comp (m f) (n f))))
+
+; 2-17
+
+(defn last-pair [lst]
+  (if (empty? (rest lst))
+    (vector (first lst))
+    (last-pair (rest lst))))
+
+; 2-18
+
+(defn rev [lst]
+  (if (empty? (rest lst))
+    (vector (first lst))
+    (conj (rev (rest lst)) (first lst))))
+
