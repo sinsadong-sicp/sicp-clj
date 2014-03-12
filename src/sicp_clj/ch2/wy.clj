@@ -121,6 +121,38 @@
 (defn add [m n]
   (fn [f] (comp (m f) (n f))))
 
+; 2-7
+
+(defn make-interval [x y]
+  (vector x y))
+(defn upper-bound [interval]
+  (first interval))
+(defn lower-bound [interval]
+  (second interval))
+
+(defn add-interval [x y]
+  (make-interval
+    (+ (lower-bound x) (lower-bound y))
+    (+ (upper-bound x) (upper-bound y))))
+
+(defn multiply-interval [x y]
+  (let [p1 (* (lower-bound x) (lower-bound y))
+        p2 (* (lower-bound x) (upper-bound y))
+        p3 (* (upper-bound x) (lower-bound y))
+        p4 (* (upper-bound x) (lower-bound y))]
+    (make-interval (max p1 p2 p3 p4) (min p1 p2 p3 p4))))
+
+(defn divide-interval [x y]
+  (let [inverse-of-y (make-interval (/ 1.0 (upper-bound y)) (/ 1.0 (lower-bound y)))]
+    (multiply-interval x inverse-of-y)))
+
+; 2-8
+
+(defn subtract-interval [x y]
+  (make-interval
+    (- (lower-bound x) (upper-bound y))
+    (- (upper-bound x) (lower-bound y))))
+
 ; 2-17
 
 (defn last-pair [lst]
