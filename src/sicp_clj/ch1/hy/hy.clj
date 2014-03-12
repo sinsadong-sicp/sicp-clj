@@ -216,7 +216,7 @@
 (defn sum3 [term a next b]
   (accumulate + 0 term a next b))
 
-; 1-33
+;1-33
 (defn filtered-accumulate [combiner null-value term a next b fil]
   (defn iter [a result]
     (if (> a b)
@@ -234,3 +234,25 @@
   (defn isdivisor? [a]
     (divides? a n))
   (filtered-accumulate * 1 identity 1 inc n isdivisor?))
+
+;1-34
+(defn f [g]
+  (g 2))
+; (f f) gives ClassCassException
+
+;1-35
+(def tolerance 0.00001)
+
+(defn fixed-point [f first-guess]
+  (defn close-enough? [v1 v2]
+    (< (abs (- v1 v2)) tolerance))
+  (defn trial [guess]
+    (let [next (f guess)]
+      (if (close-enough? guess next)
+        next
+        (trial next)
+        )))
+  (trial first-guess))
+
+(def golden-ratio
+  (fixed-point (fn [x] (inc (/ 1 x))) 1.0))

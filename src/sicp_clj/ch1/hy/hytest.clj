@@ -1,12 +1,17 @@
 (ns sicp-clj.ch1.hy.hy)
 
+(defn hytest [fname a b]
+	(if (= a b)
+		(prn "PASS")
+		(prn fname " expected : " a " got : " b)))
+
 ;1-3
-(println (sum-of-squares-of-larger-two 1 2 3))
-(println (sum-of-squares-of-larger-two 4 1 2))
-(println (sum-of-squares-of-larger-two -1 -2 -3))
+(hytest "1-3" 13 (sum-of-squares-of-larger-two 1 2 3))
+(hytest "1-3" 20 (sum-of-squares-of-larger-two 4 1 2))
+(hytest "1-3" 5 (sum-of-squares-of-larger-two -1 -2 -3))
 
 ;1-7
-(println (sqrt 16))
+(hytest "1-7" 4.0 (sqrt 16))
 (println (sqrt 13))
 
 ;1-8
