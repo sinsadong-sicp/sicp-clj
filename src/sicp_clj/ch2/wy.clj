@@ -167,3 +167,14 @@
     (vector (first lst))
     (conj (rev (rest lst)) (first lst))))
 
+; 2-20
+
+(defn same-parity [& xs]
+  (let [same-parity? (if (odd? (first xs)) odd? even?)]
+    (defn iter [fst snd]
+      (if (empty? snd)
+        fst
+        (if (same-parity? (first snd))
+          (iter (conj fst (first snd)) (rest snd))
+          (iter fst (rest snd)))))
+    (iter (vector (first xs)) (rest xs))))
