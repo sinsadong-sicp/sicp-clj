@@ -256,3 +256,11 @@
 
 (def golden-ratio
   (fixed-point (fn [x] (inc (/ 1 x))) 1.0))
+
+;1-36
+(defn cont-frac [n d k]
+  (defn iter [step result]
+    (if (= 1 step)
+      result
+      (iter (dec step) (/ (n step) (+ (d step) result)))))
+  (iter k 0))
