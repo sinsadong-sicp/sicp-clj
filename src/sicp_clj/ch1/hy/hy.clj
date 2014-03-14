@@ -257,10 +257,35 @@
 (def golden-ratio
   (fixed-point (fn [x] (inc (/ 1 x))) 1.0))
 
-;1-36
+;1-37
 (defn cont-frac [n d k]
   (defn iter [step result]
-    (if (= 1 step)
+    (if (zero? step)
       result
       (iter (dec step) (/ (n step) (+ (d step) result)))))
   (iter k 0))
+
+(defn cont-frac-recur [n d k]
+  (if (zero? k)
+    0
+    (/ (n k) (+ (d k) (cont-frac-recur n d (dec k))))))
+
+;1-38
+(defn n-euler [k]
+  1.0)
+(defn d-euler [k]
+  (cond
+    (= k 1) 1.0
+    (= k 2) 2.0
+    (= (rem (- k 2) 3) 0) (double (double2 (inc (quot (- k 2) 3))))
+    :else 1.0))
+
+;1-39
+(defn tan-cf [x k]
+  (defn n [step]
+    (if (= step 1)
+      x
+      (- (square x))))
+  (defn d [step]
+    (inc (double2 (dec step))))
+  (cont-frac n d k))

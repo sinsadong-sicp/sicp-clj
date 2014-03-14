@@ -1,12 +1,9 @@
-(ns sicp-clj.ch1.hy.hy)
+(ns sicp-clj.ch1.hy.hytest
+	(:use sicp-clj.ch1.hy.hy))
 
 (def tol 0.0001)
 
 (defn check-with-error [a b]
-	(defn abs [x]
-	  (if (< x 0.0)
-	    (- 0.0 x)
-	    x))
 	(if (< (abs (- a b)) tol)
 		true
 		false)
@@ -70,7 +67,7 @@
 
 ;1-31
 (hytest "1-31" 24 (factorial 4))
-(hytest-with-error "1-31" 3.1431 (pi-prod 1000))
+(hytest-with-error "1-31" 3.1415 (pi-prod 2000))
 (hytest "1-31" 24 (product2 donothing 1 inc 4))
 
 ;1-32
@@ -86,6 +83,14 @@
 ;1-35
 (hytest "1-35" 1.6180327868852458 golden-ratio)
 
-;1-36
-(hytest-with-error "1-36" (/ 1 golden-ratio) (cont-frac (fn [x] 1.0) (fn [x] 1.0) 10))
-(hytest-with-error "1-36" (/ 1 golden-ratio) (cont-frac (fn [x] 1.0) (fn [x] 1.0) 100))
+;1-37
+(hytest-with-error "1-37" (/ 1 golden-ratio) (cont-frac (fn [x] 1.0) (fn [x] 1.0) 10))
+(hytest-with-error "1-37" (/ 1 golden-ratio) (cont-frac (fn [x] 1.0) (fn [x] 1.0) 100))
+(hytest-with-error "1-37" (cont-frac (fn [x] 1.0) (fn [x] 1.0) 10) (cont-frac-recur (fn [x] 1.0) (fn [x] 1.0) 10))
+
+;1-38
+(hytest-with-error "1-38" 2.7182 (+ 2 (cont-frac n-euler d-euler 100)))
+
+;1-39
+(hytest-with-error "1-39" 1.0 (tan-cf (/ 3.141592 4) 100))
+
