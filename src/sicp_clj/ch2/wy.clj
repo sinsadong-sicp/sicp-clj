@@ -178,3 +178,15 @@
           (iter (conj fst (first snd)) (rest snd))
           (iter fst (rest snd)))))
     (iter (vector (first xs)) (rest xs))))
+
+; 2-21
+
+(defn square-list-1 [items]
+  (defn iter [fst snd]
+    (if (empty? snd)
+      fst
+      (iter (conj fst (expt (first snd) 2)) (rest snd))))
+  (iter [] items))
+
+(defn square-list-2 [items]
+  (map (fn [x] (expt x 2)) items))
