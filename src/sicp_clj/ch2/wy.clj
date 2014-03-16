@@ -71,7 +71,6 @@
   (* (length-of-rectangle r) (width-of-rectangle r)))
 
 ; 2-4
-
 ; (car (cons x y))
 ; => ((cons x y) (fn [p q] p))
 ; => ((fn [m] (m x y)) (fn [p q] p))
@@ -190,3 +189,16 @@
 
 (defn square-list-2 [items]
   (map (fn [x] (expt x 2)) items))
+
+; 2-22
+; the last item in 'items' is the last to be cons-ed to the front of 'answer' list.
+; interchanging arguments makes the first argument to be of list type.
+
+; 2-23
+
+(defn foreach [f lst]
+  (if (empty? lst)
+    true
+    (do
+      (f (first lst))
+      (foreach f (rest lst)))))
