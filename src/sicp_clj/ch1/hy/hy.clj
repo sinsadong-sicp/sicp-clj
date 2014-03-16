@@ -289,3 +289,20 @@
   (defn d [step]
     (inc (double2 (dec step))))
   (cont-frac n d k))
+
+;1-40
+(def dx 0.00001)
+(defn deriv [g]
+  (fn [x]
+    (/ (- (g (+ x dx)) (g x)) dx)))
+(defn newton-transform [g]
+  (fn [x]
+    (- x (/ (g x) ((deriv g) x)))))
+(defn newtons-method [g guess]
+  (fixed-point (newton-transform g) guess))
+(defn cubic [a b c]
+  (fn [x]
+    (+ (* x x x)
+       (* a x x)
+       (* b x)
+       c)))

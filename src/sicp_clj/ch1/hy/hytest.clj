@@ -94,3 +94,6 @@
 ;1-39
 (hytest-with-error "1-39" 1.0 (tan-cf (/ 3.141592 4) 100))
 
+;1-40
+(hytest-with-error "1-40" 1.0 (newtons-method (cubic -1 1 -1) 1))
+
