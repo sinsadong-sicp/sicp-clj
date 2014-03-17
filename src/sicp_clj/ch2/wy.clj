@@ -202,3 +202,17 @@
     (do
       (f (first lst))
       (foreach f (rest lst)))))
+
+; 2-25
+; (def car first)
+; (def cdr rest)
+; (car (cdr (car (cdr (cdr (list 1 3 (list 5 7) 9)))))) ; => 7
+; (car (car (list (list 7)))) ; => 7
+; (car (cdr (car (cdr (car (cdr (car (cdr (car (cdr (car (cdr (list 1 (list 2 (list 3 (list 4 (list 5 (list 6 7)))))))))))))))))) ; => 7
+
+; 2-26
+; (def x (list 1 2 3))
+; (def y (list 4 5 6))
+; (concat x y) ; => (1 2 3 4 5 6)
+; (cons x y) ; => ((1 2 3) 4 5 6)
+; (list x y) ; => ((1 2 3) (4 5 6))
