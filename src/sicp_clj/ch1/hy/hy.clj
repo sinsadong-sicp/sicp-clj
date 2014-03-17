@@ -306,3 +306,27 @@
        (* a x x)
        (* b x)
        c)))
+
+;1-41
+(defn doagain [g]
+  (fn [x]
+    (g (g x))))
+
+;1-42
+(defn compose [f g]
+  (fn [x]
+    (f (g x))))
+
+;1-43
+(defn repeated [f n]
+  (if (= n 1)
+    f
+    (compose f (repeated f (dec n)))))
+
+;1-44
+(defn smooth [f]
+  (fn [x]
+    (/ (+ (f (- x dx)) (f x) (f (+ x dx))) 3)))
+
+(defn n-fold-smooth [f n]
+  (repeated f n))

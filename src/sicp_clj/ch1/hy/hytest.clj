@@ -97,3 +97,11 @@
 ;1-40
 (hytest-with-error "1-40" 1.0 (newtons-method (cubic -1 1 -1) 1))
 
+;1-41
+(hytest "1-41" 21 (((doagain (doagain doagain)) inc) 5))
+
+;1-42
+(hytest "1-42" 49 ((compose square inc) 6))
+
+;1-43
+(hytest "1-43" 625 ((repeated square 2) 5))
