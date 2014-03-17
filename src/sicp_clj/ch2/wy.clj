@@ -157,10 +157,10 @@
 (def car first)
 (def cdr rest)
 
-(defn last-pair [lst]
-  (if (empty? (cdr lst))
-    (list (car lst))
-    (last-pair (cdr lst))))
+(defn last-pair [xs]
+  (if (empty? (cdr xs))
+    (list (car xs))
+    (last-pair (cdr xs))))
 
 ; 2-18
 
@@ -169,10 +169,10 @@
     ys
     (cons (car xs) (append (cdr xs) ys))))
 
-(defn rev [lst]
-  (if (empty? (cdr lst))
-    (list (car lst))
-    (append (rev (cdr lst)) (list (car lst)))))
+(defn rev [xs]
+  (if (empty? xs)
+    nil
+    (append (rev (cdr xs)) (list (car xs)))))
 
 ; 2-20
 
@@ -188,15 +188,15 @@
 
 ; 2-21
 
-(defn square-list-1 [items]
+(defn square-list-1 [lst]
   (defn iter [xs ys]
     (if (empty? ys)
       xs
       (iter (append xs (list (expt (first ys) 2))) (rest ys))))
-  (iter nil items))
+  (iter nil lst))
 
-(defn square-list-2 [items]
-  (map (fn [x] (expt x 2)) items))
+(defn square-list-2 [lst]
+  (map (fn [x] (expt x 2)) lst))
 
 ; 2-22
 ; the last item in 'items' is the last to be cons-ed to the front of 'answer' list.
@@ -204,12 +204,12 @@
 
 ; 2-23
 
-(defn foreach [f lst]
-  (if (empty? lst)
+(defn foreach [f xs]
+  (if (empty? xs)
     true
     (do
-      (f (car lst))
-      (foreach f (cdr lst)))))
+      (f (car xs))
+      (foreach f (cdr xs)))))
 
 ; 2-25
 ; (car (cdr (car (cdr (cdr (list 1 3 (list 5 7) 9)))))) ; => 7
@@ -222,3 +222,15 @@
 ; (append x y) ; => (1 2 3 4 5 6)
 ; (cons x y) ; => ((1 2 3) 4 5 6)
 ; (list x y) ; => ((1 2 3) (4 5 6))
+
+; 2-27
+
+(defn deep-reverse [xs]
+  (if (empty? xs)
+    nil
+    (let [x (car xs)]
+      (append
+        (deep-reverse (cdr xs))
+        (list (if (list? x)
+                (deep-reverse x)
+                x))))))
