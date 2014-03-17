@@ -154,38 +154,46 @@
 
 ; 2-17
 
+(def car first)
+(def cdr rest)
+
 (defn last-pair [lst]
-  (if (empty? (rest lst))
-    (vector (first lst))
-    (last-pair (rest lst))))
+  (if (empty? (cdr lst))
+    (list (car lst))
+    (last-pair (cdr lst))))
 
 ; 2-18
 
+(defn append [xs ys]
+  (if (empty? xs)
+    ys
+    (cons (car xs) (append (cdr xs) ys))))
+
 (defn rev [lst]
-  (if (empty? (rest lst))
-    (vector (first lst))
-    (conj (rev (rest lst)) (first lst))))
+  (if (empty? (cdr lst))
+    (list (car lst))
+    (append (rev (cdr lst)) (list (car lst)))))
 
 ; 2-20
 
-(defn same-parity [& xs]
-  (let [same-parity? (if (odd? (first xs)) odd? even?)]
-    (defn iter [fst snd]
-      (if (empty? snd)
-        fst
-        (if (same-parity? (first snd))
-          (iter (conj fst (first snd)) (rest snd))
-          (iter fst (rest snd)))))
-    (iter (vector (first xs)) (rest xs))))
+(defn same-parity [& lst]
+  (let [same-parity? (if (odd? (car lst)) odd? even?)]
+    (defn iter [xs ys]
+      (if (empty? ys)
+        xs
+        (if (same-parity? (car ys))
+          (iter (append xs (list (car ys))) (cdr ys))
+          (iter xs (cdr ys)))))
+    (iter (list (car lst)) (cdr lst))))
 
 ; 2-21
 
 (defn square-list-1 [items]
-  (defn iter [fst snd]
-    (if (empty? snd)
-      fst
-      (iter (conj fst (expt (first snd) 2)) (rest snd))))
-  (iter [] items))
+  (defn iter [xs ys]
+    (if (empty? ys)
+      xs
+      (iter (append xs (list (expt (first ys) 2))) (rest ys))))
+  (iter nil items))
 
 (defn square-list-2 [items]
   (map (fn [x] (expt x 2)) items))
@@ -200,12 +208,10 @@
   (if (empty? lst)
     true
     (do
-      (f (first lst))
-      (foreach f (rest lst)))))
+      (f (car lst))
+      (foreach f (cdr lst)))))
 
 ; 2-25
-; (def car first)
-; (def cdr rest)
 ; (car (cdr (car (cdr (cdr (list 1 3 (list 5 7) 9)))))) ; => 7
 ; (car (car (list (list 7)))) ; => 7
 ; (car (cdr (car (cdr (car (cdr (car (cdr (car (cdr (car (cdr (list 1 (list 2 (list 3 (list 4 (list 5 (list 6 7)))))))))))))))))) ; => 7
@@ -213,6 +219,6 @@
 ; 2-26
 ; (def x (list 1 2 3))
 ; (def y (list 4 5 6))
-; (concat x y) ; => (1 2 3 4 5 6)
+; (append x y) ; => (1 2 3 4 5 6)
 ; (cons x y) ; => ((1 2 3) 4 5 6)
 ; (list x y) ; => ((1 2 3) (4 5 6))
