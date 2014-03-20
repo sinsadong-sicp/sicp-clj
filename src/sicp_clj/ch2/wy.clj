@@ -234,3 +234,15 @@
         (list (if (list? x)
                 (deep-reverse x)
                 x))))))
+
+; 2-28
+
+(defn fringe [xs]
+  (if (empty? xs)
+    nil
+    (let [x (car xs)]
+      (append
+        (if (list? x)
+          (fringe x)
+          (list x))
+        (fringe (cdr xs))))))
