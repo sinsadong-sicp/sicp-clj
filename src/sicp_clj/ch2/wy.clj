@@ -82,18 +82,18 @@
 
 ; 2-5
 
-(defn my-cons [a b]
+(defn cons-int [a b]
   (* (expt 2 a) (expt 3 b)))
 
-(defn my-car [n]
+(defn car-int [n]
   (if (odd? n)
     0
-    (inc (my-car (/ n 2)))))
+    (inc (car-int (/ n 2)))))
 
-(defn my-cdr [n]
+(defn cdr-int [n]
   (if (not (zero? (rem n 3)))
     0
-    (inc (my-cdr (/ n 3)))))
+    (inc (cdr-int (/ n 3)))))
 
 ; 2-6
 
