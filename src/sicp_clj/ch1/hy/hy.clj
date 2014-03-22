@@ -330,3 +330,16 @@
 
 (defn n-fold-smooth [f n]
   (repeated f n))
+
+;1-45
+(defn average-damp [f]
+  (fn [x]
+    (average x (f x))))
+
+(defn nthroot [x n]
+   (fixed-point
+    ((repeated average-damp (int (sqrt n)))
+      (fn [y]
+        (/ x (fast-expt-iter y (dec n)))))
+    1.0))
+
