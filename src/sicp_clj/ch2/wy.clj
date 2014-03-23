@@ -317,3 +317,13 @@
         (square-tree x)
         (* x x)))
     tree))
+
+; 2-31
+
+(defn tree-map [f tree]
+  (map
+    (fn [x]
+      (if (list? x)
+        (tree-map f x)
+        (f x)))
+    tree))
