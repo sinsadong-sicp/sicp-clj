@@ -327,3 +327,34 @@
         (tree-map f x)
         (f x)))
     tree))
+
+; 2-32
+
+(defn subsets [s]
+  (if (empty? s)
+    (list nil)
+    (let [rst (subsets (cdr s))]
+      (append
+        rst
+        (map (fn [x] (cons (car s) x)) rst)))))
+
+; 2-33
+
+(defn accumulate [op initial xs]
+  (if (empty? xs)
+    initial
+    (op
+      (car xs)
+      (accumulate op initial (cdr xs)))))
+
+(defn acc-map [p xs]
+  (accumulate
+    (fn [x y] (cons x y))
+    nil
+    (map p xs)))
+
+(defn acc-append [xs ys]
+  (accumulate cons ys xs))
+
+(defn acc-length [xs]
+  (accumulate (fn [x y] (inc y)) 0 xs))
