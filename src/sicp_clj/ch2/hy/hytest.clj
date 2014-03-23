@@ -4,3 +4,5 @@
 (println "Chapter 2")
 ;2-1
 (hytest "2-1" 2 (first (make-rat 4 6)))
+;2-2
+(print-point (midpoint-segment (make-segment (make-point 0 0 ) (make-point 1 1))))
