@@ -192,7 +192,9 @@
   (defn iter [xs ys]
     (if (empty? ys)
       xs
-      (iter (append xs (list (expt (first ys) 2))) (rest ys))))
+      (iter
+        (append xs (list (expt (first ys) 2)))
+        (rest ys))))
   (iter nil lst))
 
 (defn square-list-2 [lst]
@@ -295,3 +297,24 @@
       (= (torque lft) (torque rgt))
       (balanced-branch? lft)
       (balanced-branch? rgt))))
+
+; 2-30
+
+(defn square-tree-without-map [tree]
+  (if (empty? tree)
+    nil
+    (append
+      (let [x (car tree)]
+        (list (if (list? x)
+                (square-tree-without-map x)
+                (* x x))))
+      (square-tree-without-map (cdr tree)))))
+
+(defn square-tree [tree]
+  (map
+    (fn [x]
+      (if (list? x)
+        (square-tree x)
+        (* x x)))
+    tree))
+
