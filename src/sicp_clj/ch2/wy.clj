@@ -230,9 +230,9 @@
 (defn deep-reverse [xs]
   (if (empty? xs)
     nil
-    (let [x (car xs)]
-      (append
-        (deep-reverse (cdr xs))
+    (append
+      (deep-reverse (cdr xs))
+      (let [x (car xs)]
         (list (if (list? x)
                 (deep-reverse x)
                 x))))))
@@ -242,12 +242,12 @@
 (defn fringe [xs]
   (if (empty? xs)
     nil
-    (let [x (car xs)]
-      (append
+    (append
+      (let [x (car xs)]
         (if (list? x)
           (fringe x)
-          (list x))
-        (fringe (cdr xs))))))
+          (list x)))
+      (fringe (cdr xs)))))
 
 ; 2-29
 
@@ -317,4 +317,3 @@
         (square-tree x)
         (* x x)))
     tree))
-
