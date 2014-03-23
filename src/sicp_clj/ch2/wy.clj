@@ -246,3 +246,52 @@
           (fringe x)
           (list x))
         (fringe (cdr xs))))))
+
+; 2-29
+
+(defn make-mobile [lft rgt]
+  (vector lft rgt))
+
+(defn make-branch [len struc]
+  (vector len struc))
+
+(defn left-branch [mobile]
+  (first mobile))
+
+(defn right-branch [mobile]
+  (second mobile))
+
+(defn branch-length [branch]
+  (first branch))
+
+(defn branch-structure [branch]
+  (second branch))
+
+(declare total-weight)
+(defn branch-weight [branch]
+  (let [struc (branch-structure branch)]
+    (if (number? struc)
+      struc
+      (total-weight struc))))
+
+(defn total-weight [mobile]
+  (+
+    (branch-weight (left-branch mobile))
+    (branch-weight (right-branch mobile))))
+
+(declare balanced-mobile?)
+(defn balanced-branch? [branch]
+  (let [struc (branch-structure branch)]
+    (if (number? struc)
+      true
+      (balanced-mobile? struc))))
+
+(defn balanced-mobile? [mobile]
+  (defn torque [branch]
+    (* (branch-length branch) (branch-weight branch)))
+  (let [lft (left-branch mobile)
+        rgt (right-branch mobile)]
+    (and
+      (= (torque lft) (torque rgt))
+      (balanced-branch? lft)
+      (balanced-branch? rgt))))
