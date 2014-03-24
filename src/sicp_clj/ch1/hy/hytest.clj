@@ -1,23 +1,23 @@
 (ns sicp-clj.ch1.hy.hytest
-	(:use sicp-clj.ch1.hy.hy))
+  (:use sicp-clj.ch1.hy.hy))
 
 (def tol 0.0001)
 
 (defn check-with-error [a b]
-	(if (< (abs (- a b)) tol)
-		true
-		false)
-)
+  (if (< (abs (- a b)) tol)
+    true
+    false)
+  )
 
 (defn hytest-single [check fname a b]
-	(if (check a b)
-		(println "PASS")
-		(println (str "FAIL " fname " expected : " a " got : " b))))
+  (if (check a b)
+    (println "PASS")
+    (println (str "FAIL " fname " expected : " a " got : " b))))
 
 (def hytest-with-error
-	(partial hytest-single check-with-error))
+  (partial hytest-single check-with-error))
 (def hytest
-	(partial hytest-single =))
+  (partial hytest-single =))
 
 (println "Chapter 1")
 ;1-3

@@ -1,7 +1,7 @@
 (ns sicp-clj.ch2.hy.hytest
-	(:refer-clojure :exclude [cons])
-	(:use sicp-clj.ch2.hy.hy :reload)
-	(:use [sicp-clj.ch1.hy.hytest :only [hytest hytest-with-error]]))
+  (:refer-clojure :exclude [cons])
+  (:use sicp-clj.ch2.hy.hy :reload)
+  (:use [sicp-clj.ch1.hy.hytest :only [hytest hytest-with-error]]))
 (println "Chapter 2")
 ;2-1
 (hytest "2-1" 2 (car (make-rat 4 6)))
