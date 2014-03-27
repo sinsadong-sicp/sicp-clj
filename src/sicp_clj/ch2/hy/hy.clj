@@ -142,3 +142,34 @@ dispatch)
   (if (= 0 (width-interval y))
     (throw (Exception. "divided by 0 span interval - div-interval2"))
     (div-interval x y)))
+
+;2-11
+; http://goo.gl/MrN0Xb 이것을 보라
+(defn mul-interval2 [x y]
+  (let [a (lower-bound x)
+    b (upper-bound x)
+    c (lower-bound y)
+    d (upper-bound y)]
+  (cond
+    (and (> a 0) (> c 0)) (make-interval (* a c) (* b d))
+    (and (> a 0) (< d 0)) (make-interval (* b c) (* a d))
+    (and (< b 0) (> c 0)) (make-interval (* a d) (* b c))
+    (and (< b 0) (< d 0)) (make-interval (* b d) (* a c))
+    (and (< a 0) (> b 0) (> c 0)) (make-interval (* a d) (* b d))
+    (and (< a 0) (> b 0) (< d 0)) (make-interval (* b c) (* a c))
+    (and (> a 0) (< c 0) (> d 0)) (make-interval (* b c) (* b d))
+    (and (< b 0) (< c 0) (> d 0)) (make-interval (* a d) (* b c))
+    :else (make-interval (min (* a d) (* b c)) (max (* a c) (* b d)))
+  )))
+
+;2-12
+(defn make-center-width [c w]
+  (make-interval (- c w) (+ c w)))
+(defn center [i]
+  (/ (+ (lower-bound i) (upper-bound i)) 2))
+(defn width [i]
+  (/ (- (upper-bound i) (lower-bound i)) 2))
+(defn make-center-percent [c p]
+  (make-center-width c (* c (/ p 100))))
+(defn percent [i]
+  (* (/ width center) 100))

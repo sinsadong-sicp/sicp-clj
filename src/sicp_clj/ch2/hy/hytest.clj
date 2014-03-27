@@ -29,7 +29,12 @@
 ;2-9
 (hytest "2-9" 2 (width-interval (make-interval 0 4)))
 (hytest "2-9" 0 (width-interval (make-interval 1 1)))
-
 ;2-10
-(hytest "2-10" 0 (upper-bound (div-interval2 (make-interval 0 4) (make-interval 1 1))))
-
+(try
+  (hytest "2-10" 0 (upper-bound (div-interval2 (make-interval 0 4) (make-interval 1 1))))
+  (catch Exception e
+    (println "PASS" )))
+;2-11
+(hytest "2-11" 8 (upper-bound (mul-interval2 (make-interval 0 4) (make-interval 0 2))))
+;2-12
+(hytest "2-12" 9 (lower-bound (make-center-percent 10 10)))
