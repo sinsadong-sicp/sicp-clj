@@ -347,14 +347,39 @@
       (car xs)
       (accumulate op initial (cdr xs)))))
 
-(defn acc-map [p xs]
+(defn map-acc [p xs]
   (accumulate
     (fn [x y] (cons x y))
     nil
     (map p xs)))
 
-(defn acc-append [xs ys]
+(defn append-acc [xs ys]
   (accumulate cons ys xs))
 
-(defn acc-length [xs]
+(defn length-acc [xs]
   (accumulate (fn [x y] (inc y)) 0 xs))
+
+; 2-34
+
+(defn horner-eval [x cs]
+  (accumulate
+    (fn [c terms] (+ (* terms x) c))
+    0
+    cs))
+
+; 2-35
+
+(defn count-leaves-acc [tree]
+  (accumulate
+    +
+    0
+    (map (fn [x] (if (list? x) (count-leaves-acc x) 1)) tree)))
+
+; 2-36
+
+(defn accumulate-n [op initial xs]
+  (if (empty? (car xs))
+    nil
+    (cons
+      (accumulate op initial (map car xs))
+      (accumulate-n op initial (map cdr xs)))))
