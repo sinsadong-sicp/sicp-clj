@@ -173,3 +173,10 @@ dispatch)
   (make-center-width c (* c (/ p 100))))
 (defn percent [i]
   (* (/ width center) 100))
+
+;2-17
+(defn last-pair [l]
+  (let [backlist (rest l)]
+    (if (empty? backlist)
+      l
+      (last-pair backlist))))

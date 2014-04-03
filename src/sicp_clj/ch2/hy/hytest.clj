@@ -38,3 +38,5 @@
 (hytest "2-11" 8 (upper-bound (mul-interval2 (make-interval 0 4) (make-interval 0 2))))
 ;2-12
 (hytest "2-12" 9 (lower-bound (make-center-percent 10 10)))
+;2-17
+(hytest "2-17" (list 34) (last-pair (list 23 72 34)))
