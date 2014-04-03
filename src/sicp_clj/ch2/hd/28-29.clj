@@ -49,6 +49,23 @@
         )
     )
 
+(defn mob-bal? [mob]
+    (let [lbs (branch-struct (left-branch mob))
+        rbs (branch-struct (right-branch mob))
+        lbl (branch-length (left-branch mob))
+        rbl (branch-length (right-branch mob))
+        ]
+        (and
+            (==
+                (* (total-weight lbs) lbl)
+                (* (total-weight rbs) rbl)
+            )
+            (if (list? lbs) (mob-bal? lbs) true)
+            (if (list? rbs) (mob-bal? rbs) true)
+        )
+    )
+)
+
 (def br1 (make-branch 7 10))
 (def br2 (make-branch 5 15))
 (def mob1 (make-mobile br1 br2))
