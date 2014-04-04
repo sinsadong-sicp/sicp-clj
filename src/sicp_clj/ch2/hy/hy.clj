@@ -175,8 +175,20 @@ dispatch)
   (* (/ width center) 100))
 
 ;2-17
-(defn last-pair [l]
-  (let [backlist (rest l)]
+(defn last-pair [li]
+  (let [backlist (rest li)]
     (if (empty? backlist)
-      l
+      li
       (last-pair backlist))))
+
+;2-18
+(defn first-pair [li]
+  (let [backlist (rest li)]
+    (if (empty? backlist)
+      nil
+      (conj (first-pair (rest li)) (first li)))))
+(defn reverse-list [li]
+  (let [backlist (rest li)]
+  (if (empty? backlist)
+    li
+    (concat (last-pair li) (reverse-list (first-pair li))))))
