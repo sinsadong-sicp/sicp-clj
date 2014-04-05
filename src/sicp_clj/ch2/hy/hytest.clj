@@ -42,3 +42,5 @@
 (hytest "2-17" (list 34) (last-pair (list 23 72 34)))
 ;2-18
 (hytest "2-18" (list 3 2 1) (reverse-list (list 1 2 3)))
+;2-20
+(hytest "2-20" (list 1 3) (same-parity (list 1 3 6 8)))

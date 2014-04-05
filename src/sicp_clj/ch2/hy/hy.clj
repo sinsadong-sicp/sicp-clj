@@ -192,3 +192,32 @@ dispatch)
   (if (empty? backlist)
     li
     (concat (last-pair li) (reverse-list (first-pair li))))))
+
+;2-20
+(defn same-parity [s]
+  (let [firstelem (first s)]
+  (defn check-parity [li result]
+    (if (empty? li)
+      result
+      (if (= (rem (- firstelem (first li)) 2) 0)
+        (check-parity (rest li) (conj result (first li)))
+        (check-parity (rest li) result))))
+  (check-parity s nil)))
+
+;2-21
+(defn square-list1 [s]
+  (if (empty? s)
+    s
+    (conj (square-list1 (rest s)) (square (first s)))))
+(defn square-list2 [s]
+  (map square s))
+
+;2-23
+(defn for-each [f s]
+  (if (empty? s)
+    s
+    (do
+      (f (first s))
+      (for-each f (rest s))
+    )))
+
