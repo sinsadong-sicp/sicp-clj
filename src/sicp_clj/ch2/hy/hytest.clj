@@ -43,4 +43,8 @@
 ;2-18
 (hytest "2-18" (list 3 2 1) (reverse-list (list 1 2 3)))
 ;2-20
-(hytest "2-20" (list 1 3) (same-parity (list 1 3 6 8)))
+(hytest "2-20" (list 1 3) (same-parity 1 3 6 8))
+;2-21
+(hytest "2-21" (list 4 9) (square-list1 (list 2 3)))
+;2-23
+;(for-each (fn [x] (println x)) (list 1 3))
