@@ -383,3 +383,45 @@
     (cons
       (accumulate op initial (map car xs))
       (accumulate-n op initial (map cdr xs)))))
+
+; 2-37
+
+(defn dot-product [v w]
+  (accumulate + 0 (map * v w)))
+
+(defn matrix-*-vector [m v]
+  (map (fn [row] (dot-product row v)) m))
+
+(defn transpose [m]
+  (accumulate-n cons nil m))
+
+(defn matrix-*-matrix [m n]
+  (let [cols (transpose n)]
+    (map (fn [row] (matrix-*-vector cols row)) m)))
+
+; 2-38
+
+(def foldr accumulate)
+(defn foldl [op initial xs]
+  (defn iter [acc ys]
+    (if (empty? ys)
+      acc
+      (iter
+        (op acc (car ys))
+        (cdr ys))))
+  (iter initial xs))
+
+; (foldr / 1 (list 1 2 3)) => (/ 1 (/ 2 (/ 3 1))) => 3/2
+; (foldl / 1 (list 1 2 3)) => (/ 3 (/ 2 (/ 1 1))) => 1/6
+; (foldr list nil (list 1 2 3)) => (list 1 (list 2 (list 3 nil))) => (1 (2 (3 nil)))
+; (foldl list nil (list 1 2 3)) => (list 3 (list 2 (list 1 nil))) => (((nil 1) 2) 3)
+
+; for foldr and foldl to yield the same result, op should be associative
+
+; 2-39
+
+(defn reverse-foldr [xs]
+  (foldr (fn [x y] (append y (list x))) nil xs))
+
+(defn reverse-foldl [xs]
+  (foldl (fn [x y] (cons y x)) nil xs))
