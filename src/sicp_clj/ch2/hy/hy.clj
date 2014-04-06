@@ -2,7 +2,7 @@
   (:refer-clojure :exclude [cons])
   (:use [clojure.contrib.math :only [abs gcd expt sqrt]]))
 
-(defn cons [x y]
+(defn mycons [x y]
   (defn dispatch [m]
     (cond
       (= m 0) x
@@ -23,25 +23,25 @@ dispatch)
 (defn make-rat [n d]
   (let [g (gcd n d)]
     (if (or (and (>= n 0) (> d 0)) (and (< n 0) (< d 0)))
-      (cons (/ (abs n) g) (/ (abs d) g))
-      (cons (- (/ (abs n) g)) (/ (abs d) g))
+      (mycons (/ (abs n) g) (/ (abs d) g))
+      (mycons (- (/ (abs n) g)) (/ (abs d) g))
       )))
 
 ;2-2
 (defn make-segment [p1 p2]
-  (cons p1 p2))
+  (mycons p1 p2))
 (defn start-segment [s]
   (car s))
 (defn end-segment [s]
   (cdr s))
 (defn make-point [x1 y1]
-  (cons x1 y1))
+  (mycons x1 y1))
 (defn x-point [p]
   (car p))
 (defn y-point [p]
   (cdr p))
 (defn midpoint-segment [s]
-  (cons
+  (mycons
     (average (x-point (start-segment s)) (x-point (end-segment s)))
     (average (y-point (start-segment s)) (y-point (end-segment s)))))
 (defn print-point [p]
@@ -50,7 +50,7 @@ dispatch)
 ;2-3
 ;lower left - upper right
 (defn make-rect [p1 p2]
-  (cons p1 p2))
+  (mycons p1 p2))
 (defn lower-left [r]
   (car r))
 (defn upper-right [r]
@@ -108,7 +108,7 @@ dispatch)
 
 ;2-7
 (defn make-interval [a b]
-  (cons a b))
+  (mycons a b))
 (defn lower-bound [z]
   (car z))
 (defn upper-bound [z]
@@ -221,3 +221,15 @@ dispatch)
       (for-each f (rest s))
     )))
 
+;2-24
+;(1 (2 (3 4)))
+; 1  (2 (3 4))
+;     2 (3 4)
+;        3 4
+
+;2-25
+;hytest 참고
+
+;2-26
+(def x (list 1 2 3))
+(def y (list 4 5 6))

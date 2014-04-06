@@ -1,5 +1,5 @@
 (ns sicp-clj.ch2.hy.hytest
-  (:refer-clojure :exclude [cons])
+  (:refer-clojure)
   (:use sicp-clj.ch2.hy.hy :reload)
   (:use [sicp-clj.ch1.hy.hytest :only [hytest hytest-with-error]]))
 (println "Chapter 2")
@@ -47,4 +47,12 @@
 ;2-21
 (hytest "2-21" (list 4 9) (square-list1 (list 2 3)))
 ;2-23
-;(for-each (fn [x] (println x)) (list 1 3))
+;(for-each (fn [x] (println x)) (list 1 3))고
+;2-25
+(hytest "2-25" 7 (first (rest (first (rest (rest (list 1 3 (list 5 7) 9)))))))
+(hytest "2-25" 7 (first (first (list (list 7)))))
+(hytest "2-25" 7 (first (rest (first (rest (first (rest (first (rest (first (rest (first (rest (list 1 (list 2 (list 3 (list 4 (list 5 (list 6 7)))))))))))))))))))
+;2-26
+(hytest "2-26" (list (list 1 2 3 4 5 6)) (list (concat x y))) ;썩을
+(hytest "2-26" (list (list 1 2 3) 4 5 6) (cons x y))
+(hytest "2-26" (list (list 1 2 3) (list 4 5 6)) (list x y))
