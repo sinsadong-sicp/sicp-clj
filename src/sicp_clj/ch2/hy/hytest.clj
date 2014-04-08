@@ -53,6 +53,10 @@
 (hytest "2-25" 7 (first (first (list (list 7)))))
 (hytest "2-25" 7 (first (rest (first (rest (first (rest (first (rest (first (rest (first (rest (list 1 (list 2 (list 3 (list 4 (list 5 (list 6 7)))))))))))))))))))
 ;2-26
-(hytest "2-26" (list (list 1 2 3 4 5 6)) (list (concat x y))) ;썩을
+(hytest "2-26" (list (list 1 2 3 4 5 6)) (list (concat x y))) ;썩
 (hytest "2-26" (list (list 1 2 3) 4 5 6) (cons x y))
 (hytest "2-26" (list (list 1 2 3) (list 4 5 6)) (list x y))
+;2-27
+(hytest "2-27" (list (list (list 4 3) (list 2 1))) (list (deep-reverse (list (list 1 2) (list 3 4)))))
+;2-28
+(hytest "2-28" (list 1 2 3 4) (fringe (list (list 1 2) (list 3 4))))

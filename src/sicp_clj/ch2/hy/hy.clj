@@ -233,3 +233,26 @@ dispatch)
 ;2-26
 (def x (list 1 2 3))
 (def y (list 4 5 6))
+
+;2-27
+(defn deep-reverse [li]
+  (if (empty? li)
+    nil
+    (let [backlist (rest li)]
+    (if (empty? backlist)
+      (if (list? (first li))
+        (list (deep-reverse (first li)))
+        li)
+      (concat (deep-reverse (last-pair li)) (deep-reverse (first-pair li)))))))
+
+;2-28
+(defn fringe [x]
+  (if (empty? x)
+    nil
+    (if (list? (first x))
+      (apply list (concat (fringe (first x)) (fringe (rest x))))
+      (apply list (concat (list (first x)) (fringe (rest x)))))))
+
+
+
+
