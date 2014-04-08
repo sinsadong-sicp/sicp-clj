@@ -425,3 +425,13 @@
 
 (defn reverse-foldl [xs]
   (foldl (fn [x y] (cons y x)) nil xs))
+
+; 2-40
+
+(defn unique-pairs [n]
+  (mapcat
+    (fn [i]
+      (map
+        (fn [j] (list i j))
+        (range (inc i) (inc n))))
+    (range 1 (inc n))))
