@@ -253,6 +253,37 @@ dispatch)
       (apply list (concat (fringe (first x)) (fringe (rest x))))
       (apply list (concat (list (first x)) (fringe (rest x)))))))
 
+;2-29
+(defn make-mobile [l r]
+  (list l r))
+(defn make-branch [l s]
+  (list l s))
+(defn left-branch [m]
+  (first m))
+(defn right-branch [m]
+  (first (rest m)))
+(defn branch-length [b]
+  (first b))
+(defn branch-structure [b]
+  (first (rest b)))
+(defn total-weight [m]
+  (defn weight-branch [b]
+    (if (list? (branch-structure b))
+      (total-weight (branch-structure b))
+      (branch-structure b)))
+  (+ (weight-branch (left-branch m)) (weight-branch (right-branch m))))
+
+(defn balanced? [m]
+  (if (list? m)
+    (and
+      (= (* (branch-length (left-branch m)) (weight-branch (left-branch m))
+         (* (branch-length (right-branch m)) (weight-branch (right-branch m)))))
+      (balanced? (branch-structure (left-branch m)))
+      (balanced? (branch-structure (right-branch m))))
+    true))
+
+
+
 
 
 
