@@ -62,6 +62,6 @@
 (hytest "2-28" (list 1 2 3 4) (fringe (list (list 1 2) (list 3 4))))
 ;2-29
 (hytest "2-29" 30 (total-weight (make-mobile (make-branch 10 20) (make-branch 10 (make-mobile (make-branch 5 5) (make-branch 5 5))))))
-(hytest "2-29" true (balanced? (make-mobile (make-branch 10 20) (make-branch 10 (make-mobile (make-branch 5 5) (make-branch 5 5))))))
+(hytest "2-29" true (balanced? (make-mobile (make-branch 10 10) (make-branch 10 (make-mobile (make-branch 5 5) (make-branch 5 5))))))
 (hytest "2-29" false (balanced? (make-mobile (make-branch 10 20) (make-branch 10 25))))
 (hytest "2-29" false (balanced? (make-mobile (make-branch 10 20) (make-branch 10 (make-mobile (make-branch 5 10) (make-branch 5 5))))))

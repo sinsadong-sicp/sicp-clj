@@ -274,10 +274,12 @@ dispatch)
   (+ (weight-branch (left-branch m)) (weight-branch (right-branch m))))
 
 (defn balanced? [m]
+  (defn torque [b]
+    (* (branch-length b) (weight-branch b)))
   (if (list? m)
     (and
-      (= (* (branch-length (left-branch m)) (weight-branch (left-branch m))
-         (* (branch-length (right-branch m)) (weight-branch (right-branch m)))))
+      (= (torque (left-branch m))
+         (torque (right-branch m)))
       (balanced? (branch-structure (left-branch m)))
       (balanced? (branch-structure (right-branch m))))
     true))
