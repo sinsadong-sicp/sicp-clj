@@ -65,3 +65,13 @@
 (hytest "2-29" true (balanced? (make-mobile (make-branch 10 10) (make-branch 10 (make-mobile (make-branch 5 5) (make-branch 5 5))))))
 (hytest "2-29" false (balanced? (make-mobile (make-branch 10 20) (make-branch 10 25))))
 (hytest "2-29" false (balanced? (make-mobile (make-branch 10 20) (make-branch 10 (make-mobile (make-branch 5 10) (make-branch 5 5))))))
+;2-30
+(def treetest (list 1 (list 2 (list 3 4) 5) (list 6 7)))
+(def treeresult (list 1 (list 4 (list 9 16) 25) (list 36 49)))
+(hytest "2-30" treeresult (square-tree treetest))
+(hytest "2-30" treeresult (square-tree-map treetest))
+;2-31
+(hytest "2-31" treeresult (tree-map square treetest))
+;2-32
+(hytest "2-32" (set (list nil (list 1) (list 2) (list 1 2))) (set (apply list (subsets (list 1 2)))))
+(hytest "2-32" (set (list nil (list 3) (list 2) (list 2 3) (list 1) (list 1 3) (list 1 2) (list 1 2 3))) (set (apply list (subsets (list 1 2 3)))))

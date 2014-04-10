@@ -1,5 +1,5 @@
 (ns sicp-clj.ch2.hy.hy
-  (:refer-clojure :exclude [cons])
+  (:refer-clojure)
   (:use [clojure.contrib.math :only [abs gcd expt sqrt]]))
 
 (defn mycons [x y]
@@ -284,8 +284,37 @@ dispatch)
       (balanced? (branch-structure (right-branch m))))
     true))
 
-
-
-
-
+;2-30
+(defn append [list1 list2]
+  (if (empty? list1)
+    list2
+    (cons (first list1) (append (rest list1) list2))))
+(defn square-tree [tree]
+  (cond
+    (number? tree) (* tree tree)
+    (empty? tree) nil
+    :else (cons
+      (square-tree (first tree))
+      (square-tree (rest tree)))))
+(defn square-tree-map [tree]
+  (map (fn [sub-tree]
+    (if (list? sub-tree)
+      (square-tree-map sub-tree)
+      (* sub-tree sub-tree))) tree))
+;2-31
+(defn tree-map [f tree]
+  (map (fn [sub-tree]
+    (if (list? sub-tree)
+      (square-tree-map sub-tree)
+      (f sub-tree))) tree))
+;2-32
+(defn subsets [s]
+  (if (empty? s)
+    (list nil)
+    (let [re (subsets (rest s))]
+      (append
+        re
+        (map
+          (fn [x] (cons (first s) x))
+          re)))))
 
