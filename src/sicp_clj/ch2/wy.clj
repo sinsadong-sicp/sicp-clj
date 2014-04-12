@@ -156,6 +156,7 @@
 
 (def car first)
 (def cdr rest)
+(def cadr (comp car cdr))
 
 (defn last-pair [xs]
   (if (empty? (cdr xs))
@@ -454,3 +455,34 @@
   (defn pred [triple]
     (= s (foldr + 0 triple)))
   (filter pred (unique-triples n)))
+
+; 2-53
+
+(defn memq [item xs]
+  (cond
+    (empty? xs) false
+    (= item (car xs)) xs
+    :else (memq item (cdr xs))))
+
+; (list 'a 'b 'c) ; => (a b c)
+; (list (list 'george)) ; => ((george))
+; (cdr '((x1 x2) (y1 y2))) ; => ((y1 y2))
+; (cadr '((x1 x2) (y1 y2))) ; => (y1 y2)
+; (vector? (car '(a short list))) ; => false
+; (memq 'red '((red shoes) (blue socks))) ; => false
+; (memq 'red '(red shoes blue socks)) ; => (red shoes blue socks)
+
+; 2-54
+
+(defn equal? [xs ys]
+  (cond
+    (and (empty? xs) (empty? ys)) true
+    (= (car xs) (car ys)) (equal? (cdr xs) (cdr ys))
+    :else false))
+
+; 2-55
+
+; the second quote gets interpreted as a literal quote
+; (car ''abra)
+; => (car '(quote abra)))
+; => quote
