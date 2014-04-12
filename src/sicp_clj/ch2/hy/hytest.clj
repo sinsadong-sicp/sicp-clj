@@ -75,3 +75,11 @@
 ;2-32
 (hytest "2-32" (set (list nil (list 1) (list 2) (list 1 2))) (set (apply list (subsets (list 1 2)))))
 (hytest "2-32" (set (list nil (list 3) (list 2) (list 2 3) (list 1) (list 1 3) (list 1 2) (list 1 2 3))) (set (apply list (subsets (list 1 2 3)))))
+;2-33
+(hytest "2-33" (list 2 3 4) (mymap inc (list 1 2 3)))
+(hytest "2-33" (list 1 2 3 4) (myappend (list 1 2) (list 3 4)))
+(hytest "2-33" 4 (mylength (list 1 2 3 4)))
+;2-34
+(hytest "2-34" 79 (horner-eval 2 (list 1 3 0 5 0 1)))
+;2-35
+(hytest "2-35" 4 (count-leaves (list (list 1 2) 3 4)))

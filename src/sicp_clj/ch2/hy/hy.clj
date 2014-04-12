@@ -318,3 +318,40 @@ dispatch)
           (fn [x] (cons (first s) x))
           re)))))
 
+;2-33
+(defn accumulate [op initial sequence]
+  (if (empty? sequence)
+    initial
+    (op (first sequence)
+        (accumulate op initial (rest sequence)))))
+(defn myfilter [pred sequence]
+  (cond
+    (empty? sequence) nil
+    (pred (first sequence)) (cons (first sequence) (myfilter pred (rest sequence))))
+    :else (myfilter pred (rest sequence)))
+(defn mymap [p sequence]
+  (accumulate (fn [x y] (cons (p x) y)) nil sequence))
+(defn myappend [seq1 seq2]
+  (accumulate cons seq2 seq1))
+(defn mylength [sequence]
+  (accumulate (fn [x y] (inc y)) 0 sequence))
+
+;2-34
+(defn horner-eval [x coeff]
+  (accumulate
+    (fn [this-coeff higher-terms]
+      (+ (* higher-terms x) this-coeff))
+    0
+    coeff))
+
+;2-25
+(defn count-leaves [t]
+  (accumulate + 0
+    (map
+      (fn [x]
+        (if (list? x)
+          (count-leaves x)
+          1))
+      t)))
+
+
