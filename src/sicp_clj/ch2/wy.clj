@@ -456,6 +456,47 @@
     (= s (foldr + 0 triple)))
   (filter pred (unique-triples n)))
 
+; 2-42
+
+; represent a set of board positions as a list of pairs
+(defn queens [board-size]
+  (def empty-board nil)
+  (defn adjoin-position [x y positions]
+    (cons [x y] positions))
+  (defn safe? [k positions] ; check if the first position is safe against the rest
+    (let [p (car positions)
+          px (first p)
+          py (second p)]
+      (empty?
+        (filter
+          (fn [q]
+            (let [qx (first q)
+                  qy (second q)]
+              (or
+                (= px qx)
+                (= (abs (- px qx)) (abs (- py qy))))))
+          (cdr positions)))))
+  (defn queen-cols [k]
+    (if (zero? k)
+      (list empty-board)
+      (filter
+        (fn [positions] (safe? k positions))
+        (mapcat
+          (fn [rest-of-queens]
+            (map
+              (fn [new-row]
+                (adjoin-position new-row k rest-of-queens))
+              (range 1 (inc board-size))))
+          (queen-cols (dec k))))))
+  (queen-cols board-size))
+
+; 2-43
+
+; in the original implementation queen-cols is called once for each column.
+; Reasoner's solution calls queen-cols board-size times for every column,
+; turning it into tree-recursive procedure whose running time grows exponentially.
+; it would take T^(board-size) to run.
+
 ; 2-53
 
 (defn memq [item xs]
