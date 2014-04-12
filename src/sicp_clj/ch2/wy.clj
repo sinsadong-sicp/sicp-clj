@@ -433,5 +433,24 @@
     (fn [i]
       (map
         (fn [j] (list i j))
-        (range (inc i) (inc n))))
+        (range 1 i)))
     (range 1 (inc n))))
+
+; 2-41
+
+(defn unique-triples [n]
+  (mapcat
+    (fn [i]
+      (mapcat
+        (fn [j]
+          (map
+            (fn [k]
+              (list i j k))
+            (range 1 j)))
+        (range 1 i)))
+    (range 1 (inc n))))
+
+(defn ordered-triples-of-sum [n s]
+  (defn pred [triple]
+    (= s (foldr + 0 triple)))
+  (filter pred (unique-triples n)))
