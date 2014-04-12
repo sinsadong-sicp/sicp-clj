@@ -20,6 +20,7 @@
 ; 2-54
 (defn equal? [x y]
     (cond
+        (and (empty? x) (empty? y)) true
         (and (symbol? x) (symbol? y)) (= x y)
         (and (list? x) (list? y)) (and (= (first x) (first y)) (equal? (rest x) (rest y)))
         :else false))
