@@ -344,7 +344,7 @@ dispatch)
     0
     coeff))
 
-;2-25
+;2-35
 (defn count-leaves [t]
   (accumulate + 0
     (map
@@ -354,4 +354,28 @@ dispatch)
           1))
       t)))
 
+;2-36
+(defn accumulate-n [op init seqs]
+  (if (empty? (first seqs))
+    nil
+    (cons (accumulate op init (map first seqs)) (accumulate-n op init (map rest seqs)))))
+
+;2-37
+(defn dot-product [v w]
+  (accumulate + 0 (map * v w)))
+(defn matrix-*-vector [m v]
+  (map (fn [k] (dot-product k v)) m))
+(defn transpose [mat]
+  (accumulate-n cons nil mat))
+(defn matrix-*-matrix [m n]
+  (let [cols (transpose n)]
+    (map (fn [k] (matrix-*-vector cols k)) m)))
+
+;2-38
+(defn fold-left [op initial seqs]
+  (defn iter [result res]
+    (if (empty? res)
+      result
+      (iter (op result (first res)) (rest res))))
+  (iter initial seqs))
 

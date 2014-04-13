@@ -83,3 +83,14 @@
 (hytest "2-34" 79 (horner-eval 2 (list 1 3 0 5 0 1)))
 ;2-35
 (hytest "2-35" 4 (count-leaves (list (list 1 2) 3 4)))
+;2-36
+(hytest "2-36" (list 22 26 30) (accumulate-n + 0 (list (list 1 2 3) (list 4 5 6) (list 7 8 9) (list 10 11 12))))
+;2-37
+(hytest "2-37" (list (list 3 3) (list 3 3)) (matrix-*-matrix (list (list 1 1) (list 1 1)) (list (list 1 2) (list 2 1))))
+;2-38
+(accumulate / 1 (list 1 2 3))
+(fold-left / 1 (list 1 2 3))
+(accumulate list nil (list 1 2 3))
+(fold-left list nil (list 1 2 3))
+
+
