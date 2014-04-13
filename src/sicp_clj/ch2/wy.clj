@@ -158,6 +158,7 @@
 (def cdr rest)
 (def cadr (comp car cdr))
 (def caddr (comp car cdr cdr))
+(def cddr (comp cdr cdr))
 
 (defn last-pair [xs]
   (if (empty? (cdr xs))
@@ -529,7 +530,7 @@
 ; => (car '(quote abra)))
 ; => quote
 
-; 2-56
+; 2-56, 57
 
 (defn variable? [e]
   (symbol? e))
@@ -562,14 +563,14 @@
 (defn addend [sum]
   (cadr sum))
 (defn augend [sum]
-  (caddr sum))
+  (accumulate make-sum 0 (cddr sum)))
 
 (defn product? [e]
   (and (list? e) (= (car e) '*)))
 (defn multiplier [product]
   (cadr product))
 (defn multiplicand [product]
-  (caddr product))
+  (accumulate make-product 1 (cddr product)))
 
 (defn exponentiation? [e]
   (and (list? e) (= (car e) '**)))
