@@ -157,6 +157,7 @@
 (def car first)
 (def cdr rest)
 (def cadr (comp car cdr))
+(def caddr (comp car cdr cdr))
 
 (defn last-pair [xs]
   (if (empty? (cdr xs))
@@ -527,3 +528,80 @@
 ; (car ''abra)
 ; => (car '(quote abra)))
 ; => quote
+
+; 2-56
+
+(defn variable? [e]
+  (symbol? e))
+(defn same-variable? [u v]
+  (and (variable? u) (variable? v) (= u v)))
+(defn =number? [e n]
+  (and (number? e) (= e n)))
+
+(defn make-sum [u v]
+  (cond
+    (=number? u 0) v
+    (=number? v 0) u
+    (and (number? u) (number? v)) (+ u v)
+    :else (list '+ u v)))
+(defn make-product [u v]
+  (cond
+    (or (=number? u 0) (=number? v 0)) 0
+    (=number? u 1) v
+    (=number? v 1) u
+    (and (number? u) (number? v)) (* u v)
+    :else (list '* u v)))
+(defn make-exponentiation [b e]
+  (cond
+    (=number? e 0) 1
+    (=number? e 1) b
+    :else (list '** b e)))
+
+(defn sum? [e]
+  (and (list? e) (= (car e) '+)))
+(defn addend [sum]
+  (cadr sum))
+(defn augend [sum]
+  (caddr sum))
+
+(defn product? [e]
+  (and (list? e) (= (car e) '*)))
+(defn multiplier [product]
+  (cadr product))
+(defn multiplicand [product]
+  (caddr product))
+
+(defn exponentiation? [e]
+  (and (list? e) (= (car e) '**)))
+(defn base [exponentiation]
+  (cadr exponentiation))
+(defn exponent [exponentiation]
+  (caddr exponentiation))
+
+(defn deriv [exp var]
+  (cond
+    (number? exp) 0
+    (variable? exp)
+      (if (same-variable? exp var) 1 0)
+    (sum? exp)
+      (make-sum
+        (deriv (addend exp) var)
+        (deriv (augend exp) var))
+    (product? exp)
+      (make-sum
+        (make-product
+          (multiplier exp)
+          (deriv (multiplicand exp) var))
+        (make-product
+          (deriv (multiplier exp) var)
+          (multiplicand exp)))
+    (exponentiation? exp)
+      (make-product
+        (make-product
+          (exponent exp)
+          (make-exponentiation
+            (base exp)
+            (dec (exponent exp))))
+        (deriv (base exp) var))
+    :else (throw (Exception. "unknown expression type -- DERIV"))
+  ))
