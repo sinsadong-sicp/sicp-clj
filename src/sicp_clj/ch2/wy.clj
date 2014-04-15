@@ -606,3 +606,49 @@
         (deriv (base exp) var))
     :else (throw (Exception. "unknown expression type -- DERIV"))
   ))
+
+; 2-58
+
+; ; infix form
+; (defn make-sum [u v]
+;   (cond
+;     (=number? u 0) v
+;     (=number? v 0) u
+;     (and (number? u) (number? v)) (+ u v)
+;     :else (list u '+ v)))
+; (defn sum? [e]
+;   (and (list? e) (= (cadr e) '+)))
+; (defn addend [sum]
+;   (car sum))
+; (defn augend [sum]
+;   (caddr sum))
+
+; ; standard algabraic notation
+;
+
+; 2-59
+
+(defn element-of-set? [x s]
+  (cond
+    (empty? s) false
+    (= x (car s)) true
+    :else (element-of-set? x (cdr s))))
+
+(defn union-set [a b]
+  (cond
+    (empty? a) b
+    (empty? b) a
+    (element-of-set? (car a) b) (union-set (cdr a) b)
+    :else (cons (car a) (union-set (cdr a) b))))
+
+; 2-60
+
+; element-of-set? doesn't need to change: O(n)
+
+(defn adjoin-set-with-duplicates [x s] ; O(1) (better than O(n))
+  (cons x s))
+
+(defn union-set-allow-duplicates [a b] ; O(n) (better than O(n^2))
+  (append a b))
+
+; intersection-set doesn't need to change: O(n^2)
