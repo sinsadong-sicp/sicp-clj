@@ -16,5 +16,6 @@
 (defn union-set [s1 s2]
     (cond
         (empty? s1) s2
+        (empty? s2) s1
         (not (contains? s2 (first s1))) (cons (first s1) (union-set (rest s1) s2))
         :else (union-set (rest s1) s2)))
