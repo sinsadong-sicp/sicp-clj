@@ -379,3 +379,11 @@ dispatch)
       (iter (op result (first res)) (rest res))))
   (iter initial seqs))
 
+;2-39
+(defn rev [seqs]
+  (fold-right (fn [x y]
+    (append y (list x))) nil seqs))
+(defn rev2 [seqs]
+  (fold-left (fn [x y]
+    (cons y x)) nil seqs))
+
