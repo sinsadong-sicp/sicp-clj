@@ -372,6 +372,7 @@ dispatch)
     (map (fn [k] (matrix-*-vector cols k)) m)))
 
 ;2-38
+(def fold-right accumulate)
 (defn fold-left [op initial seqs]
   (defn iter [result res]
     (if (empty? res)
@@ -387,3 +388,42 @@ dispatch)
   (fold-left (fn [x y]
     (cons y x)) nil seqs))
 
+;2-40
+(defn flatmap [proc seqs]
+  (accumulate append nil (map proc seq)))
+(defn interval-cal [low high]
+  (if (> low high)
+    nil
+    (cons low (interval-cal (+ low 1) high))))
+(defn unique-pairs [n]
+  (mapcat ;;이거 flatmap으로 하면 왜 에러나는지 나중에 찾아봐야겠다
+    (fn [x] (map (fn [y] (list x y)) (range 1 x)))
+    (range 1 (inc n))))
+(defn make-pair-sum [pair]
+  (list (first pair) (second pair) (+ (first pair) (second pair))))
+(defn divides? [a b]
+  (= (rem b a) 0))
+(defn find-divisor [n test-divisor]
+  (cond
+    (> (square test-divisor) n) n
+    (divides? test-divisor n) test-divisor
+    :else (find-divisor n (+ test-divisor 1))))
+(defn smallest-divisor [n]
+  (find-divisor n 2))
+(defn prime? [n]
+  (= (smallest-divisor n) n))
+(defn prime-sum? [pair]
+  (prime? (+ (first pair) (second pair))))
+(defn prime-sum-pairs [n]
+  (map make-pair-sum (filter prime-sum? (unique-pairs n))))
+
+;2-41
+(defn ordered-triples-sum [n s]
+  (filter (fn [li] (= (accumulate + 0 list) s))
+    (mapcat
+      (fn [x]
+        (mapcat (fn [y]
+          (map (fn [z] (list x y z))
+            (range 1 (- y 1))))
+        (range 1 (- x 1))))
+      (range 1 n))))

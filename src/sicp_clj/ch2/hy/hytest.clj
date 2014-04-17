@@ -95,6 +95,8 @@
 ;2-39
 (hytest "2-39" (list 3 2 1) (rev (list 1 2 3)))
 (hytest "2-39" (list 3 2 1) (rev2 (list 1 2 3)))
+;2-40
+(unique-pairs 5)
 
 
 
