@@ -427,3 +427,10 @@ dispatch)
             (range 1 (- y 1))))
         (range 1 (- x 1))))
       (range 1 n))))
+
+;2-53
+(defn memq [item x]
+  (cond
+    (empty? x) false
+    (= item (first x)) x
+    :else (memq item (rest x))))
