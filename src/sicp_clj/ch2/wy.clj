@@ -652,3 +652,33 @@
   (append a b))
 
 ; intersection-set doesn't need to change: O(n^2)
+
+; 2-61
+
+(defn adjoin-set-ordered-list [x s]
+  (cond
+    (empty? s) (list x)
+    (< x (car s)) (cons x s)
+    :else (cons (car s) (adjoin-set-ordered-list x (cdr s)))))
+
+; 2-62
+
+(defn union-set-ordered-list [a b]
+  (cond
+    (empty? a) b
+    (empty? b) a
+    (< (car a) (car b)) (cons (car a) (union-set-ordered-list (cdr a) b))
+    :else (cons (car b) (union-set-ordered-list a (cdr b)))))
+
+; 2-63
+; a. both procedures should return the same result: (1 3 5 7 9 11)
+; b. for every nodes tree->list-1 calls append, whereas tree->list-2 calls cons.
+;    append has linear time complexity, so tree->list-2 has a smaller order of growth.
+
+; 2-64
+; a. the procedure divides a given list into two,
+;    first half being mapped to the left subtree,
+;    the entry in the middle (car of the latter half) to the node,
+;    and the second half to the right subtree.
+;    list->tree (list 1 3 5 7 9 11)) should return (5 (1 () (3)) (9 (7) (11)))
+; b. for every nodes tree->list calls cons. its time complexity equals O(n)
