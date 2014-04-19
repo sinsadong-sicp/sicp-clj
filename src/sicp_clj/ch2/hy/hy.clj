@@ -428,9 +428,50 @@ dispatch)
         (range 1 (- x 1))))
       (range 1 n))))
 
+;2-42
+(comment
+(def empty-board nil)
+(defn queens [board-size]
+  (defn queen-cols [k]
+    (if (= k 0)
+      (list empty-board)
+      (filter
+        (fn [positions] (safe? k positions))
+        (flatmap
+          (fn [rest-of-queens]
+            (map (fn [new-row]
+              (adjoin-position new-row k rest-of-queens))
+            (range 1 board-size)))
+          (queen-cols (- k 1))))))
+  (queen-cols board-size)))
+
 ;2-53
 (defn memq [item x]
   (cond
     (empty? x) false
     (= item (first x)) x
     :else (memq item (rest x))))
+
+;2-54
+(defn equal? [a b]
+  (cond
+    (and (empty? a) (empty? b)) true
+    (and (list? a) (list? b)) (and (= (first a) (first b)) (equal? (rest a) (rest b)))
+    (and (symbol? a) (symbol? b)) (= a b)
+    :else false))
+
+;2-55
+(comment
+   (car ''abracadabra)
+ = (car '('abracadabra))
+ = (car '(quote abracadabra))
+ = quote)
+
+;2-59
+(defn union-set [set1 set2]
+  (cond
+    (empty? set1) set2
+    (empty? set2) set1
+    (contains? set1 (first set2)) (union-set set1 (rest set2))
+    :else (set (cons (first set2) (union-set set1 (rest set2))))))
+

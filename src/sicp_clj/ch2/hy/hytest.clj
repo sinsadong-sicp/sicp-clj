@@ -98,6 +98,8 @@
 ;2-40
 (unique-pairs 5)
 ;2-53
-(hytest "2-53" false (memq 'red '((red shoes) (blue socks)))
+(hytest "2-53" false (memq 'red '((red shoes) (blue socks))))
+;2-59
+(hytest "2-59" (set [1 2 3]) (union-set (set [1 2]) (set [2 3])))
 
 
