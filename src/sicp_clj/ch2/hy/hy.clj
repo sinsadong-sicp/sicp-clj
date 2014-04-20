@@ -467,6 +467,73 @@ dispatch)
  = (car '(quote abracadabra))
  = quote)
 
+;2-57, 58
+(defn make-sum [a1 a2]
+  (cond
+    (=number? a1 0) a2
+    (=number? a2 0) a1
+    (and (number? a1) (number? a2)) (+ a1 a2)
+    :else (list '+ a1 a2)))
+(defn make-product [m1 m2]
+  (cond
+    (or (=number? m1 0) (=number? m2 0)) 0
+    (=number? m1 1) m2
+    (=number? m2 1) m1
+    (and (number? m1) (number? m2)) (* m1 m2)
+    :else (list '* m1 m2)))
+(defn make-exponentiation [e1 e2]
+  (cond
+    (=number? e2 0) 1
+    (=number? e2 1) e1
+    (and (number? e1) (number? e2)) (expt e1 e2)
+    :else (list '** e1 e2)))
+
+(defn sum? [x]
+  (and (list? x) (= (first x) '+)))
+(defn addend [s]
+  (second s))
+;(defn augend [s]
+;  (second (rest s)))
+(defn augend [s]
+  (if (> (count s) 3)
+    (make-sum (addend (rest s)) (augend (rest s)))
+    (first (rest (rest s)))))
+(defn product? [x]
+  (and (list? x) (= (first x) '*)))
+(defn multiplier [p]
+  (second p))
+;(defn multiplicand [p]
+;  (second (rest p)))
+(defn multiplicand [p]
+  (if (> (count p) 3)
+    (make-product (multiplier (rest p)) (multiplicand (rest p)))
+    (first (rest (rest p)))))
+(defn exponentiation? [x]
+  (and (list? x) (= (first x) '**)))
+(defn base [p]
+  (second p))
+(defn exponent [p]
+  (second (rest p)))
+
+(defn variable? [x]
+  (symbol? x))
+(defn same-variable? [v1 v2]
+  (and (variable? v1) (variable? v2) (= v1 v2)))
+(defn =number? [exp nu]
+  (and (number? exp) (= exp nu)))
+
+(defn deriv [exp v]
+  (cond
+    (number? exp) 0
+    (variable? exp) (if (same-variable? exp v) 1 0)
+    (sum? exp) (make-sum (deriv (addend exp) v) (deriv (augend exp) v))
+    (product? exp) (make-sum (make-product (multiplier exp) (deriv (multiplicand exp) v))
+                             (make-product (deriv (multiplier exp) v) (multiplicand exp)))
+    (exponentiation? exp) (make-product
+                            (make-product (exponent exp) (make-exponentiation (base exp) (make-sum (exponent exp) -1)))
+                            (deriv (base exp) v))
+    :else (throw (Exception. "Unknown expression type - DERIV"))))
+
 ;2-59
 (defn union-set [set1 set2]
   (cond
@@ -474,4 +541,13 @@ dispatch)
     (empty? set2) set1
     (contains? set1 (first set2)) (union-set set1 (rest set2))
     :else (set (cons (first set2) (union-set set1 (rest set2))))))
+
+;2-61
+(defn adjoin-set [x s]
+  (cond
+    (nil? x) s
+    (empty? s) (set (list x))
+    (= x (first s)) s
+    (< x (first s)) (cons x s)
+    :else (cons (first s) (adjoin-set x (rest s)))))
 

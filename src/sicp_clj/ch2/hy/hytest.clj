@@ -99,7 +99,13 @@
 (unique-pairs 5)
 ;2-53
 (hytest "2-53" false (memq 'red '((red shoes) (blue socks))))
+;2-57
+(hytest "2-57" (make-product 2 'x) (deriv (make-exponentiation 'x 2) 'x))
+;2-58
+(hytest "2-58" (deriv '(* (* x y) (+ x 3)) 'x) (deriv '(* x y (+ x 3)) 'x))
 ;2-59
 (hytest "2-59" (set [1 2 3]) (union-set (set [1 2]) (set [2 3])))
+;2-61
+(hytest "2-61" (list 1 2 3) (adjoin-set 3 (list 1 2)))
 
 
