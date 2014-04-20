@@ -744,3 +744,14 @@
 
 (defn intersection-set-linear-growth [a b]
   (to-tree (intersection-set-ordered-list (to-list a) (to-list b))))
+
+; 2-66
+
+(defn lookup [k records]
+  (if (empty? records)
+    false
+    (let [this-key (car (entry records))]
+      (cond
+        (= k this-key) (cdr (entry records))
+        (< k this-key) (lookup k (left-tree records))
+        :else (lookup k (right-tree records))))))
