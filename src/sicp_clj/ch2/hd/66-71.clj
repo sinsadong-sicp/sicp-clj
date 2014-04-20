@@ -4,12 +4,13 @@
 
 ; 2-66
 ; (defn lookup [given-key set-of-records]
+;     (def current-key (key (entry set-of-records)))
 ;     (cond
 ;         (empty? set-of-records) false
-;         (== given-key (entry set-of-records)) true
-;         (< given-key (entry set-of-records))
+;         (== given-key current-key) (val (entry set-of-records))
+;         (< given-key current-key)
 ;             (lookup given-key (left-branch set-of-records))
-;         (> given-key (entry set-of-records))
+;         (> given-key current-key)
 ;             (lookup given-key (right-branch set-of-records))
 ;         )
 ;     )
@@ -108,3 +109,27 @@
 
 (encode '(A D A B B C A) sample-tree) ; sample-message와 같게 나온다.
 
+; 2-69
+(defn successive-merge [leaf-set]
+    (if (== (count leaf-set) 1) (first leaf-set)
+        (successive-merge
+            (adjoin-set
+                (make-code-tree (first leaf-set) (second leaf-set))
+                (rest (rest leaf-set)))
+            )
+        )
+    )
+
+(defn generate-huffman-tree [pairs]
+  (successive-merge (make-leaf-set pairs)))
+
+; 2-70
+(def song-tree (generate-huffman-tree '((a 2) (na 16) (boom 1) (sha 3) (get 2) (yip 9) (job 2) (wah 1))))
+
+(def song '(get a job sha na na na na na na na na get a job sha na na na na na na na na wah yip yip yip yip yip yip yip yip yip sha boom))
+
+(count (encode song song-tree)) ; 84
+; fixed면 각각 3bit씩 들었을 테니까, (count song-tree) * 3 = 108
+
+; 2-71
+; min은 1, max는 n-1.
