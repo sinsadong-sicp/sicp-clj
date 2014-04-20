@@ -747,11 +747,11 @@
 
 ; 2-66
 
-(defn lookup [k records]
+(defn lookup [k records] ; assume records are pairs
   (if (empty? records)
     false
-    (let [this-key (car (entry records))]
+    (let [this-key (first (entry records))]
       (cond
-        (= k this-key) (cdr (entry records))
+        (= k this-key) (second (entry records))
         (< k this-key) (lookup k (left-tree records))
         :else (lookup k (right-tree records))))))
