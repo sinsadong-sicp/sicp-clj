@@ -682,3 +682,65 @@
 ;    and the second half to the right subtree.
 ;    list->tree (list 1 3 5 7 9 11)) should return (5 (1 () (3)) (9 (7) (11)))
 ; b. for every nodes tree->list calls cons. its time complexity equals O(n)
+
+; 2-65
+
+(defn intersection-set-ordered-list [a b]
+  (if (or (empty? a) (empty? b))
+    nil
+    (let [x (car a)
+          y (car b)]
+      (cond
+        (= x y)
+          (cons x (intersection-set-ordered-list (cdr a) (cdr b)))
+        (< x y)
+          (intersection-set-ordered-list (cdr a) b)
+        :else
+          (intersection-set-ordered-list a (cdr b))))))
+
+(defn make-tree [entry lft rgt]
+  (list entry lft rgt))
+
+(defn entry [tree]
+  (car tree))
+(defn left-tree [tree]
+  (cadr tree))
+(defn right-tree [tree]
+  (caddr tree))
+
+(defn to-list [tree] ; tree->list-2 from 2-63
+  (defn tree-to-list [t lst]
+    (if (empty? t)
+      lst
+      (tree-to-list
+        (left-tree t)
+        (cons
+          (entry t)
+          (tree-to-list (right-tree t) lst)))))
+  (tree-to-list tree nil))
+
+(defn to-tree [lst] ; list->tree from 2-64
+  (defn partial-tree [xs n]
+    (if (zero? n)
+      (cons nil xs)
+      (let [lft-size (quot (dec n) 2)
+            lft-result (partial-tree xs lft-size)
+            lft-tree (car lft-result)
+            lft-else (cdr lft-result)
+            this-entry (car lft-else)
+            rgt-size (- n (inc lft-size))
+            rgt-result (partial-tree (cdr lft-else) rgt-size)
+            rgt-tree (car rgt-result)
+            rgt-else (cdr rgt-result)]
+        (cons (make-tree this-entry lft-tree rgt-tree) rgt-else))))
+  (car (partial-tree lst (length-acc lst))))
+
+; to-list has O(n) time complexity
+; to-tree has O(n) time complexity
+; union-set, intersection-set with ordered lists have O(n) time complexity
+
+(defn union-set-linear-growth [a b]
+  (to-tree (union-set-ordered-list (to-list a) (to-list b))))
+
+(defn intersection-set-linear-growth [a b]
+  (to-tree (intersection-set-ordered-list (to-list a) (to-list b))))
