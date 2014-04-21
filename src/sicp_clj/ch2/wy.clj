@@ -659,6 +659,7 @@
 (defn adjoin-set-ordered-list [x s]
   (cond
     (empty? s) (list x)
+    (= x (car s)) s
     (< x (car s)) (cons x s)
     :else (cons (car s) (adjoin-set-ordered-list x (cdr s)))))
 
@@ -668,6 +669,7 @@
   (cond
     (empty? a) b
     (empty? b) a
+    (= (car a) (car b)) (cons (car a) (union-set-ordered-list (cdr a) (cdr b)))
     (< (car a) (car b)) (cons (car a) (union-set-ordered-list (cdr a) b))
     :else (cons (car b) (union-set-ordered-list a (cdr b)))))
 
