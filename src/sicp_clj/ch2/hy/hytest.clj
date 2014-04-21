@@ -107,5 +107,6 @@
 (hytest "2-59" (set [1 2 3]) (union-set (set [1 2]) (set [2 3])))
 ;2-61
 (hytest "2-61" (list 1 2 3) (adjoin-set 3 (list 1 2)))
-
+;2-62
+(hytest "2-62" (list 1 2 3) (union-set-ordered (list 1 2) (list 2 3)))
 

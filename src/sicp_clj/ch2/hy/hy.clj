@@ -468,6 +468,14 @@ dispatch)
  = quote)
 
 ;2-57, 58
+
+(defn variable? [x]
+  (symbol? x))
+(defn same-variable? [v1 v2]
+  (and (variable? v1) (variable? v2) (= v1 v2)))
+(defn =number? [exp nu]
+  (and (number? exp) (= exp nu)))
+
 (defn make-sum [a1 a2]
   (cond
     (=number? a1 0) a2
@@ -515,13 +523,6 @@ dispatch)
 (defn exponent [p]
   (second (rest p)))
 
-(defn variable? [x]
-  (symbol? x))
-(defn same-variable? [v1 v2]
-  (and (variable? v1) (variable? v2) (= v1 v2)))
-(defn =number? [exp nu]
-  (and (number? exp) (= exp nu)))
-
 (defn deriv [exp v]
   (cond
     (number? exp) 0
@@ -550,4 +551,13 @@ dispatch)
     (= x (first s)) s
     (< x (first s)) (cons x s)
     :else (cons (first s) (adjoin-set x (rest s)))))
+
+;2-62
+(defn union-set-ordered [set1 set2]
+  (cond
+    (empty? set1) set2
+    (empty? set2) set1
+    (= (first set1) (first set2)) (union-set-ordered set1 (rest set2))
+    (> (first set1) (first set2)) (cons (first set2) (union-set-ordered set1 (rest set2)))
+    :else (cons (first set1) (union-set-ordered (rest set1) set2))))
 
