@@ -158,6 +158,7 @@
 (def cdr rest)
 (def cadr (comp car cdr))
 (def caddr (comp car cdr cdr))
+(def cadddr (comp car cdr cdr cdr))
 (def cddr (comp cdr cdr))
 
 (defn last-pair [xs]
@@ -755,3 +756,95 @@
         (= k this-key) (second (entry records))
         (< k this-key) (lookup k (left-tree records))
         :else (lookup k (right-tree records))))))
+
+; 2-67
+
+(ns sicp-clj.ch2.wy.huffman
+  (:use [sicp-clj.ch2.wy :only [car cdr cadr caddr cadddr append element-of-set?]]))
+
+(defn make-leaf [sym w]
+  (list 'leaf sym w))
+
+(defn leaf? [x]
+  (= (car x) 'leaf))
+(defn symbol-leaf [x]
+  (cadr x))
+(defn weight-leaf [x]
+  (caddr x))
+
+(defn symbols [tree]
+  (if (leaf? tree)
+    (list (symbol-leaf tree))
+    (caddr tree)))
+(defn weight [tree]
+  (if (leaf? tree)
+    (weight-leaf tree)
+    (cadddr tree)))
+
+(defn make-code-tree [lft rgt]
+  (list
+    lft
+    rgt
+    (append (symbols lft) (symbols rgt))
+    (+ (weight lft) (weight rgt))))
+
+(defn left-branch [tree]
+  (car tree))
+(defn right-branch [tree]
+  (cadr tree))
+
+(defn decode [bits tree]
+  (defn choose-branch [bit branch]
+    (cond
+      (= 0 bit) (left-branch branch)
+      (= 1 bit) (right-branch branch)
+      :else (throw (Exception. "bad bit -- CHOOSE-BRANCH"))))
+  (defn decode-recur [bits branch]
+    (if (empty? bits)
+      nil
+      (let [next-branch (choose-branch (car bits) branch)]
+        (if (leaf? next-branch)
+          (cons
+            (symbol-leaf next-branch)
+            (decode-recur (cdr bits) tree))
+          (decode-recur (cdr bits) next-branch)))))
+  (decode-recur bits tree))
+
+(def sample-tree
+  (make-code-tree
+    (make-leaf 'A 4)
+    (make-code-tree
+      (make-leaf 'B 2)
+      (make-code-tree
+        (make-leaf 'D 1)
+        (make-leaf 'C 1)))))
+
+(def sample-message '(0 1 1 0 0 1 0 1 0 1 1 1 0))
+
+; (decode sample-message sample-tree) ; => (A D A B B C A)
+
+; 2-68
+
+(defn encode [message tree]
+  (defn next-branch? [sym branch]
+    (element-of-set? sym (symbols branch)))
+  (defn encode-symbol [sym tree]
+    (let [lft (left-branch tree)
+          rgt (right-branch tree)]
+      (cond
+        (next-branch? lft)
+          (if (leaf? lft)
+            '(0)
+            (cons 0 (encode-symbol sym lft)))
+        (next-branch? rgt)
+          (if (leaf? rgt)
+            '(1)
+            (cons 1 (encode-symbol sym rgt)))
+        :else (throw (Exception. "bad symbol -- ENCODE-SYMBOL")))))
+  (if (empty? message)
+    nil
+    (append
+      (encode-symbol (car message) tree)
+      (encode (cdr message) tree))))
+
+; (encode '(A D A B B C A) sample-tree) ; => (0 1 1 0 0 1 0 1 0 1 1 1 0)
