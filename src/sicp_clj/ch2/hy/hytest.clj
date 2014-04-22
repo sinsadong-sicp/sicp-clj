@@ -109,4 +109,6 @@
 (hytest "2-61" (list 1 2 3) (adjoin-set 3 (list 1 2)))
 ;2-62
 (hytest "2-62" (list 1 2 3) (union-set-ordered (list 1 2) (list 2 3)))
-
+;2-63
+(def h (make-tree 7 (make-tree 3 (make-tree 1 nil nil) (make-tree 5 nil nil)) (make-tree 9 nil (make-tree 11 nil nil))))
+(hytest "2-63" (treelist1 h) (treelist2 h))

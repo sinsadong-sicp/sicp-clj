@@ -561,3 +561,34 @@ dispatch)
     (> (first set1) (first set2)) (cons (first set2) (union-set-ordered set1 (rest set2)))
     :else (cons (first set1) (union-set-ordered (rest set1) set2))))
 
+;2-63
+(defn entry [tree]
+  (first tree))
+(defn tree-left-branch [tree]
+  (first (rest tree)))
+(defn tree-right-branch [tree]
+  (first (rest (rest tree))))
+(defn make-tree [entry l r]
+  (list entry l r))
+(defn treelist1 [tree]
+  (println tree)
+  (if (nil? tree)
+    '()
+    (append (treelist1 (tree-left-branch tree))
+            (cons (entry tree)
+                  (treelist1 (tree-right-branch tree))))))
+(defn treelist2 [tree]
+  (defn copy-to-list [tree result-list]
+    (println tree " " result-list)
+    (if (nil? tree)
+      result-list
+      (copy-to-list (tree-left-branch tree)
+                    (cons (entry tree)
+                          (copy-to-list
+                            (tree-right-branch tree)
+                            result-list)))))
+  (copy-to-list tree '()))
+; a) hytest에서 보듯 결과는 같음
+; b) balanced tree 일때 left branch = right branch = total n / 2 인데 위에꺼는 append라서 O(n/2) for each step
+; 아래는 O(1) for each step => 재귀 O계산해보면 nlogn과 n의 차이로 나타남
+
