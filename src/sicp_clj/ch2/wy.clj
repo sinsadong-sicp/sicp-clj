@@ -762,7 +762,7 @@
 ; 2-67
 
 (ns sicp-clj.ch2.wy.huffman
-  (:use [sicp-clj.ch2.wy :only [car cdr cadr caddr cadddr append element-of-set?]]))
+  (:use [sicp-clj.ch2.wy :only [car cdr cadr caddr cadddr cddr append element-of-set?]]))
 
 (defn make-leaf [sym w]
   (list 'leaf sym w))
@@ -828,9 +828,9 @@
 ; 2-68
 
 (defn encode [message tree]
-  (defn next-branch? [sym branch]
-    (element-of-set? sym (symbols branch)))
   (defn encode-symbol [sym tree]
+    (defn next-branch? [branch]
+      (element-of-set? sym (symbols branch)))
     (let [lft (left-branch tree)
           rgt (right-branch tree)]
       (cond
@@ -850,3 +850,37 @@
       (encode (cdr message) tree))))
 
 ; (encode '(A D A B B C A) sample-tree) ; => (0 1 1 0 0 1 0 1 0 1 1 1 0)
+
+; 2-69
+
+(defn adjoin-set [x s]
+  (cond
+    (empty? s) (list x)
+    (< (weight x) (weight (car s))) (cons x s)
+    :else (cons (car s) (adjoin-set x (cdr s)))))
+
+(defn make-leaf-set [pairs]
+  (if (empty? pairs)
+    nil
+    (let [pair (car pairs)]
+      (adjoin-set
+        (make-leaf (car pair) (cadr pair))
+        (make-leaf-set (cdr pairs))))))
+
+(defn generate-huffman-tree [pairs]
+  (defn successive-merge [leaf-set]
+    (if (empty? (cdr leaf-set))
+      (car leaf-set)
+      (successive-merge
+        (adjoin-set
+          (make-code-tree (car leaf-set) (cadr leaf-set))
+          (cddr leaf-set)))))
+  (successive-merge (make-leaf-set pairs)))
+
+; 2-70
+
+; (encode
+;   '(GET A JOB SHA NA NA NA NA NA NA NA NA GET A JOB SHA NA NA NA NA NA NA NA NA WAH YIP YIP YIP YIP YIP YIP YIP YIP YIP SHA BOOM)
+;   (generate-huffman-tree '((A 2) (NA 16) (BOOM 1) (SHA 3) (GET 2) (YIP 9) (JOB 2) (WAH 1))))
+; ; => 84 bits
+; ; a fixed-length code for the eight-symbol alphabet uses three bits per symbol => 3 * 36 = 108 bits
