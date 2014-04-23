@@ -112,3 +112,6 @@
 ;2-63
 (def h (make-tree 7 (make-tree 3 (make-tree 1 nil nil) (make-tree 5 nil nil)) (make-tree 9 nil (make-tree 11 nil nil))))
 (hytest "2-63" (treelist1 h) (treelist2 h))
+;2-64
+;(println (list->tree (list 1 3 5 7 9 11)))
+

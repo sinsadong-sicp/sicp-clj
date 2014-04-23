@@ -571,7 +571,7 @@ dispatch)
 (defn make-tree [entry l r]
   (list entry l r))
 (defn treelist1 [tree]
-  (println tree)
+  ;(println tree)
   (if (nil? tree)
     '()
     (append (treelist1 (tree-left-branch tree))
@@ -579,7 +579,7 @@ dispatch)
                   (treelist1 (tree-right-branch tree))))))
 (defn treelist2 [tree]
   (defn copy-to-list [tree result-list]
-    (println tree " " result-list)
+    ;(println tree " " result-list)
     (if (nil? tree)
       result-list
       (copy-to-list (tree-left-branch tree)
@@ -591,4 +591,22 @@ dispatch)
 ; a) hytest에서 보듯 결과는 같음
 ; b) balanced tree 일때 left branch = right branch = total n / 2 인데 위에꺼는 append라서 O(n/2) for each step
 ; 아래는 O(1) for each step => 재귀 O계산해보면 nlogn과 n의 차이로 나타남
+
+;2-64
+(defn partial-tree [elts n]
+  (if (= n 0)
+    (cons '() elts)
+    (let [left-size (quot (- n 1) 2)]
+      (let [left-result (partial-tree elts left-size)]
+        (let [left-tree (first left-result)
+              non-left-elts (rest left-result)
+              right-size (- n (+ left-size 1))]
+          (let [this-entry (first non-left-elts)
+                right-result (partial-tree (rest non-left-elts) right-size)]
+                (let [right-tree (first right-result)
+                      remaining-elts (rest right-result)]
+                  (cons (make-tree
+                          this-entry left-tree right-tree) remaining-elts))))))))
+(defn list->tree [elem]
+  (first (partial-tree elem (count elem))))
 
