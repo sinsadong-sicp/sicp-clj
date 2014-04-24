@@ -570,14 +570,14 @@ dispatch)
   (first (rest (rest tree))))
 (defn make-tree [entry l r]
   (list entry l r))
-(defn treelist1 [tree]
+(defn tree->list1 [tree]
   ;(println tree)
   (if (nil? tree)
     '()
     (append (treelist1 (tree-left-branch tree))
             (cons (entry tree)
                   (treelist1 (tree-right-branch tree))))))
-(defn treelist2 [tree]
+(defn tree->list2 [tree]
   (defn copy-to-list [tree result-list]
     ;(println tree " " result-list)
     (if (nil? tree)
@@ -609,4 +609,27 @@ dispatch)
                           this-entry left-tree right-tree) remaining-elts))))))))
 (defn list->tree [elem]
   (first (partial-tree elem (count elem))))
+;a) (5 (1 () (3 () ())) (9 (7 () ()) (11 () ()))) 5가 root고 왼쪽에 1 3 오른쪽에 9 7 11 로 이어지는 트리임
+;b) cons하니까 자체 opreation은 O(1)
+; T(n) = T((n-1)/2) + T(n-((n-1)/2)) + O(1) = 거의 T(n/2) + T(n/2) + O(1)
+; T(n) = O(n)
 
+;2-65
+(defn intersection-set-ordered [set1 set2]
+  (if (or (empty? set1) (empty? set2))
+    '()
+    (let [x1 (first set1)
+          x2 (first set2)]
+      (cond
+        (= x1 x2)
+        (cons x1 (intersection-set-ordered (rest set1) (rest set2))))
+        (< x1 x2)
+        (intersection-set-ordered (rest set1) set2)
+        (< x2 x1)
+        (intersection-set-ordered set1 (rest set2))
+        )))
+(defn union-set-1 [tree1 tree2]
+  (list->tree (union-set-ordered (tree->list2 tree1) (tree->list2 tree2))))
+(defn intersection-set-1 [tree1 tree2]
+  (list->tree (intersection-set-ordered (tree->list2 tree1) (tree->list2 tree2))))
+;list->tree, tree->list, intersection-set-ordered, union-set-ordered 다 O(n)
