@@ -116,3 +116,7 @@
 ;(println (list->tree (list 1 3 5 7 9 11)))
 ;2-65
 ;(hytest "2-65" h (union-set-1 h h))
+;2-66
+(hytest "2-66" 11 (lookup 11 h))
+;2-67
+(hytest "2-67" '(A D A B B C A) (decode sample-message sample-tree))

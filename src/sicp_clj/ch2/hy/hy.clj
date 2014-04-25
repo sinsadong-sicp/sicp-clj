@@ -574,9 +574,9 @@ dispatch)
   ;(println tree)
   (if (nil? tree)
     '()
-    (append (treelist1 (tree-left-branch tree))
+    (append (tree->list1 (tree-left-branch tree))
             (cons (entry tree)
-                  (treelist1 (tree-right-branch tree))))))
+                  (tree->list1 (tree-right-branch tree))))))
 (defn tree->list2 [tree]
   (defn copy-to-list [tree result-list]
     ;(println tree " " result-list)
@@ -633,3 +633,78 @@ dispatch)
 (defn intersection-set-1 [tree1 tree2]
   (list->tree (intersection-set-ordered (tree->list2 tree1) (tree->list2 tree2))))
 ;list->tree, tree->list, intersection-set-ordered, union-set-ordered 다 O(n)
+
+;2-66
+(defn hykey [x]
+  x)
+(defn lookup [given-key set-of-records]
+  (cond
+    (empty? set-of-records) false
+    (= given-key (hykey (entry set-of-records))) (entry set-of-records)
+    (< given-key (hykey (entry set-of-records))) (lookup given-key (tree-left-branch set-of-records))
+    :else (lookup given-key (tree-right-branch set-of-records))))
+
+;2-67
+(defn make-leaf [sym weight]
+  (list 'leaf sym weight))
+(defn leaf? [object]
+  (= (first object) 'leaf))
+(defn symbol-leaf [x]
+  (first (rest x)))
+(defn weight-leaf [x]
+  (nth x 2))
+(defn symbols [tree]
+  (if (leaf? tree)
+    (list (symbol-leaf tree))
+    (nth tree 2)))
+(defn weight [tree]
+  (if (leaf? tree)
+    (weight-leaf tree)
+    (nth tree 3)))
+(defn make-code-tree [l r]
+  (list l r (append (symbols l) (symbols r)) (+ (weight l) (weight r))))
+(defn c-left-branch [tree]
+  (first tree))
+(defn c-right-branch [tree]
+  (first (rest tree)))
+(defn choose-branch [bit branch]
+  (cond
+    (= bit 0) (c-left-branch branch)
+    (= bit 1) (c-right-branch branch)
+    :else (throw (Exception. "bad bit - CHOOSE-BRANCH" bit))))
+(defn decode [bits tree]
+  (defn decode-1 [bits current-branch]
+    (if (empty? bits)
+      '()
+      (let [next-branch (choose-branch (first bits) current-branch)]
+        (if (leaf? next-branch)
+          (cons (symbol-leaf next-branch)
+                (decode-1 (rest bits) tree))
+          (decode-1 (rest bits) next-branch)))))
+  (decode-1 bits tree))
+(defn adjoin-set2 [x s]
+  (cond
+    (empty? s) (list x)
+    (< (weight x) (weight (first s))) (cons x s)
+    :else (cons (first s) (adjoin-set2 x (rest s)))))
+(defn make-leaf-set [pairs]
+  (if (empty? pairs)
+    '()
+    (let [pair (first pairs)]
+      (adjoin-set2 (make-leaf (first pair) (first (rest pair))) (make-leaf-set (rest pairs))))))
+;여기부터 진짜 문제
+(def sample-tree
+  (make-code-tree (make-leaf 'A 4)
+                  (make-code-tree
+                    (make-leaf 'B 2)
+                    (make-code-tree
+                      (make-leaf 'D 1)
+                      (make-leaf 'C 1)))))
+(def sample-message '(0 1 1 0 0 1 0 1 0 1 1 1 0))
+;2-68
+;(defn encode [message tree]
+;  (if (empty? message)
+;    '()
+;    (append (encode-symbol (first message) tree)
+;            (encode (rest message) tree))))
+
