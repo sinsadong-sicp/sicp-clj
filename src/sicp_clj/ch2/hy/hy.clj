@@ -701,10 +701,43 @@ dispatch)
                       (make-leaf 'D 1)
                       (make-leaf 'C 1)))))
 (def sample-message '(0 1 1 0 0 1 0 1 0 1 1 1 0))
+
 ;2-68
-;(defn encode [message tree]
-;  (if (empty? message)
-;    '()
-;    (append (encode-symbol (first message) tree)
-;            (encode (rest message) tree))))
+;http://goo.gl/koKHt
+;contain?는 안먹네....
+(defn in?
+  "true if seq contains elm"
+  [seq elm]
+  (some #(= elm %) seq))
+
+(defn encode-symbol [word tree]
+  (if (in? (symbols tree) word)
+    (cond
+      (= true (in? (symbols (c-left-branch tree)) word))
+      (if (leaf? (c-left-branch tree))
+        '(0)
+        (cons 0 (encode-symbol word (c-left-branch tree)))
+      )
+      (= true (in? (symbols (c-right-branch tree)) word))
+      (if (leaf? (c-right-branch tree))
+        '(1)
+        (cons 1 (encode-symbol word (c-right-branch tree)))
+      )
+      :else (throw (Exception. "symbol not in tree - " word)))
+    (throw (Exception. "symbol not in tree - " word))))
+
+(defn encode [message tree]
+  (if (empty? message)
+    '()
+    (append (encode-symbol (first message) tree)
+            (encode (rest message) tree))))
+
+;2-69
+(defn successive-merge [leaves]
+  (if (empty? (rest leaves))
+    (first leaves)
+    (successive-merge
+      (adjoin-set2 (make-code-tree (first leaves) (second leaves)) (rest (rest leaves))))))
+(defn generate-huffman-tree [pairs]
+  (successive-merge (make-leaf-set pairs)))
 

@@ -120,3 +120,7 @@
 (hytest "2-66" 11 (lookup 11 h))
 ;2-67
 (hytest "2-67" '(A D A B B C A) (decode sample-message sample-tree))
+;2-68
+(hytest "2-68" sample-message (encode '(A D A B B C A) sample-tree))
+;2-69
+(hytest "2-69" sample-tree (generate-huffman-tree '((A 4) (B 2) (C 1) (D 1))))
