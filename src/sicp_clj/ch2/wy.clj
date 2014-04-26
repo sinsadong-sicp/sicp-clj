@@ -884,3 +884,11 @@
 ;   (generate-huffman-tree '((A 2) (NA 16) (BOOM 1) (SHA 3) (GET 2) (YIP 9) (JOB 2) (WAH 1))))
 ; ; => 84 bits
 ; ; a fixed-length code for the eight-symbol alphabet uses three bits per symbol => 3 * 36 = 108 bits
+
+; 2-71
+; the least frequent symbol would require 1 bit, the most (n-1) bits.
+
+; 2-72
+; searching the symbol list is a linear search, taking O(n) at each node.
+; encoding the most frequent symbol requires a single search at the root, and hence takes O(n)
+; the least frequent symbol is all the way down the tree at depth (n-1), so it takes O(n^2)
