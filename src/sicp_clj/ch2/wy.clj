@@ -929,3 +929,35 @@
 
 ; d.
 ; change argument order of put as well, like (put '(+) 'deriv deriv-sum)
+
+; 2-75
+
+(declare cos)
+(declare sin)
+(defn make-from-mag-ang [r a]
+  (defn dispatch [op]
+    (cond
+      (= op 'real-part) (* r (cos a))
+      (= op 'imag-part) (* r (sin a))
+      (= op 'magnitude) r
+      (= op 'angle) a
+      :else (throw (Exception. "Unknown op -- MAKE_FROM_REAL_IMAG"))))
+  dispatch)
+
+; 2-76
+; in explicit dispatch,
+; adding a new type requires modifying every operations (probably by writing another clause for that type.)
+; adding a new operation requires writing operations for each type and a generic operation to dispatch.
+
+; in data-directed style,
+; adding a new type requires writing respective operations and adding them to operation-type table.
+; adding a new operation requires writing operations for each type and a generic operation to dispatch
+; (which is reduced down to a simple call to operation-type table.)
+
+; in message passing,
+; adding a new type requires writing its own constructor (which will dispatch supported operations.)
+; adding a new operation requires modifying every constructors to support this operation.
+
+; one should not have to worry about modifying pre-existing code base when adding a new type/operation.
+; under such a rationale, message passing is most appropriate for a system expecting frequent addtion of types,
+; while data-directed style is the same for a system where new operations are frequently added.
