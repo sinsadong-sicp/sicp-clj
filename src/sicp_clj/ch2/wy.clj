@@ -892,3 +892,40 @@
 ; searching the symbol list is a linear search, taking O(n) at each node.
 ; encoding the most frequent symbol requires a single search at the root, and hence takes O(n)
 ; the least frequent symbol is all the way down the tree at depth (n-1), so it takes O(n^2)
+
+(ns sicp-clj.ch2.wy)
+
+; 2-73
+
+; a. we regard operator symbols as the types of expressions and dispatch based on them.
+;    number? and variable? are predicates: there's nothing to dispatch.
+
+; b, c.
+(declare put)
+(defn install-deriv-package []
+  (defn deriv-sum [operands var]
+    (make-sum
+      (deriv (addend operands) var)
+      (deriv (augend operands) var)))
+  (defn deriv-product [operands var]
+    (make-sum
+      (make-product
+        (multiplier operands)
+        (deriv (multiplicand operands) var))
+      (make-product
+        (deriv (multiplier operands) var)
+        (multiplicand operands))))
+  (defn deriv-exponentiation [operands var]
+    (make-product
+      (make-product
+        (exponent operands)
+        (make-exponentiation
+          (base operands)
+          (dec (exponent operands))))
+      (deriv (base operands) var)))
+  (put 'deriv '(+) deriv-sum)
+  (put 'deriv '(*) deriv-product)
+  (put 'deriv '(**) deriv-exponentiation))
+
+; d.
+; change argument order of put as well, like (put '(+) 'deriv deriv-sum)
