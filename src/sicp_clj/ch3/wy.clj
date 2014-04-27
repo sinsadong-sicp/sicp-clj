@@ -12,8 +12,9 @@
 (defn make-monitored [f]
   (let [counter (atom 0)]
     (fn [x]
-      (if (= x 'how-many-calls?)
-        @counter
-        (do
-          (swap! counter + 1)
-          (f x))))))
+      (cond
+        (= x 'how-many-calls?) @counter
+        (= x 'reset-counter) (reset! counter 0)
+        :else (do
+                (swap! counter + 1)
+                (f x))))))
