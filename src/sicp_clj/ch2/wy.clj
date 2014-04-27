@@ -961,3 +961,66 @@
 ; one should not have to worry about modifying pre-existing code base when adding a new type/operation.
 ; under such a rationale, message passing is most appropriate for a system expecting frequent addtion of types,
 ; while data-directed style is the same for a system where new operations are frequently added.
+
+; 2-77
+
+; (magnitude z)
+; => (apply-generic 'magnitude ('complex ('rectangular (3 4))))
+; => ((get 'magnitude '(complex)) ('rectangular (3 4)))
+; => (magnitude ('rectangular (3 4))) ; this magnitude is a generic selector in the complex system
+; => (apply-generic 'magnitude ('rectangular 3 4))
+; => ((get 'magnitude '(rectangular)) (3 4))
+; => (magnitude (3 4)) ; this magnitude, in the rectangular type package, contains actual logic
+; => 5
+
+; 2-78
+
+(declare pair?) ; there's no clojure equivalent of scheme's pair.
+                ; I won't try to convert the given code using, for example, vector,
+                ; since this example is purely imaginary anyway.
+(defn type-tag [datum]
+  (cond
+    (pair? datum) (car datum)
+    (number? datum) datum
+    :else (throw (Exception. "Bad tagged datum -- TYPE_TAG"))))
+(defn contents [datum]
+  (cond
+    (pair? datum) (cdr datum)
+    (number? datum) datum
+    :else (throw (Exception. "Bad tagged datum -- CONTENTS"))))
+(defn attach-tag [type-tag contents]
+  (if (number? contents)
+    contents
+    (cons type-tag contents)))
+
+; 2-79
+
+; (defn equ? [x y]
+;   (apply-generic 'equ? x y))
+; (put 'equ? '(number number)
+;   (fn [x y]
+;     (= x y)))
+; (put 'equ? '(rational rational)
+;   (fn [x y]
+;     (=
+;       (* (denom x) (numer y))
+;       (* (numer x) (denom y)))))
+; (put 'equ? '(complex complex)
+;   (fn [x y]
+;     (and
+;       (= (real-part x) (real-part y))
+;       (= (imag-part x) (imag-part y)))))
+
+; 2-80
+
+; (defn =zero? [x]
+;   (apply-generic '=zero? x))
+; (put '=zero? '(number)
+;   (fn [x] (zero? x)))
+; (put '=zero? '(rational)
+;   (fn [x] (zero? (numer x))))
+; (put '=zero? '(complex)
+;   (fn [x]
+;     (and
+;       (zero? (real-part x))
+;       (zero? (imag-part x)))))
