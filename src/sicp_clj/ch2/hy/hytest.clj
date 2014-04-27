@@ -124,3 +124,9 @@
 (hytest "2-68" sample-message (encode '(A D A B B C A) sample-tree))
 ;2-69
 (hytest "2-69" sample-tree (generate-huffman-tree '((A 4) (B 2) (C 1) (D 1))))
+;2-70
+(def song-tree
+  (generate-huffman-tree '((A 2) (BOOM 1) (GET 2) (JOB 2) (NA 16) (SHA 3) (YIP 9) (WAH 1))))
+(hytest "2-70" '(1 1 1 1 1 1 1 0 0 1 1 1 1 0 1 1 1 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 0 0 1 1 1 1 0 1 1 1 0 0 0 0 0 0 0 0 1 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 1 1 0 1 1 0 1 1)
+ (encode '(GET A JOB SHA NA NA NA NA NA NA NA GET A JOB SHA NA NA NA NA NA NA NA WAH YIP YIP YIP YIP YIP YIP YIP YIP YIP SHA BOOM) song-tree))
+

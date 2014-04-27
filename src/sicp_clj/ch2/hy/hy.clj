@@ -741,3 +741,12 @@ dispatch)
 (defn generate-huffman-tree [pairs]
   (successive-merge (make-leaf-set pairs)))
 
+;2-71
+;최소 1bit, 최대 n-1bit
+
+;2-72
+;매 step마다 in? 체크하는거 O(n)
+;most frequent 같은 경우는 이걸로 끝
+;least frequent 같은 경우는 tree를 따라 내려가는데, 2.71의 설정을 이용하면 tree depth는 n-1
+;그때마다 symbol개수도 주니까 O(n) + O(n-1) + O(n-2) + ... O(1) ~ O(n^2)
+
