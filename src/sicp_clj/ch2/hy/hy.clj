@@ -750,3 +750,23 @@ dispatch)
 ;least frequent 같은 경우는 tree를 따라 내려가는데, 2.71의 설정을 이용하면 tree depth는 n-1
 ;그때마다 symbol개수도 주니까 O(n) + O(n-1) + O(n-2) + ... O(1) ~ O(n^2)
 
+;2-73
+(defn operator [exp]
+  (first exp))
+(defn operands [exp]
+  (rest exp))
+(defn intall-deriv-package []
+  (defn sum [exp v]
+    (make-sum (deriv (addend exp) v) (deriv (augend exp) v)))
+  (defn product [exp v]
+    (make-sum (make-product (multiplier exp) (deriv (multiplicand exp) v))
+                             (make-product (deriv (multiplier exp) v) (multiplicand exp))))
+  (defn exponentiation [exp v]
+    (make-product
+                            (make-product (exponent exp) (make-exponentiation (base exp) (make-sum (exponent exp) -1)))
+                            (deriv (base exp) v))))
+(defn deriv-data [exp var]
+  (cond
+    (number? exp) 0
+    (variable? exp) (if (same-variable? exp var) 1 0)
+    :else ((get 'deriv (operator exp)) (operands exp) var)))
