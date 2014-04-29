@@ -12,7 +12,7 @@
             (if (>= balance amount)
                 (do (swap! bal - amount) @bal)
                 "Insufficient funds"))
-        (defn deposit [pw amount]
+        (defn deposit [amount]
             (do (swap! bal + amount) @bal))
         (defn dispatch [pw msg]
             (cond
