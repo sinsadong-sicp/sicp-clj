@@ -755,6 +755,7 @@ dispatch)
   (first exp))
 (defn operands [exp]
   (rest exp))
+(declare put)
 (defn intall-deriv-package []
   (defn sum [exp v]
     (make-sum (deriv (addend exp) v) (deriv (augend exp) v)))
@@ -764,9 +765,35 @@ dispatch)
   (defn exponentiation [exp v]
     (make-product
                             (make-product (exponent exp) (make-exponentiation (base exp) (make-sum (exponent exp) -1)))
-                            (deriv (base exp) v))))
+                            (deriv (base exp) v)))
+  (put 'deriv '(+) sum)
+  (put 'deriv '(*) product)
+  (put 'deriv '(**) exponentiation))
 (defn deriv-data [exp var]
   (cond
     (number? exp) 0
     (variable? exp) (if (same-variable? exp var) 1 0)
     :else ((get 'deriv (operator exp)) (operands exp) var)))
+
+;2-74
+(defn install-division-package []
+  (defn get-name [record]
+    (first record))
+  (defn get-record [name file]
+    (cond
+      (nil? file) (throw (Exception. "no result"))
+      (= name (get-name (second file))) (cons (second file) (get-record name (rest file)))
+      :else (get-record name (rest file)))
+    )
+  (defn get-salary [name file]
+    (cond
+      (nil? file) (throw (Exception. "no result"))
+      (= name (get-name (second file))) (cons (second (second file)) (get-salary name (rest file)))
+      :else (get-salary name (rest file))))
+  (defn find-employee-record [name list]
+    (cond
+      (empty? list) (throw (Exception. "no result"))
+      :else (append (get-record (first list) (find-employee-record name (rest list))))))
+  (put 'division 'get-record get-record)
+  (put 'division 'get-name get-name))
+
