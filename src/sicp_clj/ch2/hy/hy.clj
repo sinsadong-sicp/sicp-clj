@@ -797,3 +797,26 @@ dispatch)
   (put 'division 'get-record get-record)
   (put 'division 'get-name get-name))
 
+;2-75
+(declare cos)
+(declare sin)
+(declare atan)
+(defn make-from-real-imag [x y]
+  (defn dispatch [op]
+    (cond
+      (= op 'real-part) x
+      (= op 'imag-part) y
+      (= op 'magnitude) (sqrt (+ (square x) (square y)))
+      (= op 'angle) (atan y x)
+      :else (throw (Exception. "Unknown op - MAKE-FROM-REAL-IMAG "))))
+  dispatch)
+
+(defn make-from-mag-ang [x y]
+  (defn dispatch [op]
+    (cond
+      (= op 'real-part) (* x (cos y))
+      (= op 'imag-part) (* x (sin y))
+      (= op 'magnitude) x
+      (= op 'angle) y
+      :else (throw (Exception. "Unknown op - MAKE-FROM-MAG-ANG "))))
+  dispatch)
