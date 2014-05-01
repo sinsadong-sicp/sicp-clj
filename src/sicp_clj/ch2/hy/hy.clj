@@ -820,3 +820,19 @@ dispatch)
       (= op 'angle) y
       :else (throw (Exception. "Unknown op - MAKE-FROM-MAG-ANG "))))
   dispatch)
+
+;2-78
+(defn type-tag [data]
+  (cond
+    (number? data) data
+    (seq? data) (first data)
+    :else (throw (Exception. "Invalid type tag"))))
+(defn contents [data]
+  (cond
+    (number? data) data
+    (seq? data) (second data)
+    :else (throw (Exception. "Invalid contents"))))
+(defn attach-tag [tag contents]
+  (cond
+    (number? contents) contents
+    (seq? contents) (cons tag contents)))
