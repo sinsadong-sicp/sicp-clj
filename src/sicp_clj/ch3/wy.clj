@@ -1,4 +1,5 @@
-(ns sicp-clj.ch3.wy)
+(ns sicp-clj.ch3.wy
+  (:use [clojure.contrib.math :only [gcd]]))
 
 ; 3-1
 
@@ -16,7 +17,7 @@
         (= x 'how-many-calls?) @counter
         (= x 'reset-counter) (reset! counter 0)
         :else (do
-                (swap! counter + 1)
+                (swap! counter inc)
                 (f x))))))
 
 ; 3-3, 4
@@ -46,3 +47,25 @@
               (call-the-cops)
               "Incorrect password")))))
     dispatch))
+
+; 3-5
+
+(defn monte-carlo [trials experiment]
+  (defn iter [trials-remaining trials-passed]
+    (cond
+      (zero? trials-remaining) (/ trials-passed trials)
+      (experiment) (iter (dec trials-remaining) (inc trials-passed))
+      :else (iter (dec trials-remaining) trials-passed)))
+  (iter trials 0))
+
+(defn random-in-range [low high]
+  (let [n (- high low)]
+    (+ low (rand n))))
+
+(defn estimate-integral [p x1 x2 y1 y2 trials]
+  (let [area (* (- x2 x1) (- y2 y1))]
+    (defn experiment []
+      (let [x (random-in-range x1 x2)
+            y (random-in-range y1 y2)]
+        (p x y)))
+    (* area (monte-carlo trials experiment))))
