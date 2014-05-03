@@ -77,3 +77,25 @@
     (if (= p new-password)
       (account original-password m)
       (fn [_] "Incorrect password"))))
+
+; 3-8
+
+(def f
+  (let [a (atom 0)]
+    (defn g [x]
+      (let [b (atom @a)]
+        (swap! a + x)
+        @b))
+    g))
+
+; left-to-right evaluation
+; (+ (f 0) (f 1))
+; => (+ 0 (f 1))
+; => (+ 0 0)
+; => 0
+
+; right-to-left evaluation
+; (+ (f 0) (f 1))
+; => (+ (f 0) 1)
+; => (+ 0 1)
+; => 1
