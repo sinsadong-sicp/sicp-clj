@@ -19,6 +19,9 @@
 (def hytest
   (partial hytest-single =))
 
+(defn chapter1 []
+  (do
+
 (println "Chapter 1")
 ;1-3
 (hytest "1-3" 13 (sum-of-squares-of-larger-two 1 2 3) )
@@ -109,3 +112,5 @@
 
 ;1-45
 (hytest-with-error "1-45" 2.0 (nthroot 8 3))
+
+  ))
