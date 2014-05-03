@@ -69,3 +69,11 @@
             y (random-in-range y1 y2)]
         (p x y)))
     (* area (monte-carlo trials experiment))))
+
+; 3-7
+
+(defn make-joint [account original-password new-password]
+  (fn [p m]
+    (if (= p new-password)
+      (account original-password m)
+      (fn [_] "Incorrect password"))))
