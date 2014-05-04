@@ -157,3 +157,19 @@
 ; global <- E6 (balance: 100, withdraw: ..., deposit: ..., dispatch: ...) [body of make-account]
 
 ; local state for acc2 is kept separately in E6
+
+; 3-12
+
+; z makes a new list with x intact. first (cdr x) returns '(b)
+; w replaces cdr pointer of the last pair of x to a pointer to y. second (cdr x) returns '(b c d)
+
+; 3-13
+
+; z forms a loop with three nodes having 'a, 'b and 'c
+; (last-pair z) enters an infinite loop
+
+; 3-14
+
+; mystery returns a reversed list
+; v => '(a)
+; w => '(d c b a)
