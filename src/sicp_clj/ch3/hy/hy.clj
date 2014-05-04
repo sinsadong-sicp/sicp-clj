@@ -97,4 +97,4 @@
       (swap! value3 = value2)
       @value3))
   f2)
-(defn f [] (f1 0))
+(defn f [x] ((f1 0) x))

@@ -40,3 +40,5 @@
 (hytest "3-7" "Incorrect password" ((D2 'some-password 'withdraw) 40))
 (hytest "3-7" "Police officer" ((D3 'secret-password 'withdraw) 40))
 
+;3-8
+(f 0)
