@@ -92,9 +92,9 @@
 
 ;3-8
 (defn f1 [value1]
-  (defn f2 [value2]
-    (let [value3 (atom value1)]
-      (swap! value3 = value2)
-      @value3))
-  f2)
-(defn f [x] ((f1 0) x))
+  (let [value4 (atom value1)]
+    (defn f2 [value2]
+      (let [value3 (atom @value4)]
+        (swap! value4 + value2)
+        @value3))
+    f2))

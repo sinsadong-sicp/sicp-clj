@@ -41,4 +41,7 @@
 (hytest "3-7" "Police officer" ((D3 'secret-password 'withdraw) 40))
 
 ;3-8
-(f 0)
+(def hy1 (f1 0))
+(def hy2 (f1 0))
+(hytest "3-8" 0 (+ (hy1 0) (hy1 1)))
+(hytest "3-8" 1 (+ (hy2 1) (hy2 0)))
