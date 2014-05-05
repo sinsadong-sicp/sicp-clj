@@ -80,13 +80,21 @@
 
 ; 3-8
 
-(def f
-  (let [a (atom 0)]
-    (defn g [x]
-      (let [b (atom @a)]
-        (swap! a + x)
-        @b))
-    g))
+; (def f
+;   (let [a (atom 0)]
+;     (defn g [x]
+;       (let [b (atom @a)]
+;         (swap! a + x)
+;         @b))
+;     g))
+
+(defn f1 [value1]
+   (defn f2 [value2]
+     (let [value3 (atom value1)]
+       (swap! value3 = value2)
+       @value3))
+   f2)
+(defn f [x] ((f1 0) x))
 
 ; left-to-right evaluation
 ; (+ (f 0) (f 1))
@@ -173,3 +181,19 @@
 ; mystery returns a reversed list
 ; v => '(a)
 ; w => '(d c b a)
+
+; 3-15
+
+; z1 -> [ ][ ]
+;        |  |
+; x  -> [ ][ ] -> [ ][/]
+;        |         |
+;       wow        b
+
+; z2 -> [ ][ ] -> [ ][ ] -> [ ][/]
+;        |         |         |
+;        |         a         b
+;        |                   |
+;       [ ][ ] -----------> [ ][/]
+;        |
+;       wow
