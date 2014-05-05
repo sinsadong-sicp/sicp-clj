@@ -98,3 +98,26 @@
         (swap! value4 + value2)
         @value3))
     f2))
+
+;3-9
+(comment (
+  global <- env1 { function factorial, n : 6 }
+  global <- env2 { function factorial, n : 5 }
+  global <- env3 { function factorial, n : 4 }
+  global <- env4 { function factorial, n : 3 }
+  global <- env5 { function factorial, n : 2 }
+  global <- env6 { function factorial, n : 1 }
+))
+(comment (
+  global <- env1 { function factorial, n : 6 }
+  global <- env2 { function fact-iter, product : 1, counter : 1, max-count : 6 }
+  global <- env3 { function fact-iter, product : 1, counter : 2, max-count : 6 }
+  global <- env4 { function fact-iter, product : 2, counter : 3, max-count : 6 }
+  global <- env5 { function fact-iter, product : 6, counter : 4, max-count : 6 }
+  global <- env6 { function fact-iter, product : 24, counter : 5, max-count : 6 }
+  global <- env7 { function fact-iter, product : 120, counter : 6, max-count : 6 }
+  global <- env7 { function fact-iter, product : 720, counter : 7, max-count : 6 }
+))
+
+;3-10
+
