@@ -1024,3 +1024,24 @@
 ;     (and
 ;       (zero? (real-part x))
 ;       (zero? (imag-part x)))))
+
+; 2-81
+
+; a. infinite loop
+; b. apply-generic work correctly as is
+; c.
+; (defn apply-generic [op & args]
+;   (let [type-tags (map type-tag args)
+;         proc (get op type-tags)]
+;     (if proc
+;       (apply proc (map contents args))
+;       (if (= (length args) 2)
+;         (let [type1 (car type-tags)
+;               type2 (cadr type-tags)
+;               a1 (car args)
+;               a2 (cadr args)]
+;           (if (= type1 type2) ; <-- check for type sameness before calling get-coercion
+;             (throw (Exception. (str "No method for these types " (list op type-tags))))
+;             (let [t1-to-t2 (get-coercion type1 type2)
+;                   t2-to-t1 (get-coercion type2 type1)]
+;               ...))))))) ; the rest stays the same
