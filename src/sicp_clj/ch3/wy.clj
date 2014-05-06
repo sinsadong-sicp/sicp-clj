@@ -39,7 +39,7 @@
           (cond
             (= m 'withdraw) withdraw
             (= m 'deposit) deposit
-            :else (throw (Exception. "Unknown request -- MAKE-ACCOUNT"))))
+            :else (throw (Exception. (str "Unknown request -- MAKE-ACCOUNT " m)))))
         (fn [_]
           (do
             (swap! suspicious-attempts inc)

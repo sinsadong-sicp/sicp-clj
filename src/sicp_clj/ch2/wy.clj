@@ -605,7 +605,7 @@
             (base exp)
             (dec (exponent exp))))
         (deriv (base exp) var))
-    :else (throw (Exception. "unknown expression type -- DERIV"))
+    :else (throw (Exception. (str "unknown expression type -- DERIV " exp)))
   ))
 
 ; 2-58
@@ -800,7 +800,7 @@
     (cond
       (= 0 bit) (left-branch branch)
       (= 1 bit) (right-branch branch)
-      :else (throw (Exception. "bad bit -- CHOOSE-BRANCH"))))
+      :else (throw (Exception. (str "bad bit -- CHOOSE-BRANCH " bit)))))
   (defn decode-recur [bits branch]
     (if (empty? bits)
       nil
@@ -842,7 +842,7 @@
           (if (leaf? rgt)
             '(1)
             (cons 1 (encode-symbol sym rgt)))
-        :else (throw (Exception. "bad symbol -- ENCODE-SYMBOL")))))
+        :else (throw (Exception. (str "bad symbol -- ENCODE-SYMBOL " sym))))))
   (if (empty? message)
     nil
     (append
@@ -941,7 +941,7 @@
       (= op 'imag-part) (* r (sin a))
       (= op 'magnitude) r
       (= op 'angle) a
-      :else (throw (Exception. "Unknown op -- MAKE_FROM_REAL_IMAG"))))
+      :else (throw (Exception. (str "Unknown op -- MAKE_FROM_REAL_IMAG " op)))))
   dispatch)
 
 ; 2-76
@@ -982,12 +982,12 @@
   (cond
     (pair? datum) (car datum)
     (number? datum) datum
-    :else (throw (Exception. "Bad tagged datum -- TYPE_TAG"))))
+    :else (throw (Exception. (str "Bad tagged datum -- TYPE_TAG " datum)))))
 (defn contents [datum]
   (cond
     (pair? datum) (cdr datum)
     (number? datum) datum
-    :else (throw (Exception. "Bad tagged datum -- CONTENTS"))))
+    :else (throw (Exception. (str "Bad tagged datum -- CONTENTS " datum)))))
 (defn attach-tag [type-tag contents]
   (if (number? contents)
     contents
