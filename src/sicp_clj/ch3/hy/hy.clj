@@ -120,4 +120,9 @@
 ))
 
 ;3-10
-
+(comment (
+  global <- env1 { function make-withdraw, initial-amount : 100 }
+  env1 <- { function lambda, balance : 100 }
+  env1 <- env2 { function lambda, amount : 50, balance : 50 }
+  global <- env3 { function make-withdraw, initial-amount : 100 }
+))
