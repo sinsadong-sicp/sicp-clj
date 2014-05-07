@@ -1045,3 +1045,29 @@
 ;             (let [t1-to-t2 (get-coercion type1 type2)
 ;                   t2-to-t1 (get-coercion type2 type1)]
 ;               ...))))))) ; the rest stays the same
+
+; 2-83
+
+; (defn install-real-package []
+;   (defn real->complex [n]
+;     (make-from-real-imag n 0))
+;   (put 'raise '(real) real->complex)
+;   ...
+;   )
+
+; (defn install-rational-package []
+;   (defn rational->real [n]
+;     (double (/ (numer n) (denom n))))
+;   (put 'raise '(rational) rational->real)
+;   ...
+;   )
+
+; (defn install-integer-package []
+;   (defn integer->rational [n]
+;     (make-rational n 1))
+;   (put 'raise '(integer) integer->rational)
+;   ...
+;   )
+
+; (defn raise [n]
+;   (apply-generic 'raise n))
