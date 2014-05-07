@@ -126,3 +126,26 @@
   env1 <- env2 { function lambda, amount : 50, balance : 50 }
   global <- env3 { function make-withdraw, initial-amount : 100 }
 ))
+
+;3-11
+(comment (
+  ;(define acc (make-account 50))
+  global <- env1 { function make-account, balance : 50 }
+))
+(comment (
+  ;((acc 'deposit) 40)
+  global <- env1 { function make-account, balance : 50 }
+  env1 <- env2 { function dispatch, m : 'deposit }
+  env2 <- env3 { function deposit, amount : 40 }
+))
+(comment (
+  ;((acc 'withdraw) 60)
+  global <- env1 { function make-account, balance : 90 }
+  env1 <- env2 { function dispatch, m : 'withdraw }
+  env2 <- env3 { function withdraw, amount : 60 }
+))
+(comment (
+  Local state is kept in env1
+  For acc2, another env (env4?) is made, which has different local state 'balance'
+  Function definitions are the same
+))
