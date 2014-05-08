@@ -149,3 +149,19 @@
   For acc2, another env (env4?) is made, which has different local state 'balance'
   Function definitions are the same
 ))
+
+;3-12
+(comment (
+  (define x (list ’a ’b))
+  (define y (list ’c ’d))
+  (define z (append x y))
+  z
+    (a b c d)
+  (cdr x)
+    (b)
+  (define w (append! x y)) w
+    (a b c d)
+  (cdr x)
+    (b c d)
+  why? set-cdr! modified x
+))
