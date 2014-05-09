@@ -165,3 +165,9 @@
     (b c d)
   why? set-cdr! modified x
 ))
+
+;3-13
+(comment(
+  a <- b <- c <- a 의 구조임
+  (last-pair z) 는 무한루프
+))
