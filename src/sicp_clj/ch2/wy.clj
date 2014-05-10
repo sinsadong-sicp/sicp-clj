@@ -1071,3 +1071,17 @@
 
 ; (defn raise [n]
 ;   (apply-generic 'raise n))
+
+; 2-87
+
+; (put '=zero? '(polynomial)
+;   (fn [p]
+;     (defn check [tl]
+;       (cond
+;         (empty-termlist? tl)
+;           true
+;         (zero? (coeff (first-term tl)))
+;           (check (rest-terms tl))
+;         :else
+;           false))
+;     (check (term-list p))))
