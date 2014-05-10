@@ -171,3 +171,39 @@
   a <- b <- c <- a 의 구조임
   (last-pair z) 는 무한루프
 ))
+
+;3-14
+(comment (
+  v <- {a b c d}
+  여기서 mystery v를 수행하면
+  v <- {a} (set-cdr!에 의해 맨 앞만 남음)
+  w <- {d c b a} (inverse가 된다능)
+))
+
+;3-15
+(comment (
+z1 -> (car | cdr)
+        |     |
+x ->  (car | cdr-)---(-car | nil)
+        |               |
+       wow              b
+(같이바뀜)
+z2 -> (car | cdr-)---(-car | cdr-)---(car | nil)
+        |               |              |
+        |               a              b
+        |               |              |
+       wow           (-car | cdr-)---(car | nil)
+(혼자바뀜)
+))
+
+;3-16
+(comment (
+  평범한 (a b c) list -> 3
+  3-15 z1 처럼
+  x <- (cons a b)
+  y <- (cons x x) 하면 ((a b) a b) 로 3 pair짜리 리스트지만 세보면 4
+  비슷하게
+  z <- (cons y y) 하면 (((a b) a b) (a b) (a b)) => 7
+  만약
+  a <- (a b c) 하고 마지막 c가 다시 a를 point하게 만들면 => 무한루프)
+))
