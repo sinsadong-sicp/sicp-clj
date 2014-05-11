@@ -100,110 +100,155 @@
     f2))
 
 ;3-9
-(comment (
-  global <- env1 { function factorial, n : 6 }
-  global <- env2 { function factorial, n : 5 }
-  global <- env3 { function factorial, n : 4 }
-  global <- env4 { function factorial, n : 3 }
-  global <- env5 { function factorial, n : 2 }
-  global <- env6 { function factorial, n : 1 }
-))
-(comment (
-  global <- env1 { function factorial, n : 6 }
-  global <- env2 { function fact-iter, product : 1, counter : 1, max-count : 6 }
-  global <- env3 { function fact-iter, product : 1, counter : 2, max-count : 6 }
-  global <- env4 { function fact-iter, product : 2, counter : 3, max-count : 6 }
-  global <- env5 { function fact-iter, product : 6, counter : 4, max-count : 6 }
-  global <- env6 { function fact-iter, product : 24, counter : 5, max-count : 6 }
-  global <- env7 { function fact-iter, product : 120, counter : 6, max-count : 6 }
-  global <- env7 { function fact-iter, product : 720, counter : 7, max-count : 6 }
-))
+;(comment
+;  global <- env1 { function factorial, n : 6 }
+;  global <- env2 { function factorial, n : 5 }
+;  global <- env3 { function factorial, n : 4 }
+;  global <- env4 { function factorial, n : 3 }
+;  global <- env5 { function factorial, n : 2 }
+;  global <- env6 { function factorial, n : 1 }
+;)
+;(comment (
+;  global <- env1 { function factorial, n : 6 }
+;  global <- env2 { function fact-iter, product : 1, counter : 1, max-count : 6 }
+;  global <- env3 { function fact-iter, product : 1, counter : 2, max-count : 6 }
+;  global <- env4 { function fact-iter, product : 2, counter : 3, max-count : 6 }
+;  global <- env5 { function fact-iter, product : 6, counter : 4, max-count : 6 }
+;  global <- env6 { function fact-iter, product : 24, counter : 5, max-count : 6 }
+;  global <- env7 { function fact-iter, product : 120, counter : 6, max-count : 6 }
+;  global <- env7 { function fact-iter, product : 720, counter : 7, max-count : 6 }
+;))
 
 ;3-10
-(comment (
-  global <- env1 { function make-withdraw, initial-amount : 100 }
-  env1 <- { function lambda, balance : 100 }
-  env1 <- env2 { function lambda, amount : 50, balance : 50 }
-  global <- env3 { function make-withdraw, initial-amount : 100 }
-))
+;(comment (
+;  global <- env1 { function make-withdraw, initial-amount : 100 }
+;  env1 <- { function lambda, balance : 100 }
+;  env1 <- env2 { function lambda, amount : 50, balance : 50 }
+;  global <- env3 { function make-withdraw, initial-amount : 100 }
+;))
 
 ;3-11
-(comment (
+;(comment (
   ;(define acc (make-account 50))
-  global <- env1 { function make-account, balance : 50 }
-))
-(comment (
+;  global <- env1 { function make-account, balance : 50 }
+;))
+;(comment (
   ;((acc 'deposit) 40)
-  global <- env1 { function make-account, balance : 50 }
-  env1 <- env2 { function dispatch, m : 'deposit }
-  env2 <- env3 { function deposit, amount : 40 }
-))
-(comment (
-  ;((acc 'withdraw) 60)
-  global <- env1 { function make-account, balance : 90 }
-  env1 <- env2 { function dispatch, m : 'withdraw }
-  env2 <- env3 { function withdraw, amount : 60 }
-))
-(comment (
-  Local state is kept in env1
-  For acc2, another env (env4?) is made, which has different local state 'balance'
-  Function definitions are the same
-))
+;  global <- env1 { function make-account, balance : 50 }
+;  env1 <- env2 { function dispatch, m : 'deposit }
+;  env2 <- env3 { function deposit, amount : 40 }
+;))
+;(comment (
+;  ;((acc 'withdraw) 60)
+;  global <- env1 { function make-account, balance : 90 }
+;  env1 <- env2 { function dispatch, m : 'withdraw }
+;  env2 <- env3 { function withdraw, amount : 60 }
+;))
+;(comment (
+;  Local state is kept in env1
+;  For acc2, another env (env4?) is made, which has different local state 'balance'
+;  Function definitions are the same
+;))
 
 ;3-12
-(comment (
-  (define x (list ’a ’b))
-  (define y (list ’c ’d))
-  (define z (append x y))
-  z
-    (a b c d)
-  (cdr x)
-    (b)
-  (define w (append! x y)) w
-    (a b c d)
-  (cdr x)
-    (b c d)
-  why? set-cdr! modified x
-))
+;(comment (
+;  (define x (list ’a ’b))
+;  (define y (list ’c ’d))
+;  (define z (append x y))
+;  z
+;    (a b c d)
+;  (cdr x)
+;    (b)
+;  (define w (append! x y)) w
+;    (a b c d)
+;  (cdr x)
+;    (b c d)
+;  why? set-cdr! modified x
+;))
 
 ;3-13
-(comment(
-  a <- b <- c <- a 의 구조임
-  (last-pair z) 는 무한루프
-))
+;(comment(
+;  a <- b <- c <- a 의 구조임
+;  (last-pair z) 는 무한루프
+;));
 
 ;3-14
-(comment (
-  v <- {a b c d}
-  여기서 mystery v를 수행하면
-  v <- {a} (set-cdr!에 의해 맨 앞만 남음)
-  w <- {d c b a} (inverse가 된다능)
-))
+;(comment (
+;  v <- {a b c d}
+;  여기서 mystery v를 수행하면
+;  v <- {a} (set-cdr!에 의해 맨 앞만 남음)
+;  w <- {d c b a} (inverse가 된다능)
+;))
 
 ;3-15
-(comment (
-z1 -> (car | cdr)
-        |     |
-x ->  (car | cdr-)---(-car | nil)
-        |               |
-       wow              b
-(같이바뀜)
-z2 -> (car | cdr-)---(-car | cdr-)---(car | nil)
-        |               |              |
-        |               a              b
-        |               |              |
-       wow           (-car | cdr-)---(car | nil)
-(혼자바뀜)
-))
+;(comment (
+;z1 -> (car | cdr)
+;        |     |
+;x ->  (car | cdr-)---(-car | nil)
+;        |               |
+;       wow              b
+;(같이바뀜)
+;z2 -> (car | cdr-)---(-car | cdr-)---(car | nil)
+;        |               |              |
+;        |               a              b
+;        |               |              |
+;       wow           (-car | cdr-)---(car | nil)
+;(혼자바뀜)
+;))
 
 ;3-16
-(comment (
-  평범한 (a b c) list -> 3
-  3-15 z1 처럼
-  x <- (cons a b)
-  y <- (cons x x) 하면 ((a b) a b) 로 3 pair짜리 리스트지만 세보면 4
-  비슷하게
-  z <- (cons y y) 하면 (((a b) a b) (a b) (a b)) => 7
-  만약
-  a <- (a b c) 하고 마지막 c가 다시 a를 point하게 만들면 => 무한루프)
-))
+;(comment (
+;  평범한 (a b c) list -> 3
+;  3-15 z1 처럼
+;  x <- (cons a b)
+;  y <- (cons x x) 하면 ((a b) a b) 로 3 pair짜리 리스트지만 세보면 4
+;  비슷하게
+;  z <- (cons y y) 하면 (((a b) a b) (a b) (a b)) => 7
+;  만약
+;  a <- (a b c) 하고 마지막 c가 다시 a를 point하게 만들면 => 무한루프)
+;))
+
+;3-17
+;http://goo.gl/koKHt
+(defn in?
+  "true if seq contains elm"
+  [seq elm]
+  (some #(= elm %) seq))
+
+(defn count-pairs [x]
+  (let [visited (atom '())]
+    (defn iter [y]
+      (if (or (not (list? y)) (in? y visited))
+        0
+        (do
+          (reset! visited (list y @visited))
+          (+ (iter (first y)) (iter (rest y)) 1)))))
+  (iter x))
+
+;3-18
+(defn checkcycle [l]
+  (let [visited (atom nil)]
+  (defn iter [x]
+    (reset! visited (list x @visited))
+    (cond
+      (nil? (rest x)) false
+      (in? (rest x)) true
+      :else (iter (rest x)))
+    )))
+
+;3-19
+;http://goo.gl/u3ZDf
+(defn checkcycle2 [l]
+  (defn totoise [l1]
+    (if (list? l1)
+      (rest l1)
+      '()))
+  (defn hare [l2]
+    (totoise (totoise l2)))
+  (defn iter [t h]
+    (cond
+      (not (list? t)) false
+      (= t h) false
+      (= t (totoise h)) false
+      :else (iter (totoise t) (hare h))))
+  (iter (totoise l) (hare l)))
