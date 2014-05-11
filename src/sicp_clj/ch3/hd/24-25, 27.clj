@@ -41,6 +41,6 @@
 ;             :else (prn "Unknown operation -- TABLE" m)))
 ;     dispatch))
 
-; 3-26
+; 3-27
 ; n번째 피보나치 수를 찾는데 n단계만에 가능한 이유는 한번 찾은 값을 다시 안 찾기 때문이다. (너무 자명한데??)
 ; memo-fib를 (memoize fib)로 정의하면 fib의 내부에서 (fib (- n 1))과 (fib (- n 2))가 그대로 불리기 때문에 원하는 대로 작동하지 않는다.
