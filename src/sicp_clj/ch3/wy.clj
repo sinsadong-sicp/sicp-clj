@@ -197,3 +197,37 @@
 ;       [ ][ ] -----------> [ ][/]
 ;        |
 ;       wow
+
+; 3-16
+
+; z3 -> [ ][ ] -> [ ][ ] -> [ ][/]
+;        |         |         |
+;        a         b         c
+
+; z4 -> [ ][ ] -> [ ][ ] -> [ ][/]
+;        |          \______/ |
+;        a                   b
+
+; z7 -> [ ][ ] -> [ ][ ] -> [ ][/]
+;         \______/  \______/ |
+;                            a
+
+;        a         b         c
+;        |         |         |
+; z∞ -> [ ][ ] -> [ ][ ] -> [ ][ ]
+;        \_____________________/
+
+; 3-17
+
+; doesn't really make sense as there's no clojure-equivalent of lisp's pair
+; the general idea is to keep a set of visited pairs and count only those not in this set
+
+; 3-18
+
+; the algorithm used in 3-17 finds a cycle when a pair is already in the set of visited pairs
+
+; 3-19
+
+; keep two 'pointers', one of which scans the list one by one
+; and the other proceeding at 2x speed of the former
+; if there's a cycle, two pointers will ultimately coincide before reaching the end of the list
