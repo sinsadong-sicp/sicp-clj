@@ -231,3 +231,21 @@
 ; keep two 'pointers', one of which scans the list one by one
 ; and the other proceeding at 2x speed of the former
 ; if there's a cycle, two pointers will ultimately coincide before reaching the end of the list
+
+; 3-20
+
+; (define x (cons 1 2))
+; ; global <- E1 (x: 1, y: 2, set-x!: ..., set-y!: ..., dispatch: ...) [body of cons]
+
+; (define z (cons x x))
+; ; global <- E2 (x: x, y: x, ...) [body of cons]
+
+; (set-car! (cdr z) 17)
+; ; E2 <- E3 (m: 'cdr) [body of dispatch]
+; ; global <- E4 (z: x, new-value: 17) [body of set-car!]
+; ; E1 <- E5 (m: 'set-car!) [body of dispatch]
+; ; E1 <- E6 (v: 17) [body of set-x!]
+; ; global <- E1 (x: 17, y: 2, ...) [body of cons]
+
+; (car x)
+; ; E1 <- E7 (m: 'car) [body of dispatch]
