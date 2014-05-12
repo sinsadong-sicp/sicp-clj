@@ -252,3 +252,15 @@
       (= t (totoise h)) false
       :else (iter (totoise t) (hare h))))
   (iter (totoise l) (hare l)))
+
+;3-20
+; (define x (cons 1 2))
+;global <- env1 x = { function cons, x = 1, y = 2 }
+; (define z (cons x x))
+;global <- env2 z = { function cons, x = x, y = x }
+; (set-car! (cdr z) 17)
+;env2 <- env3 { function dispatch, m = 'cdr }
+;env3 <- env4 { function set-x!, z = (cdr z), new-value = 17 }
+;env1 <- env5 { function set!, x = 17 }
+; (car x)
+;env5 <- env6 { function car, z = x }
