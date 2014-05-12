@@ -1,4 +1,5 @@
 (ns sicp-clj.ch3.wy
+  (:use sicp-clj.ch3.pair)
   (:use [clojure.contrib.math :only [gcd]]))
 
 ; 3-1
@@ -249,3 +250,40 @@
 
 ; (car x)
 ; ; E1 <- E7 (m: 'car) [body of dispatch]
+
+; 3-21
+
+(defn front-ptr [queue] (.car queue))
+(defn rear-ptr [queue] (.cdr queue))
+(defn set-front-ptr! [queue item] (.setcar queue item))
+(defn set-rear-ptr! [queue item] (.setcdr queue item))
+
+(defn empty-queue? [queue] (nil? (front-ptr queue)))
+(defn make-queue [] (pair nil nil))
+
+(defn front-queue [queue]
+  (if (empty-queue? queue)
+    (throw (Exception. (str "FRONT called with an empty queue" queue)))
+    (.car (front-ptr queue))))
+
+(defn insert-queue! [queue item]
+  (let [new-pair (pair item nil)]
+    (if (empty-queue? queue)
+      (do
+        (set-front-ptr! queue new-pair)
+        (set-rear-ptr! queue new-pair)
+        queue)
+      (do
+        (.setcdr (rear-ptr queue) new-pair)
+        (set-rear-ptr! queue new-pair)
+        queue))))
+
+(defn delete-queue! [queue]
+  (if (empty-queue? queue)
+    (throw (Exception. (str "DELETE! called with an empty queue" queue)))
+    (do
+      (set-front-ptr! queue (.cdr (front-ptr queue)))
+      queue)))
+
+(defn print-queue [queue]
+  (prn (str "(" (front-ptr queue) ")")))
