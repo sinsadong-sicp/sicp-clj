@@ -1,4 +1,5 @@
 (ns sicp-clj.ch3.hy.hy
+  (:use sicp-clj.ch3.pair :reload)
   (:refer-clojure))
 
 ;3-1
@@ -264,3 +265,8 @@
 ;env1 <- env5 { function set!, x = 17 }
 ; (car x)
 ;env5 <- env6 { function car, z = x }
+
+;3-21
+(declare car)
+(defn print-queue [queue]
+  (car queue))
