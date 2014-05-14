@@ -273,14 +273,14 @@
 
 ;3-22
 (defn make-queue []
-  (let [front-ptr (atom (pair nil nil))
-        rear-ptr (atom (pair nil nil))]
+  (let [front-ptr (atom nil)
+        rear-ptr (atom nil)]
     (defn set-front-ptr! [item]
       (reset! front-ptr item))
     (defn set-rear-ptr! [item]
       (reset! rear-ptr item))
     (defn empty-queue? []
-      (nil? (.car @front-ptr)))
+      (nil? @front-ptr))
     (defn front-queue []
       (if (empty-queue?)
         (throw (Exception. (str "Empty queue!!")))
@@ -302,7 +302,7 @@
       (println @front-ptr))
     (defn dispatch [m]
       (cond
-        (= m 'empty-queue) empty-queue?
+        (= m 'empty-queue?) empty-queue?
         (= m 'front-queue) front-queue
         (= m 'insert-queue!) insert-queue!
         (= m 'delete-queue!) delete-queue!

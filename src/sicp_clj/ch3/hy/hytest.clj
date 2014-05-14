@@ -53,6 +53,10 @@
 ((queue 'insert-queue!) 3)
 ((queue 'print-queue))
 ((queue 'delete-queue!))
+((queue 'delete-queue!))
+((queue 'print-queue))
+((queue 'delete-queue!))
+((queue 'empty-queue?))
 ((queue 'print-queue))
 
 ;(use 'sicp-clj.ch3.hy.hytest :reload-all)
