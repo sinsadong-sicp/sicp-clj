@@ -287,3 +287,42 @@
 
 (defn print-queue [queue]
   (prn (str "(" (front-ptr queue) ")")))
+
+; 3-22
+
+(defn make-queue []
+  (let [front-ptr (atom nil)
+        rear-ptr (atom nil)]
+    (defn set-front-ptr! [item]
+      (reset! front-ptr item))
+    (defn set-rear-ptr! [item]
+      (reset! rear-ptr item))
+    (defn empty-queue? []
+      (= nil @front-ptr))
+    (defn front-queue []
+      (if (empty-queue?)
+        (throw (Exception. (str "FRONT called with an empty queue")))
+        (.car @front-ptr)))
+    (defn insert-queue! [item]
+      (let [new-pair (pair item nil)]
+        (if (empty-queue?)
+          (do
+            (set-front-ptr! new-pair)
+            (set-rear-ptr! new-pair))
+          (do
+            (.setcdr @rear-ptr new-pair)
+            (set-rear-ptr! new-pair)))))
+    (defn delete-queue! []
+      (if (empty-queue?)
+        (throw (Exception. (str "DELETE! called with an empty queue")))
+        (set-front-ptr! (.cdr @front-ptr))))
+    (defn print-queue []
+      (prn (str "(" @front-ptr ")")))
+    (defn dispatch [m]
+      (cond
+        (= m 'empty-queue?) empty-queue?
+        (= m 'front-queue) front-queue
+        (= m 'insert-queue!) insert-queue!
+        (= m 'delete-queue!) delete-queue!
+        (= m 'print-queue) print-queue))
+    dispatch))
