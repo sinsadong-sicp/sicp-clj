@@ -59,4 +59,12 @@
 ((queue 'empty-queue?))
 ((queue 'print-queue))
 
+;3-23
+(def deque (make-deque))
+(front-insert-deque! deque 1)
+(front-insert-deque! deque 2)
+(front-insert-deque! deque 3)
+(print-deque deque)
+
+
 ;(use 'sicp-clj.ch3.hy.hytest :reload-all)

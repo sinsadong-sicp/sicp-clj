@@ -309,3 +309,59 @@
         (= m 'print-queue) print-queue
         :else (println "error")))
   dispatch))
+
+;3-23
+(defn make-deque []
+  (pair nil nil))
+(defn front-ptr [deque]
+  (.car deque))
+(defn rear-ptr [deque]
+  (.cdr deque))
+(defn empty-deque? [deque]
+  (nil? (front-ptr deque)))
+(defn set-front! [deque item]
+  (.setcar deque item))
+(defn set-rear! [deque item]
+  (.setcdr deque item))
+(defn front-insert-deque! [deque item]
+  (let [new-pair (pair (pair item nil) nil)] ;(pair (pair value prev) next)
+    (if (empty-deque? deque)
+      (do
+        (set-front! deque new-pair)
+        (set-rear! deque new-pair))
+      (do
+        (.setcdr new-pair (front-ptr deque))
+        (.setcdr (.car (front-ptr deque)) new-pair)
+        (set-front! deque new-pair)
+(defn rear-insert-deque! [deque item]
+  (let [new-pair (pair (pair item nil) nil)] ;(pair (pair value prev) next)
+    (if (empty-deque? deque)
+      (do
+        (set-front! deque new-pair)
+        (set-rear! deque new-pair))
+      (do
+        (.setcdr (rear-ptr deque) new-pair)
+        (.setcdr (.car new-pair) (rear-ptr deque))
+        (set-rear! deque new-pair)))))
+(defn front-delete-deque! [deque]
+  (if (empty-queue?)
+    (throw (Exception. (str "Empty queue delete!")))
+    (do
+      (set-front! deque (.cdr (front-ptr deque)))
+      (if (empty-deque? deque)
+        (.setcdr (.car (front-ptr deque)) nil)))))
+(defn rear-delete-deque! [deque]
+  (if (empty-queue?)
+    (throw (Exception. (str "Empty queue delete!")))
+    (do
+      (set-rear! deque (.car (.cdr (front-ptr deque))))
+      (if (nil? (rear-ptr deque))
+        (set-front! deque nil)
+        (.setcdr (rear-ptr deque) nil)))))
+(defn print-deque [deque]
+  (defn iter [d s]
+    (if (nil? d)
+      (println s)
+      (do
+        (iter (.cdr d) (str s (front-ptr (front-ptr d)) " ")))))
+  (iter deque ""))
