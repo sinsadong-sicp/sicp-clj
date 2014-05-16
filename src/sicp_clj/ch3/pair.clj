@@ -11,12 +11,6 @@
   (car [this] x)
   (cdr [this] y)
   (setcar [this v] (set! x v) this)
-  (setcdr [this v] (set! y v) this)
-
-  Object
-  (toString [_]
-    (if (nil? y)
-      (str x)
-      (str x " " y))))
+  (setcdr [this v] (set! y v) this))
 
 (defn pair [x y] (Pair. x y))
