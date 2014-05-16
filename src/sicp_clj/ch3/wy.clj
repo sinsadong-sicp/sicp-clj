@@ -286,7 +286,11 @@
       queue)))
 
 (defn print-queue [queue]
-  (prn (str "(" (front-ptr queue) ")")))
+  (prn (reverse
+    (loop [current-ptr (front-ptr queue) acc '()]
+      (if (nil? current-ptr)
+        acc
+        (recur (.cdr current-ptr) (cons (.car current-ptr) acc)))))))
 
 ; 3-22
 
@@ -317,7 +321,11 @@
         (throw (Exception. (str "DELETE! called with an empty queue")))
         (set-front-ptr! (.cdr @front-ptr))))
     (defn print-queue []
-      (prn (str "(" @front-ptr ")")))
+      (prn (reverse
+        (loop [current-ptr @front-ptr acc '()]
+          (if (nil? current-ptr)
+            acc
+            (recur (.cdr current-ptr) (cons (.car current-ptr) acc)))))))
     (defn dispatch [m]
       (cond
         (= m 'empty-queue?) empty-queue?
