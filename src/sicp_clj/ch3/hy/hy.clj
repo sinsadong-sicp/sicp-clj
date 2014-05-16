@@ -332,7 +332,7 @@
       (do
         (.setcdr new-pair (front-ptr deque))
         (.setcdr (.car (front-ptr deque)) new-pair)
-        (set-front! deque new-pair)
+        (set-front! deque new-pair)))))
 (defn rear-insert-deque! [deque item]
   (let [new-pair (pair (pair item nil) nil)] ;(pair (pair value prev) next)
     (if (empty-deque? deque)
@@ -365,3 +365,38 @@
       (do
         (iter (.cdr d) (str s (front-ptr (front-ptr d)) " ")))))
   (iter deque ""))
+
+;3-24
+(defn make-table [same-key?]
+  (let [local-table (pair '*table* nil)]
+    (defn asso [key records]
+      (cond
+        (nil? records) false
+        (same-key? key (.car (.car records))) (.car records)
+        :else (asso key (.cdr records))))
+    (defn lookup [key1 key2]
+      (let [subtable (asso key1 (.cdr local-table))]
+        (if subtable
+          (let [record (asso key2 (.cdr subtable))]
+            (if record
+              (.cdr record)
+              false))
+          false)))
+    (defn insert! [key1 key2 value]
+      (let [subtable (asso key1 (.cdr local-table))]
+        (if subtable
+          (let [record (asso key2 (.cdr subtable))]
+            (if record
+              (.setcdr record value)
+              (.setcdr subtable (pair (pair key2 value) (.cdr subtable)))))
+          (.setcdr local-table (pair (pair key1 (pair key2 value)) (.cdr local-table))))))
+    (defn dispatch [m]
+      (cond
+        (= m 'lookup-proc) lookup
+        (= m 'insert-proc!) insert!
+        :else (throw (Exception. "HOYOON"))))
+  dispatch))
+(defn operation-table [] (make-table))
+(defn get-table [] (operation-table 'lookup-proc))
+(defn put-table [] (operation-table 'insert-proc!))
+
