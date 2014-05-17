@@ -334,3 +334,68 @@
         (= m 'delete-queue!) delete-queue!
         (= m 'print-queue) print-queue))
     dispatch))
+
+; 3-28
+
+(defn inverter [input output]
+  (defn invert-input []
+    (let [new-value (logical-not (get-signal input))]
+      (after-delay
+        inverter-delay
+        (fn [] (set-signal! output new-value)))))
+  (add-action! input invert-input))
+
+(defn logical-not [s]
+  (if (zero? s) 1 0))
+
+(defn and-gate [a1 a2 output]
+  (defn and-action []
+    (let [new-value (logical-and (get-signal a1) (get-signal a2))]
+      (after-delay
+        and-gate-delay
+        (fn [] (set-signal! output new-value)))))
+  (do
+    (add-action! a1 and-action)
+    (add-action! a2 and-action)))
+
+(defn logical-and [s v]
+  (if
+    (and (= 1 s) (= 1 v)) 1
+    0))
+
+(defn or-gate [a1 a2 output]
+  (defn or-action []
+    (let [new-value (logical-or (get-signal a1) (get-signal a2))]
+      (after-delay
+        or-gate-delay
+        (fn [] (set-signal! output new-value)))))
+  (do
+    (add-action! a1 or-action)
+    (add-action! a2 or-action)))
+
+(defn logical-or [s v]
+  (if
+    (or (= 1 s) (= 1 v)) 1
+    0))
+
+; 3-29
+
+(defn or-gate-using-and-gate-inverter [a1 a2 output]
+  (let [inverse-a1 (make-wire)
+        inverse-a2 (make-wire)
+        inverse-output (make-wire)]
+    (do
+      (inverter a1 inverse-a1)
+      (inverter a2 inverse-a2)
+      (and-gate inverse-a1 inverse-a2 inverse-output)
+      (inverter inverse-output output))))
+
+; total delay = 3 * inverter delay + and-gate delay
+
+; 3-31
+
+; initialization is necessary to capture the initial signal.
+; if input procedure is not immediately run in half-adder,
+; the initial output would be 0 no matter what input wires
+; had at the time of the call to half-adder as make-wire assumes
+; default signal of 0 when creating wires d and e.
