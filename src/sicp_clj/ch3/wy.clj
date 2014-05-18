@@ -399,3 +399,40 @@
 ; the initial output would be 0 no matter what input wires
 ; had at the time of the call to half-adder as make-wire assumes
 ; default signal of 0 when creating wires d and e.
+
+; 3-38
+
+; a.
+; peter, paul, mary: 45
+; peter, mary, paul: 35
+; paul, peter, mary: 45
+; paul, mary, pater: 50
+; mary, peter, paul: 40
+; mary, paul, peter: 40
+
+; b.
+; suppose everyone reads at the same time the balance of 10,
+; but peter's transaction completes last. then the balance is 110.
+
+; 3-39
+
+; P1 executes and then P2: 101
+; P2 executes and then P1: 121
+; serialized lambda inside P1 executes and then P2 and then P1: 100
+
+; 3-40
+
+; unserialized: 1000000, 1000, 100
+; serialized: 1000000
+
+; 3-41
+
+; calling unserialized balance allows reading the balance while
+; either withdraw or deposit is being executed. there's nothing wrong
+; with that, though, as that reading is actually correct until any
+; ongoing transaction gets completed. and since balance is read-only
+; operation, it can't mess up outputs of other operations.
+
+; 3-42
+
+; this is a safe change. both versions provide the same concurrency.
