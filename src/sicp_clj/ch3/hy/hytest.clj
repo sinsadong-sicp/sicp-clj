@@ -66,5 +66,7 @@
 (front-insert-deque! deque 3)
 (print-deque deque)
 
+;3-24
+()
 
 ;(use 'sicp-clj.ch3.hy.hytest :reload-all)

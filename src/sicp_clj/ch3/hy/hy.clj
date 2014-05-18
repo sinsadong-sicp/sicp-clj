@@ -400,3 +400,69 @@
 (defn get-table [] (operation-table 'lookup-proc))
 (defn put-table [] (operation-table 'insert-proc!))
 
+;3-27
+;global <- env1 { function memo-fib, n = 3 }
+;env1 <- env2 { function memo-fib, n = 2 }
+;env1 <- env3 { function memo-fib, n = 1 }
+;여기서 위에 정의한 table을 통해 예전에 계산된 결과를 이용할 수 있기 때문에 O(n)에 가능.
+;다만 (memoize fib) 로 정의할 경우에는, table에서 lookup하는 것과 별개로 fib가 중복으로 n-1, n-2를
+;계속 호출하기 때문에 일반 fib와 차이 없다
+
+;3-28
+(declare logic-or)
+(declare after-delay)
+(declare or-gate-delay)
+(declare add-action!)
+(declare get-signal)
+(declare set-signal!)
+(defn or-gate [a1 a2 output]
+  (defn action[]
+    (let [newval (logic-or (get-signal a1) (get-signal a2))]
+      (after-delay or-gate-delay
+        (fn [] (set-signal! output newval)))))
+  (add-action! a1 action)
+  (add-action! a2 action))
+
+;3-29
+(declare inverter)
+(declare and-gate)
+(declare make-wire)
+(defn or-gate2 [a1 a2 output]
+  (let [c1 (make-wire)
+        c2 (make-wire)
+        c3 (make-wire)]
+    (inverter a1 c1)
+    (inverter a2 c2)
+    (and-gate c1 c2 c3)
+    (inverter c3 output)))
+
+;3-30
+(declare full-adder)
+(defn ripple-carry-adder [a b s c]
+  (let [cin (make-wire)]
+    (if (nil? (rest a))
+      (set-signal! cin 0)
+      (ripple-carry-adder (rest a) (rest b) (rest s) cin))
+    (full-adder (first a) (first b) cin (first s) c)))
+
+;3-31
+;이 구현에서는 signal 변화가 생겨야 그때 procedure가 실행된다.
+;또한 procedure 실행 과정에서는 after-delay를 통해 실행될 타이밍인지 체크하는 과정이 들어가 있다.
+;이 때 agenda(schedule)에 함수를 등록시키는 식인데, 맨 처음 wire가 0일때는 set-signal!에 의한 c
+;all each가 실행되지 않고 따라서 schedule에 함수 수행 정보가 등록되지 않는다.
+;propagate했을때 아무것도 못가져옴 ㅇㅇ
+
+;3-32
+;??
+
+;3-33
+(declare adder)
+(declare make-connector)
+(declare multiplier)
+(declare constant)
+(defn averager [a b c]
+  (let [sum (make-connector)
+        factor (make-connector)]
+    (adder a b sum)
+    (multiplier c factor sum)
+    (constant factor 2)))
