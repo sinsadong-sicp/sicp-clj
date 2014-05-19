@@ -466,3 +466,8 @@
     (adder a b sum)
     (multiplier c factor sum)
     (constant factor 2)))
+
+;3-34
+;(multiplier a a b) 라고 하면 b만 setting하였을 때 코드 안에서 has-value? 체크하는 부분에서
+;m1, m2가 둘 다 setting되어 있지 않다.
+
