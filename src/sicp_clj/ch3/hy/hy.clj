@@ -1,5 +1,6 @@
 (ns sicp-clj.ch3.hy.hy
   (:use sicp-clj.ch3.pair :reload)
+  (:use [clojure.contrib.math :only [abs gcd expt sqrt]])
   (:refer-clojure))
 
 ;3-1
@@ -471,3 +472,31 @@
 ;(multiplier a a b) 라고 하면 b만 setting하였을 때 코드 안에서 has-value? 체크하는 부분에서
 ;m1, m2가 둘 다 setting되어 있지 않다.
 
+;3-35
+(declare has-value?)
+(declare set-value!)
+(declare get-value)
+(declare forget-value!)
+(declare connect)
+(defn square [a]
+  (* a a))
+(defn squarer [a b]
+  (declare me)
+  (defn process-new-value []
+    (if (has-value? b)
+      (if (< (get-value b) 0)
+        (throw (Exception. "square less than 0 - SQUARER"))
+        (set-value! a (sqrt (get-value b)) me))
+      (if (has-value? a)
+        (set-value! b (square (get-value a)) me))))
+  (defn process-forget-value []
+    (forget-value! a me)
+    (forget-value! b me))
+  (defn me [request]
+    (cond
+      (= request 'value) (process-new-value)
+      (= request 'lost) (process-forget-value)
+      :else (throw (Exception. "Unknown request - SQUARER"))))
+  (connect a me)
+  (connect b me)
+  me)
