@@ -1,6 +1,6 @@
 (ns sicp-clj.ch3.wy
   (:use sicp-clj.ch3.pair)
-  (:use [clojure.contrib.math :only [gcd]]))
+  (:use [clojure.contrib.math :only [gcd sqrt]]))
 
 ; 3-1
 
@@ -399,6 +399,43 @@
 ; the initial output would be 0 no matter what input wires
 ; had at the time of the call to half-adder as make-wire assumes
 ; default signal of 0 when creating wires d and e.
+
+; 3-33
+
+(defn averager [a b c]
+  (let [sum (make-connector)
+        m (make-connector)]
+    (adder a b sum)
+    (constant 2 m)
+    (muliplier c d sum)))
+
+; 3-34
+
+; multiplier assumes two of its three connectors to have values
+; to set the value of the third. so setting the value of b alone
+; can't compute the value of a.
+
+; 3-35
+
+(defn squarer [a b]
+  (defn process-new-value []
+    (cond
+      (has-value? b)
+        (if (< (get-value b) 0)
+          (throw (Exception. (str "square less than 0 -- SQUARER" (get-value b))))
+          (set-value! a (sqrt (get-value b)) me))
+      (has-value? a)
+        (set-value! b (expt (get-value a) 2))))
+  (defn process-forget-value []
+    (forget-value! a me)
+    (forget-value! b me)
+    (process-new-value))
+  (defn me [request]
+    (cond
+      (= request 'I-have-a-value) (process-new-value)
+      (= request 'I-lost-my-value) (process-forget-value)
+      :else (throw (Exception. (str "Unknown request -- SQUARER" request)))))
+  me)
 
 ; 3-38
 
