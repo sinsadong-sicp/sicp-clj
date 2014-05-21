@@ -500,3 +500,21 @@
   (connect a me)
   (connect b me)
   me)
+
+;3-36
+(defn c- [x y]
+  (let [z (make-connector)]
+    (adder x (- 0 y) z)
+    z))
+(defn c* [x y]
+  (let [z (make-connector)]
+    (multiplier x y z)
+    z))
+(defn c/ [x y]
+  (let [z (make-connector)]
+    (multiplier x (/ 1 y) z)
+    z))
+(defn cv [value]
+  (let [z (make-connetor)]
+    (constant z value)
+    z))
