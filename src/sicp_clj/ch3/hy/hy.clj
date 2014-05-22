@@ -501,7 +501,7 @@
   (connect b me)
   me)
 
-;3-36
+;3-37
 (defn c- [x y]
   (let [z (make-connector)]
     (adder x (- 0 y) z)
@@ -518,3 +518,15 @@
   (let [z (make-connetor)]
     (constant z value)
     z))
+
+;3-38
+;Peter : P, Paul : A, Mary : M 으로 표기
+;(a)
+;PAM : 45
+;PMA : 35
+;APM : 45
+;AMP : 50
+;MPA : 40
+;MAP : 40
+;35, 40, 45, 50
+;(b) 맨 마지막에 실행한 사람이 P : 110, A : 80, M : 50 이 들어가 있을 것이다
