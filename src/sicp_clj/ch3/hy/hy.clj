@@ -504,7 +504,7 @@
 ;3-37
 (defn c- [x y]
   (let [z (make-connector)]
-    (adder x (- 0 y) z)
+    (adder y x z)
     z))
 (defn c* [x y]
   (let [z (make-connector)]
@@ -512,7 +512,7 @@
     z))
 (defn c/ [x y]
   (let [z (make-connector)]
-    (multiplier x (/ 1 y) z)
+    (multiplier y x z)
     z))
 (defn cv [value]
   (let [z (make-connetor)]
@@ -535,3 +535,14 @@
 ;총 가짓수는 책에서 봤듯이 101, 121, 110, 11, 100
 ;이 중 serializer에 의해 P2가 access할때 P1이 동시에 set하는 11, 100은 있을 수 없음 탈락.
 ;남은 가짓수는 101, 121, 110
+
+;3-40
+;100(1번 결과 덮어씀), 1000(2번 결과 덮어씀), 1000000(둘다 실행), 10000(p2먼저 실행된 다음 10*1000했을때), 100000(p1먼저 실행된 다음 p2에서 100*100했을때)
+;serialize하면 1000000만 남
+
+;3-41
+;아님. withdraw나 deposit순서가 바뀜에 의해 결과가 달라질 수는 있지만 balance reading과는 상관없는 작업들임.
+
+;3-42
+;safe 함. 사실 두 솔루션은 concurrency측면에서 차이가 없고, 단지 차이는
+;새로 정의된 프로시저가는 call 전에 serialize를 하고 원본은 withdraw나 deposit 호출시에 된다는 점.
