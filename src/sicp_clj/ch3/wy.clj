@@ -437,6 +437,28 @@
       :else (throw (Exception. (str "Unknown request -- SQUARER" request)))))
   me)
 
+; 3-37
+
+(defn c- [x y]
+  (let [z (make-connector)]
+    (adder y z x)
+    z))
+
+(defn c* [x y]
+  (let [z (make-connector)]
+    (multiplier x y z)
+    z))
+
+(defn c/ [x y]
+  (let [z (make-connector)]
+    (multiplier y z x)
+    z))
+
+(defn cv [c]
+  (let [z (make-connector)]
+    (constant c z)
+    z))
+
 ; 3-38
 
 ; a.
