@@ -495,3 +495,17 @@
 ; 3-42
 
 ; this is a safe change. both versions provide the same concurrency.
+
+; 3-44
+
+; Ben's procedure should work fine.
+; the difference between transfer and exchange is that the amount is
+; known beforehand in the case of transfer, whereas in exchange the
+; the amount is the difference between two account's balances
+
+; 3-45
+
+; (serialized-exchange a b)
+; => ((s1 (s2 exchange)) a b)
+; => ((s1 (s2 ((s1 withdraw) (s2 deposit)))) ...) ; not the exact expansion
+; => s1 waits for s2 which waits for s1, resulting in a deadlock
