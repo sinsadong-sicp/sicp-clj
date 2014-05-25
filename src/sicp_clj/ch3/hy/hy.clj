@@ -546,3 +546,18 @@
 ;3-42
 ;safe 함. 사실 두 솔루션은 concurrency측면에서 차이가 없고, 단지 차이는
 ;새로 정의된 프로시저가는 call 전에 serialize를 하고 원본은 withdraw나 deposit 호출시에 된다는 점.
+
+;3-44
+
+;Louis의 주장은 구라임.
+;Exchange에서는 account들이 모두 idle 상태여야만 한다는 조건이 필요한데, transfer에는 그런 조건이 필요없음.
+
+;3-45
+
+;주어진 코드로 exchange를 하게 되면 코드에서 같은 serializer를 두번 사용하게 된다(serialized-exchange, dispatch).
+;그러면 mutex때문에 서로 deadlock
+
+;3-48
+
+;a1, a2에서 a1이 작은 번호라고 하자. 그러면 Paul과 Peter모두 a1을 먼저 require하게 되고, 두 명이 동시에
+;a1을 가져올 수는 없으므로 Paul이 Peter를 기다리거나 Peter가 Paul을 기다리는 식으로 deadlock을 피해 순차적으로 해결됨.
