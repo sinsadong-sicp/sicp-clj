@@ -509,3 +509,20 @@
 ; => ((s1 (s2 exchange)) a b)
 ; => ((s1 (s2 ((s1 withdraw) (s2 deposit)))) ...) ; not the exact expansion
 ; => s1 waits for s2 which waits for s1, resulting in a deadlock
+
+; 3-46
+
+; two procedures, namely A and B, call car-cell on the same mutex
+; at the same time, both getting false and assuming the mutex is
+; available. both then set the value of mutex to true.
+
+; 3-48
+
+; suppose a1 is the smaller-numbered account. then both Paul and Peter
+; try to protect a1 first so either Paul waits Peter to finish or vice versa.
+
+; 3-49
+
+; for the given deadlock-avoidance mechanism to work, every procedure must
+; know in advance all accounts it needs to access, to sort them by their
+; numbers and decide in what order it should enter procedures protecting them.
