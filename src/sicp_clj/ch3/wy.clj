@@ -1,6 +1,6 @@
 (ns sicp-clj.ch3.wy
   (:use sicp-clj.ch3.pair)
-  (:use [clojure.contrib.math :only [gcd sqrt]]))
+  (:use [clojure.contrib.math :only [gcd sqrt expt]]))
 
 ; 3-1
 
@@ -337,6 +337,17 @@
 
 ; 3-28
 
+(declare after-delay)
+(declare inverter-delay)
+(declare and-gate-delay)
+(declare or-gate-delay)
+(declare get-signal)
+(declare set-signal!)
+(declare add-action!)
+
+(defn logical-not [s]
+  (if (zero? s) 1 0))
+
 (defn inverter [input output]
   (defn invert-input []
     (let [new-value (logical-not (get-signal input))]
@@ -345,8 +356,10 @@
         (fn [] (set-signal! output new-value)))))
   (add-action! input invert-input))
 
-(defn logical-not [s]
-  (if (zero? s) 1 0))
+(defn logical-and [s v]
+  (if
+    (and (= 1 s) (= 1 v)) 1
+    0))
 
 (defn and-gate [a1 a2 output]
   (defn and-action []
@@ -358,9 +371,9 @@
     (add-action! a1 and-action)
     (add-action! a2 and-action)))
 
-(defn logical-and [s v]
+(defn logical-or [s v]
   (if
-    (and (= 1 s) (= 1 v)) 1
+    (or (= 1 s) (= 1 v)) 1
     0))
 
 (defn or-gate [a1 a2 output]
@@ -373,12 +386,9 @@
     (add-action! a1 or-action)
     (add-action! a2 or-action)))
 
-(defn logical-or [s v]
-  (if
-    (or (= 1 s) (= 1 v)) 1
-    0))
-
 ; 3-29
+
+(declare make-wire)
 
 (defn or-gate-using-and-gate-inverter [a1 a2 output]
   (let [inverse-a1 (make-wire)
@@ -402,12 +412,17 @@
 
 ; 3-33
 
+(declare make-connector)
+(declare adder)
+(declare multiplier)
+(declare constant)
+
 (defn averager [a b c]
   (let [sum (make-connector)
         m (make-connector)]
     (adder a b sum)
     (constant 2 m)
-    (muliplier c d sum)))
+    (multiplier c m sum)))
 
 ; 3-34
 
@@ -417,7 +432,13 @@
 
 ; 3-35
 
+(declare set-value!)
+(declare has-value?)
+(declare get-value)
+(declare forget-value!)
+
 (defn squarer [a b]
+  (declare me)
   (defn process-new-value []
     (cond
       (has-value? b)
@@ -439,17 +460,17 @@
 
 ; 3-37
 
-(defn c- [x y]
+(defn c-minus [x y]
   (let [z (make-connector)]
     (adder y z x)
     z))
 
-(defn c* [x y]
+(defn c-multiply [x y]
   (let [z (make-connector)]
     (multiplier x y z)
     z))
 
-(defn c/ [x y]
+(defn c-divide [x y]
   (let [z (make-connector)]
     (multiplier y z x)
     z))
@@ -526,3 +547,12 @@
 ; for the given deadlock-avoidance mechanism to work, every procedure must
 ; know in advance all accounts it needs to access, to sort them by their
 ; numbers and decide in what order it should enter procedures protecting them.
+
+; 3-50
+
+; (defn stream-map [proc & argstreams]
+;   (if (stream-null? (car argstreams))
+;     the-empty-stream
+;     (stream-cons
+;       (proc (map stream-car argstreams))
+;       (stream-map (cons proc (map stream-car argstreams))))))
