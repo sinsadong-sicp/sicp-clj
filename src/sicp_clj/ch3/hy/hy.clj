@@ -502,6 +502,7 @@
   me)
 
 ;3-37
+(declare make-connector)
 (defn c- [x y]
   (let [z (make-connector)]
     (adder y x z)
@@ -510,12 +511,12 @@
   (let [z (make-connector)]
     (multiplier x y z)
     z))
-(defn c/ [x y]
+(defn c_div [x y]
   (let [z (make-connector)]
     (multiplier y x z)
     z))
 (defn cv [value]
-  (let [z (make-connetor)]
+  (let [z (make-connector)]
     (constant z value)
     z))
 
@@ -567,7 +568,13 @@
 ;우선순위를 정해줌으로써 deadlock을 피할 수 있다.
 
 ;3-50
-(defn stream-map [proc . argstreams]
+(declare stream-null?)
+(declare the-empty-stream)
+(declare cons-stream)
+(declare stream-map)
+(declare stream-car)
+(declare stream-cdr)
+(defn stream-map [proc argstreams]
   (if (stream-null? (first argstreams))
     the-empty-stream
     (cons-stream
