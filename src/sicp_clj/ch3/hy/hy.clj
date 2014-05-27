@@ -561,3 +561,16 @@
 
 ;a1, a2에서 a1이 작은 번호라고 하자. 그러면 Paul과 Peter모두 a1을 먼저 require하게 되고, 두 명이 동시에
 ;a1을 가져올 수는 없으므로 Paul이 Peter를 기다리거나 Peter가 Paul을 기다리는 식으로 deadlock을 피해 순차적으로 해결됨.
+
+;3-49
+;48번 문제에서 확인하였듯이, 각자 procedure가 자신이 필요한 resource를 모두 정확히 알고 있다면 그들 사이의
+;우선순위를 정해줌으로써 deadlock을 피할 수 있다.
+
+;3-50
+(defn stream-map [proc . argstreams]
+  (if (stream-null? (first argstreams))
+    the-empty-stream
+    (cons-stream
+      (apply proc (map stream-car argstreams)
+      (apply stream-map (cons proc (map stream-cdr argstreams)))))))
+
