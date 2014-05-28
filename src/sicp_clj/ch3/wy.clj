@@ -556,3 +556,29 @@
 ;     (stream-cons
 ;       (proc (map stream-car argstreams))
 ;       (stream-map (cons proc (map stream-car argstreams))))))
+
+; 3-51
+
+; (def x (stream-map show (stream-enumerate-interval 0 10)))
+; => 0
+; (stream-ref x 5)
+; => 1
+; => 2
+; => 3
+; => 4
+; => 5
+; (stream-ref x 7)
+; => 6
+; => 7
+
+; 3-53
+
+; s is a list of powers of 2 starting from 1
+
+; 3-54
+
+(defn mul-streams [s1 s2]
+  (stream-map * s1 s2))
+
+(def factorials
+  (cons-stream 1 (mul-streams factorials (integers-starting-from 2))))
