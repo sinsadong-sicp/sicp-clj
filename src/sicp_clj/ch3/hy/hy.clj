@@ -574,14 +574,52 @@
 (declare stream-map)
 (declare stream-car)
 (declare stream-cdr)
-(defn stream-map [proc argstreams]
+(defn stream-delay [exp]
+  (defn memo-proc [proc]
+    (let [already-run? (atom false)
+          result (atom nil)]
+        (fn []
+          (if (not already-run?)
+            (do
+              (reset! already-run? true)
+              (reset! result (proc)))))))
+  (memo-proc (fn [] exp)))
+(defn stream-null? [x]
+  (empty? x))
+(defn the-empty-stream []
+  nil)
+(defn cons-stream [a b]
+  (cons a (lazy-seq b)))
+(defn stream-car [stream]
+  (first stream))
+(defn stream-cdr [stream]
+  (rest stream))
+(defn stream-map [proc s]
+  (if (stream-null? s)
+    (the-empty-stream)
+    (cons-stream (proc (stream-car s))
+                 (stream-map proc (stream-cdr s)))))
+(defn stream-map2 [proc & argstreams]
   (if (stream-null? (first argstreams))
-    the-empty-stream
+    (the-empty-stream)
     (cons-stream
-      (apply proc (map stream-car argstreams)
-      (apply stream-map (cons proc (map stream-cdr argstreams)))))))
-
+      (apply proc (map stream-car argstreams))
+      (apply stream-map proc (stream-cdr argstreams)))))
+(defn stream-enumerate-interval [low high]
+  (if (> low high)
+    (the-empty-stream)
+    (cons-stream
+      low
+      (stream-enumerate-interval (+ low 1) high))))
+(defn stream-ref [s n]
+  (if (= n 0)
+    (stream-car s)
+    (stream-ref (stream-cdr s) (- n 1))))
 ;3-51
+(defn show [x]
+  (println x)
+  x)
+(def x (stream-map show (stream-enumerate-interval 0 10)))
 ;(defn x [] (stream-map show (stream-enumerate-interval 0 10)))
 ;0
 ;(stream-ref x 5)
