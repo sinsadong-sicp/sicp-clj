@@ -631,3 +631,14 @@
 ;(stream-ref x 7)
 ;6
 ;7
+
+;3-52
+;(def seq (stream-map accum (stream-enumerate-interval 1 20)))
+;1
+;(def y (stream-filter even? seq))
+;6
+;(def z (stream-filter (fn [x] (= (rem x 5) 0)) seq))
+;(stream-ref y 7)
+;136
+
+;3-53
