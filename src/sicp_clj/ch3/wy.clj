@@ -582,3 +582,10 @@
 
 (def factorials
   (cons-stream 1 (mul-streams factorials (integers-starting-from 2))))
+
+; 3-55
+
+(defn partial-sums [s]
+  (cons-stream
+    (stream-car s)
+    (add-streams (partial-sums s) (stream-cdr s))))
