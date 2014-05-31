@@ -589,3 +589,32 @@
   (cons-stream
     (stream-car s)
     (add-streams (partial-sums s) (stream-cdr s))))
+
+; 3-56
+
+(def S
+  (cons-stream
+    1
+    (stream-merge
+      (scale-stream S 2)
+      (stream-merge
+        (scale-stream S 3)
+        (scale-stream S 5)))))
+
+; 3-58
+
+; expand performs division of num by den in the base of radix
+
+; (expand 1 7 10) ; => (1 4 2 8 5 7 ...)
+; (expand 3 8 10) ; => (3 7 5 0 0 0 ...)
+
+; 3-59
+
+(defn integrate-series [s]
+  (stream-map / s (integers-starting-from 1)))
+
+(defn cosine-series [s]
+  (cons-stream 1 (scale-stream (integrate-series sine-series) -1)))
+
+(defn sine-series [s]
+  (cons-stream 0 (integrate-series cosine-series)))
