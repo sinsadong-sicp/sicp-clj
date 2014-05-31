@@ -574,6 +574,9 @@
 (declare stream-map)
 (declare stream-car)
 (declare stream-cdr)
+(declare stream-enumerate-interval)
+(declare stream-ref)
+(comment (
 (defn stream-delay [exp]
   (defn memo-proc [proc]
     (let [already-run? (atom false)
@@ -615,11 +618,12 @@
   (if (= n 0)
     (stream-car s)
     (stream-ref (stream-cdr s) (- n 1))))
+))
 ;3-51
 (defn show [x]
   (println x)
   x)
-(def x (stream-map show (stream-enumerate-interval 0 10)))
+;(def x (stream-map show (stream-enumerate-interval 0 10)))
 ;(defn x [] (stream-map show (stream-enumerate-interval 0 10)))
 ;0
 ;(stream-ref x 5)
@@ -643,3 +647,59 @@
 
 ;3-53
 ;책에 나오는 double과 비슷하게, 1부터 시작하는 2의 거듭제곱들(1, 2, 4, 8, ..)
+
+;3-54
+(declare add-streams)
+(declare ones)
+(declare integers)
+
+(comment (
+(defn add-streams [s1 s2]
+  (stream-map + s1 s2))
+(def ones
+  (cons-stream 1 ones))
+(def integers
+  (cons-stream 1 (add-streams ones integers)))
+))
+
+(defn mul-streams [s1 s2]
+  (stream-map * s1 s2))
+;(def factorials (cons-stream 1 (mul-streams factorials integers)))
+
+;3-55
+(defn partial-sums [s]
+  (cons-stream
+    (stream-car s)
+    (add-streams (stream-cdr s) (partial-sums s))))
+
+;3-56
+(defn merge-streams [s1 s2]
+  (cond
+    (stream-null? s1) s2
+    (stream-null? s2) s1
+    :else
+      (let [s1car (stream-car s1)
+            s2car (stream-car s2)]
+        (cond
+          (< s1car s2car) (cons-stream s1car (merge-streams (stream-cdr s1) s2))
+          (> s1car s2car) (cons-stream s2car (merge-streams s1 (stream-cdr s2)))
+          :else (cons-stream s1car (merge-streams (stream-cdr s1) (stream-cdr s2)))))))
+
+;3-57
+;memoization을 했기 때문에 추가적인 computation 없이 O(n)에 가능
+;안그럴경우 fib(n)을 계산하기 위해서는 fib(n-1) 계산수 + fib(n-2) 계산수 + 1 = fib(n) - 1번의 계산이 필요하다(거의 exponential)
+
+;3-58
+;num을 den으로 나눌 때 값을 radix 진법으로 표현한 것
+;(expand 1 7 10) => (1 4 2 8 5 7 ...) (1/7 = 0.142857...)
+;(expand 3 8 10) => (3 7 5 0 0 0 ...) (3/8 = 0.375)
+
+; 3-59
+(defn integrate-series [s]
+  (stream-map * (stream-map / ones integers) s))
+;(def exp-series
+;  (cons-stream 1 (integrate-series exp-seires)))
+;(def cosine-series
+;  (cons-stream 1 (integer-series (scale-stream sine-series -1))))
+;(def sine-series
+;  (cons-stream 1 (integer-series cosine-series)))
