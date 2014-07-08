@@ -694,7 +694,7 @@
 ;(expand 1 7 10) => (1 4 2 8 5 7 ...) (1/7 = 0.142857...)
 ;(expand 3 8 10) => (3 7 5 0 0 0 ...) (3/8 = 0.375)
 
-; 3-59
+;3-59
 (defn integrate-series [s]
   (stream-map * (stream-map / ones integers) s))
 ;(def exp-series
@@ -703,3 +703,8 @@
 ;  (cons-stream 1 (integer-series (scale-stream sine-series -1))))
 ;(def sine-series
 ;  (cons-stream 1 (integer-series cosine-series)))
+
+;3-60
+(defn mul-series [s1 s2]
+  (cons-stream (* (stream-car s1) (stream-car s2))
+    (add-streams (mul-streams (stream-cdr s1) (stream-cdr s2)) (mul-series s1 s2))))
