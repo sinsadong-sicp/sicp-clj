@@ -8,7 +8,7 @@
 
 (def factorials
     (cons-stream 1
-        (mul-streams factorials integers)))
+        (mul-streams factorials (integers-starting-from 2))))
 
 ; 3-55
 (defn partial-sum [st]
