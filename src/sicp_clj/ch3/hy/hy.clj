@@ -699,10 +699,10 @@
   (stream-map * (stream-map / ones integers) s))
 ;(def exp-series
 ;  (cons-stream 1 (integrate-series exp-seires)))
-;(def cosine-series
-;  (cons-stream 1 (integer-series (scale-stream sine-series -1))))
-;(def sine-series
-;  (cons-stream 1 (integer-series cosine-series)))
+(def cosine-series
+  (cons-stream 1 (integer-series (scale-stream sine-series -1))))
+(def sine-series
+  (cons-stream 1 (integer-series cosine-series)))
 
 ;3-60
 (defn mul-series [s1 s2]
@@ -712,3 +712,12 @@
 ;3-61
 (defn reciprocal-series [s]
   (cons-stream 1 (scale-stream (mul-series (stream-cdr s) (reciprocal-series s)) -1)))
+
+;3-62
+(defn div-series [s1 s2]
+  (let [c (stream-car s2)]
+    (if (= c 0)
+      (throw (Exception. "divided by 0"))
+      (scale-stream (mul-series s1 (reciprocal-series (scale-stream s2 (/ 1 c)))) (/ 1 c)))))
+(defn tan-series []
+  (div-series sine-series cosine-series))
