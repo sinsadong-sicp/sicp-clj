@@ -634,3 +634,17 @@
 
 (defn invert-unit-series [s]
   (cons-stream 1 (scale-stream (mul-series (stream-cdr s) (invert-unit-series s)) -1))
+
+; 3-62
+
+(defn div-series [nums dens]
+  (let [den (stream-car dens)
+        unit-dens (scale-stream dens (/ 1 den))]
+    (if (zero? den)
+      (throw (Exception. (str "denominator cannot be zero -- DIV-SERIES")))
+      (scale-stream
+        (mul-series nums (invert-unit-series unit-dens))
+        (/ 1 den))))
+
+(def tan-series
+  (div-series sine-series cosine-series))
