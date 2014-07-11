@@ -721,3 +721,10 @@
       (scale-stream (mul-series s1 (reciprocal-series (scale-stream s2 (/ 1 c)))) (/ 1 c)))))
 (defn tan-series []
   (div-series sine-series cosine-series))
+
+;3-63
+; Program provided in prob 3-63 calls sqrt-improve function redundantly, since every
+;instantiation of each element needs seperate calculation. For example, calculating n th
+;term of sqrt-stream needs 4! computation (like fibonacci).
+; On the other hands, program in the main text only needs n calcuation. But if we drop the
+;memo-proc, it does the same inefficent calculation.
