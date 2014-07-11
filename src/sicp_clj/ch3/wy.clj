@@ -1,6 +1,6 @@
 (ns sicp-clj.ch3.wy
   (:use sicp-clj.ch3.pair)
-  (:use [clojure.contrib.math :only [gcd sqrt expt]]))
+  (:use [clojure.contrib.math :only [abs gcd sqrt expt]]))
 
 ; 3-1
 
@@ -648,3 +648,12 @@
 
 (def tan-series
   (div-series sine-series cosine-series))
+
+; 3-64
+
+(defn stream-limit [s tolerance]
+  (let [a (stream-car s)
+        b (stream-car (stream-cdr s))]
+    (if (< (abs (- a b)) tolerance)
+      a
+      (stream-limit (stream-cdr s) tolerance))))
