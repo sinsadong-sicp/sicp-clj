@@ -728,3 +728,9 @@
 ;term of sqrt-stream needs 4! computation (like fibonacci).
 ; On the other hands, program in the main text only needs n calcuation. But if we drop the
 ;memo-proc, it does the same inefficent calculation.
+
+;3-64
+(defn stream-limit [stream tolerance]
+  (if (< (abs (- (stream-ref stream 1) (stream-ref stream 0))) tolerance)
+    (stream-ref stream 1) ;true
+    (stream-limit (stream-cdr stream) tolerance))) ;false
