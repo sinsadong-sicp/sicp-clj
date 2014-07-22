@@ -734,3 +734,10 @@
   (if (< (abs (- (stream-ref stream 1) (stream-ref stream 0))) tolerance)
     (stream-ref stream 1) ;true
     (stream-limit (stream-cdr stream) tolerance))) ;false
+
+;3-65
+(defn ln2-summands [n]
+  (cons-stream (/ 1.0 n)
+    (stream-map - (ln2-summands (+ n 1)))))
+(def ln2-stream
+  (cons-stream 1 (ln2-summands 1)))
