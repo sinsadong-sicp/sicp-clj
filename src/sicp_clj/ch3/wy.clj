@@ -657,3 +657,12 @@
     (if (< (abs (- a b)) tolerance)
       a
       (stream-limit (stream-cdr s) tolerance))))
+
+; 3-65
+
+(defn ln2-summands [n]
+  (cons-stream
+    (/ 1 n)
+    (stream-map - (ln2-summands (inc n)))))
+(def ln2-stream
+  (partial-sums (ln2-summands 1)))
