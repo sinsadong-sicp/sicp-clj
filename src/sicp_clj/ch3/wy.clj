@@ -666,3 +666,18 @@
     (stream-map - (ln2-summands (inc n)))))
 (def ln2-stream
   (partial-sums (ln2-summands 1)))
+
+; 3-67
+
+(defn pairs [s t]
+  (cons-stream
+    (list (stream-car s) (stream-car t))
+    (interleave
+      (interleave
+        (stream-map
+          (fn [x] (list (stream-car s) x))
+          (stream-cdr t))
+        (stream-map
+          (fn [x] (list x (stream-car t)))
+          (stream-cdr s)))
+      (pairs (stream-cdr s) (stream-cdr t)))))
