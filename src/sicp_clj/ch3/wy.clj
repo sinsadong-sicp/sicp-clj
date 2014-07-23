@@ -681,3 +681,29 @@
           (fn [x] (list x (stream-car t)))
           (stream-cdr s)))
       (pairs (stream-cdr s) (stream-cdr t)))))
+
+; 3-68
+
+; it doesn't work without cons-stream's lazy evaluation.
+; interleave will try to evaluate its second argument, pairs,
+; which results in an infinite loop.
+
+; 3-69
+
+(defn triples [s t u]
+  (cons-stream
+    (list (stream-car s) (stream-car t) (stream-car u))
+    (interleave
+      (stream-map
+        (fn [x] (list (stream-car s) (car x) (cdr x)))
+        (pairs t u))
+      (triples (stream-cdr s) (stream-cdr t) (stream-cdr u)))))
+
+(def pythagorean-triples
+  (stream-filter
+    (fn [x]
+      (let [i (car x)
+            j (cadr x)
+            k (cddr x)])
+      (= (+ (* i i) (* j j)) (* k k)))
+    (triples integers integers integers)))
