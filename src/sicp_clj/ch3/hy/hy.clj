@@ -756,3 +756,22 @@
 ; case ii) n - m = k -> f(m,n) = (2^m - 1) + 2^(m-1) + (k-1) * 2^m
 ; So, (1, 100) = (2 - 1) + 1 + 98 * 2 = 198
 ; (100, 100) = 2^100 - 1
+
+;3-67
+(defn pairs [s t]
+  (cons-stream
+    (list (stream-car s) (stream-car t))
+    (interleave
+      (stream-map (fn [x] (list (stream-car s) x))
+                  (stream-cdr t))
+      (pairs (stream-cdr s) (stream-cdr t)))))
+(defn pairs2 [s t]
+  (cons-stream
+    (list (stream-car s) (stream-car t))
+    (interleave
+      (interleave
+        (stream-map (fn [x] (list (stream-car s) x))
+                    (stream-cdr t))
+        (pairs2 (stream-cdr s) (stream-cdr t)))
+      (stream-map (fn [x] (list x (stream-car t)))
+                  (stream-cdr s)))))
