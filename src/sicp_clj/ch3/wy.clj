@@ -707,3 +707,19 @@
             k (cddr x)])
       (= (+ (* i i) (* j j)) (* k k)))
     (triples integers integers integers)))
+
+; 3-73
+
+(defn rc [r c dt]
+  (fn [i v0]
+    (add-streams
+      (scale-stream i r)
+      (integral (scale-stream i (/ 1 c)) v0 dt))))
+
+; 3-74
+
+(def zero-crossings
+  (stream-map
+    sign-change-detector
+    sense-data
+    (cons-stream 0 sense-data)))
