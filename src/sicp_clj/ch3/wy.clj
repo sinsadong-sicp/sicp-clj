@@ -723,3 +723,32 @@
     sign-change-detector
     sense-data
     (cons-stream 0 sense-data)))
+
+; 3-75
+
+; the bug is where, instead of averaging each value with the previous 'value',
+; it averages each value with the previous 'average'.
+
+(defn make-zero-crossings [input last-avg last-value]
+  (let [avg (/ (+ (stream-car input) last-value) 2)]
+    (cons-stream
+      (sign-change-detector avg last-avg)
+      (make-zero-crossings
+        (stream-cdr input)
+        avg
+        (stream-car input)))))
+
+; 3-76
+
+(defn smooth [input]
+  (stream-map
+    (fn [x y] (/ (+ x y) 2))
+    input
+    (cons-stream 0 input)))
+
+(defn smoothed-zero-crossings [input]
+  (let [smoothed (smooth input)]
+    (stream-map
+      sign-change-detector
+      smoothed
+      (cons-stream 0 smoothed))))
