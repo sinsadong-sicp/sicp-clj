@@ -775,3 +775,30 @@
         (pairs2 (stream-cdr s) (stream-cdr t)))
       (stream-map (fn [x] (list x (stream-car t)))
                   (stream-cdr s)))))
+
+;3-68
+; No. It will not work. (pairs (stream-cdr s) (stream-cdr t)) causes infinite loop
+
+;3-69
+(defn triples [s t u]
+  (cons-stream
+    (list (stream-car s) (stream-car t) (stream-car u))
+    (interleave
+      (stream-map (fn [x] (list (stream-car s) x))
+                  (stream-cdr (pairs t u)))
+      (triples (stream-cdr s) (stream-cdr t) (stream-cdr u)))))
+
+(defn phythagorean-numbers []
+  (stream-filter
+    (fn [x] (= (square (caddr x)) (+ (square (car x)) (square (cadr x)))))
+    numbers))
+
+;3-73
+(defn RC [r c dt]
+  (defn proc [i v]
+    (add-streams (scale-stream i r) (integral (scale-stream i (/ 1 c) v dt))))
+  proc)
+
+;3-74
+(def zero-crossings
+  (stream-map sign-change-detector sense-data (cons-stream 0 sense-data)))
