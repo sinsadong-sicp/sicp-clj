@@ -802,3 +802,28 @@
 ;3-74
 (def zero-crossings
   (stream-map sign-change-detector sense-data (cons-stream 0 sense-data)))
+
+;3-75
+(defn make-zero-crossings [input-stream last-value last-avpt]
+  (let [avpt (/ (+ (stream-car input-stream) last-value) 2)]
+    (cons-stream (sign-change-detector avpt last-avpt)
+      (make-zero-crossings (stream-cdr input-stream) (stream-car input-stream) avpt))))
+
+;3-76
+(defn smooth [stream]
+  (stream-map (fn [x y] (/ (+ x y) 2))
+    (cons-stream 0 stream) s))
+(defn make-zero-crossings2 [input-stream sm]
+  (let [t (sm input-stream)]
+    (stream-map sign-change-detector t (cons-stream 0 t))))
+
+;3-77
+(defn integral [delayed-integrand initial-value dt]
+  (let [integrand (force delayed-integrand)]
+    (cons-stream initial-value
+      (if (stream-null? integrand)
+        the-empty-stream
+        (integral
+          (delay (stream-cdr integrand))
+          (+ (* dt (stream-car integrand)) initial-value)
+          dt)))))
