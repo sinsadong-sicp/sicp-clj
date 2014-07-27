@@ -752,3 +752,47 @@
       sign-change-detector
       smoothed
       (cons-stream 0 smoothed))))
+
+; 3-77
+
+(defn integral [delayed-integrand initial-value dt]
+  (cons-stream
+    initial-value
+    (let [integrand (force delayed-integrand)]
+      (if (stream-null? integrand)
+        the-empty-stream
+        (integral
+          (delay (stream-cdr integrand))
+          (+ initial-value (* dt (stream-car integrand)))
+          dt)))))
+
+; 3-78
+
+(defn solve-2nd [a b dt y0 dy0]
+  (def y (integral (delay dy) y0 dt))
+  (def dy (integral (delay ddy) dy0 dt))
+  (def ddy
+    (add-streams
+      (scale-stream a dy)
+      (scale-stream b y)))
+  y)
+
+; 3-79
+
+(defn generalized-solve-2nd [f dt y0 dy0]
+  (def y (integral (delay dy) y0 dt))
+  (def dy (integral (delay ddy) dy0 dt))
+  (def ddy (stream-map f dy y))
+  y)
+
+; 3-80
+
+(defn rlc [r l c dt]
+  (fn [i v0]
+    (def vc (integral (delay dvc) v0 dt))
+    (def dvc (scale-stream (delay il) (/ -1 c)))
+    (def il (integral (delay dil) i dt))
+    (def dil (add-streams
+                (scale-stream vc (/ 1 l))
+                (scale-stream il (/ -r l))))
+    (stream-map list vc il)))
