@@ -827,3 +827,16 @@
           (delay (stream-cdr integrand))
           (+ (* dt (stream-car integrand)) initial-value)
           dt)))))
+
+;3-78
+;Defining functions with each other - we call it mutual recursion.
+;Clojure has no explicit way to express mutual recursion elegantly.
+;One should use declare (http://goo.gl/q8dsG4)
+(defn solve-2nd [a b dt y0 dy0]
+  (declare y)
+  (declare dy)
+  (declare ddy)
+  (let [y (integral (delay dy) y0 dt)]
+    (let [dy (integral (delay ddy) dy0 dt)]
+      (let [ddy (add-streams (scale-stream dy a) (scale-stream y b))]
+        y))))
