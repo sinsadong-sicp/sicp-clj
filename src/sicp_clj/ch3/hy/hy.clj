@@ -840,3 +840,12 @@
     (let [dy (integral (delay ddy) dy0 dt)]
       (let [ddy (add-streams (scale-stream dy a) (scale-stream y b))]
         y))))
+
+;3-79
+(defn solve-2nd2 [f y0 dy0 dt]
+  (declare y)
+  (declare dy)
+  (declare ddy)
+  (let [y (integral (delay dy) y0 dt)]
+    (let [dy (integral (delay ddy) dy0 dt)]
+      (let [ddy (stream-map f dy y)]))))
