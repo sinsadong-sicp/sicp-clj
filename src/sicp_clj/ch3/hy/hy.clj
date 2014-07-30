@@ -849,3 +849,17 @@
   (let [y (integral (delay dy) y0 dt)]
     (let [dy (integral (delay ddy) dy0 dt)]
       (let [ddy (stream-map f dy y)]))))
+
+
+;3-80
+(defn RLC [r l c dt]
+  (defn proc [vc0 il0]
+    (declare dvc)
+    (declare dil)
+    (def vc (integral (delay dvc) vc0 dt))
+    (def il (integral (delay dil) il0 dt))
+    (def dvc (scale-stream il (- (/ 1 C))))
+    (def dil (add-streams (scale-stream vc (/ 1 L)) (scale-stream il (- (/ R L)))))
+    (cons-stream vc il)
+    )
+  proc)
